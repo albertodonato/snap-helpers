@@ -22,6 +22,41 @@ snap-helpers - Interact with the Snap system within a Snap
    Full documentation is available on ReadTheDocs_.
 
 
+Testing with the snap
+---------------------
+
+The `snap-helpers` snap provides a way to easily test code using the library in
+a real snap environment with strict confinement.
+
+It provides the `python` and `ipython` commands:
+
+.. code::
+
+   $ snap-helpers.python -c 'from pprint import pprint; import snaphelpers; pprint(dict(snaphelpers.SnapEnviron()))'
+   {'ARCH': 'amd64',
+    'COMMON': '/var/snap/snap-helpers/common',
+    'CONTEXT': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
+    'COOKIE': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
+    'DATA': '/var/snap/snap-helpers/x1',
+    'INSTANCE_KEY': '',
+    'INSTANCE_NAME': 'snap-helpers',
+    'LIBRARY_PATH': '/var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void',
+    'NAME': 'snap-helpers',
+    'REEXEC': '',
+    'REVISION': 'x1',
+    'SNAP': '/snap/snap-helpers/x1',
+    'USER_COMMON': '/home/ack/snap/snap-helpers/common',
+    'USER_DATA': '/home/ack/snap/snap-helpers/x1',
+    'VERSION': '0+git.26e1e9d'}
+
+The snap can be built and installed as follows:
+
+.. code:: shell
+
+   $ snapcraft
+   $ sudo snap install --dangerous snap-helpers_*.snap
+
+
 .. _ReadTheDocs: https://snap-helpers.readthedocs.io/en/latest/
 .. _PyPI: https://pypi.python.org/
 

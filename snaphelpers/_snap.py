@@ -1,4 +1,7 @@
-from typing import Mapping
+from typing import (
+    Mapping,
+    Optional,
+)
 
 from ._ctl import SnapCtl
 from ._env import SnapEnviron
@@ -20,7 +23,7 @@ class Snap:
     environ: SnapEnviron
     ctl: SnapCtl
 
-    def __init__(self, environ: Mapping[str, str] = None):
+    def __init__(self, environ: Optional[Mapping[str, str]] = None):
         self.environ = SnapEnviron(environ=environ)
         self.ctl = SnapCtl(environ=environ)
 

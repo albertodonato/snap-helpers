@@ -1,0 +1,45 @@
+name: snap-helpers
+version: git
+summary: Test snap for snap-helpers
+description: |
+  Test snap for snap-helpers.
+
+  It provides python and ipython shells.
+grade: stable
+confinement: strict
+base: core18
+
+apps:
+  python:
+    command: usr/bin/python3
+    plugs:
+      - home
+      - network
+      - network-bind
+  ipython:
+    command: bin/ipython3
+    plugs:
+      - home
+      - network
+      - network-bind
+
+parts:
+  ipython:
+    plugin: python
+    python-version: python3
+    source: .
+    python-packages:
+      - ipython
+    build-packages:
+      - python3-dev
+    stage-packages:
+      - libpython3.6
+
+  snap-helpers:
+    plugin: python
+    python-version: python3
+    source: ..
+    build-packages:
+      - python3-dev
+    stage-packages:
+      - libpython3.6
