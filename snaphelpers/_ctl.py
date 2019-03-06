@@ -99,6 +99,15 @@ class SnapCtl:
         conf = json.loads(self._run('get', *keys))
         return conf
 
+    def set(self, configs: Dict[str, Any]):
+        """Set snap configs.
+
+        :param configs: a dict with configs. Keys can use dotted notation.
+
+        """
+        args = [f'{key}={json.dumps(value)}' for key, value in configs.items()]
+        self._run('set', *args)
+
     def _run(self, *args: str) -> str:
         """Execute the command return its output.
 

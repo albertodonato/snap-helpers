@@ -39,6 +39,10 @@ class TestSnapCtl:
         snapctl = SnapCtl(executable=str(executable))
         assert snapctl.get('foo', 'bar') == data
 
+    def test_set(self, snapctl, snapctl_calls):
+        snapctl.set({'foo.bar': 123, 'baz': [1, 2, 3]})
+        assert snapctl_calls == [('set', 'foo.bar=123', 'baz=[1, 2, 3]')]
+
     def test_start(self, snapctl, snapctl_calls):
         snapctl.start()
         assert snapctl_calls == [('start', )]
