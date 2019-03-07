@@ -5,6 +5,7 @@ from typing import (
 
 from ._ctl import SnapCtl
 from ._env import SnapEnviron
+from ._path import SnapPaths
 
 
 class EnvironProperty:
@@ -20,12 +21,14 @@ class EnvironProperty:
 class Snap:
     """Top-level wrapper for a Snap."""
 
-    environ: SnapEnviron
     ctl: SnapCtl
+    environ: SnapEnviron
+    paths: SnapPaths
 
     def __init__(self, environ: Optional[Mapping[str, str]] = None):
-        self.environ = SnapEnviron(environ=environ)
         self.ctl = SnapCtl(environ=environ)
+        self.environ = SnapEnviron(environ=environ)
+        self.paths = SnapPaths(environ=environ)
 
     name = EnvironProperty('NAME')
     instance_name = EnvironProperty('INSTANCE_NAME')
