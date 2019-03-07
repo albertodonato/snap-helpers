@@ -5,7 +5,7 @@ from setuptools import (
     setup,
 )
 
-tests_require = ['pytest']
+tests_require = ['pytest', 'pytest-mock']
 
 config = {
     'name': 'snap-helpers',
@@ -23,10 +23,13 @@ config = {
     'packages': find_packages(include=['snaphelpers', 'snaphelpers.*']),
     'include_package_data': True,
     'entry_points': {
-        'console_scripts': []
+        'console_scripts': [
+            'snap-helpers = snaphelpers.scripts.snaphelpers:script',
+            'snap-helpers-hook = snaphelpers.scripts.hook:script'
+        ]
     },
     'test_suite': 'snaphelpers',
-    'install_requires': ['packaging'],
+    'install_requires': ['packaging', 'PyYAML'],
     'tests_require': tests_require,
     'extras_require': {
         'testing': tests_require
