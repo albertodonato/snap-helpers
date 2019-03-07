@@ -40,26 +40,26 @@ def snapcraft_yaml(src_dir):
 @pytest.mark.usefixtures('snapcraft_env')
 class TestSnapHelpersScript:
 
-    def test_make_hooks_missing_part_dir(self, monkeypatch):
+    def test_write_hooks_missing_part_dir(self, monkeypatch):
         monkeypatch.delenv('SNAPCRAFT_PART_SRC')
         script = SnapHelpersScript()
         with pytest.raises(RuntimeError) as e:
-            script(['make-hooks'])
+            script(['write-hooks'])
         assert (
             'SNAPCRAFT_PART_SRC environment variable not defined' in str(
                 e.value))
 
-    def test_make_hooks_missing_prime_dir(self, monkeypatch):
+    def test_write_hooks_missing_prime_dir(self, monkeypatch):
         monkeypatch.delenv('SNAPCRAFT_PRIME')
         script = SnapHelpersScript()
         with pytest.raises(RuntimeError) as e:
-            script(['make-hooks'])
+            script(['write-hooks'])
         assert (
             'SNAPCRAFT_PRIME environment variable not defined' in str(e.value))
 
-    def test_make_hooks_create_files(self, prime_dir, snapcraft_yaml):
+    def test_write_hooks_create_files(self, prime_dir, snapcraft_yaml):
         script = SnapHelpersScript()
-        script(['make-hooks'])
+        script(['write-hooks'])
         hooks_dir = prime_dir / 'snap' / 'hooks'
         configure_hook, install_hook = sorted(hooks_dir.iterdir())
         assert (

@@ -35,8 +35,8 @@ class SnapHelpersScript(Script):
         subparsers.required = True
 
         subparsers.add_parser(
-            'make-hooks',
-            help='Create hook files',
+            'write-hooks',
+            help='Write hook files',
             formatter_class=ArgumentDefaultsHelpFormatter)
         return parser
 
@@ -44,7 +44,7 @@ class SnapHelpersScript(Script):
         action = options.action.replace('-', '_')
         getattr(self, f'_action_{action}')(options)
 
-    def _action_make_hooks(self, options: Namespace):
+    def _action_write_hooks(self, options: Namespace):
         src_dir = self._ensure_env_path('SNAPCRAFT_PART_SRC')
         prime_dir = self._ensure_env_path('SNAPCRAFT_PRIME')
 
