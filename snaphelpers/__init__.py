@@ -4,7 +4,10 @@ from pkg_resources import get_distribution
 
 from packaging.version import parse
 
-from ._conf import SnapConfig
+from ._conf import (
+    SnapConfig,
+    SnapConfigOptions,
+)
 from ._ctl import SnapCtl
 from ._env import (
     is_snap,
@@ -18,6 +21,7 @@ __all__ = [
     'Snap',
     'SnapCtl',
     'SnapConfig',
+    'SnapConfigOptions',
     'SnapEnviron',
     'SnapPaths',
     '__version__',

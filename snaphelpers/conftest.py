@@ -1,9 +1,6 @@
-import json
-from textwrap import dedent
+from copy import deepcopy
 
 import pytest
-
-from ._ctl import SnapCtl
 
 
 @pytest.fixture
@@ -45,17 +42,31 @@ def snap_config():
     }
 
 
+class FakeSnapCtl:
+
+    def __init__(self, configs):
+        self.configs = configs
+
+    def get(self, *keys):
+        options = {}
+        for key in keys:
+            if key in self.configs:
+                options[key] = deepcopy(self.configs[key])
+        return options
+
+    def set(self, configs):
+        for key, value in configs.items():
+            old_conf = conf = self.configs
+            for token in key.split('.'):
+                entry = conf.get(token)
+                if not isinstance(entry, dict):
+                    conf[token] = {}
+
+                old_conf, conf = conf, conf[token]
+            old_conf[token] = value
+
+
 @pytest.fixture
-def snapctl(tmpdir, snap_environ, snap_config):
-    """A SnapCtl instance returning the config."""
-    executable = tmpdir / 'snapctl'
-    executable.write_text(
-        dedent(
-            f'''\
-            #!/bin/sh
-            cat <<EOF
-            {json.dumps(snap_config)}
-            EOF
-            '''), 'utf-8')
-    executable.chmod(0o755)
-    yield SnapCtl(executable=str(executable), environ=snap_environ)
+def snapctl(snap_config):
+    """A fake SnapCtl handling the config."""
+    yield FakeSnapCtl(configs=snap_config)
