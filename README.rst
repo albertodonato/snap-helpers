@@ -1,7 +1,7 @@
 snap-helpers - Interact with the Snap system within a Snap
 ==========================================================
 
-|Build Status| |Coverage Status|
+|Build Status| |Coverage Status| |Documentation Status|
 
 ..
    |Latest Version| |Build Status| |Coverage Status| |Documentation Status|
@@ -15,12 +15,6 @@ snap-helpers - Interact with the Snap system within a Snap
    As a user run::
 
      $ pip install snap-helpers
-
-   Documentation
-   -------------
-
-   Full documentation is available on ReadTheDocs_.
-
 
 The library exposes a top-level ``snaphelpers.Snap`` object which provides
 access to:
@@ -162,6 +156,12 @@ The snap can be built and installed as follows:
 
    $ snapcraft
    $ sudo snap install --dangerous snap-helpers_*.snap
+
+
+Documentation
+-------------
+
+Full documentation is available on ReadTheDocs_.
 
 
 .. _ReadTheDocs: https://snap-helpers.readthedocs.io/en/latest/
