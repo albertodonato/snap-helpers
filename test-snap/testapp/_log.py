@@ -1,8 +1,7 @@
 import logging
 
 
-def setup_log(log_dir):
-    logfile = log_dir / 'hooks.log'
+def setup_log(logfile):
     logging.basicConfig(
         filename=str(logfile),
         filemode='a',

@@ -1,4 +1,4 @@
-name: testapp
+name: snap-helpers-testapp
 version: git
 summary: Snap for a test application using snap-helpers
 description: |
@@ -20,6 +20,12 @@ apps:
       - home
       - network
       - network-bind
+  service1:
+    command: bin/service1
+    daemon: simple
+  service2:
+    command: bin/service2
+    daemon: simple
 
 hooks:
   configure:
@@ -28,27 +34,18 @@ hooks:
     plugs: []
 
 parts:
-  snap-helpers:
-    plugin: python
-    python-version: python3
-    source: ..
-    build-packages:
-      - python3-dev
-    stage-packages:
-      - libpython3.6
-
-  testapp:
+  snap-helpers-testapp:
     plugin: python
     python-version: python3
     source: .
+    requirements:
+      - requirements.txt
     python-packages:
       - ipython
     build-packages:
       - python3-dev
     stage-packages:
       - libpython3.6
-    after:
-      - snap-helpers
     override-build: |
       set -e
 
