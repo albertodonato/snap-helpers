@@ -6,9 +6,11 @@
    :hidden:
    :maxdepth: 3
 
+   configuration.rst
    mod-snaphelpers.rst
 
 .. include:: ../README.rst
+
 
 Indices and tables
 ==================

@@ -1,6 +1,6 @@
-===========
-snaphelpers
-===========
+===============
+``snaphelpers``
+===============
 
 .. automodule:: snaphelpers
       :members:
