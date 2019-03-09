@@ -7,6 +7,7 @@
    :maxdepth: 3
 
    configuration.rst
+   hooks.rst
    mod-snaphelpers.rst
 
 .. include:: ../README.rst

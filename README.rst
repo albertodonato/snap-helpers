@@ -96,7 +96,7 @@ Hooks can be defined by simply registering functions to be called as hooks via
        }
    )
 
-Hook functions are called with a ``Snap`` objects as argument:
+Hook functions are called with a ``Snap`` object as argument:
 
 .. code:: python
 
