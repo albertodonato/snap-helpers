@@ -2,9 +2,11 @@ from copy import deepcopy
 
 import pytest
 
+from ._env import SnapEnviron
+
 
 @pytest.fixture
-def snap_environ():
+def snap_env():
     """Environment variables defined in a snap."""
     yield {
         'SNAP': '/snap/mysnap/123',
@@ -20,9 +22,15 @@ def snap_environ():
 
 
 @pytest.fixture
-def snap_apply_environ(monkeypatch, snap_environ):
+def snap_environ(snap_env):
+    """A SnapEnviron using the snap_env."""
+    yield SnapEnviron(environ=snap_env)
+
+
+@pytest.fixture
+def snap_apply_env(monkeypatch, snap_env):
     """Apply snap environment variables."""
-    for key, value in snap_environ.items():
+    for key, value in snap_env.items():
         monkeypatch.setenv(key, value)
 
 

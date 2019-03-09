@@ -1,8 +1,5 @@
 from pathlib import Path
-from typing import (
-    Mapping,
-    Optional,
-)
+from typing import Optional
 
 from ._env import SnapEnviron
 
@@ -18,8 +15,9 @@ class SnapPaths:
     user_common: Path  #: the SNAP_USER_COMMON path
     user_data: Path  #: the SNAP_USER_DATA path
 
-    def __init__(self, environ: Optional[Mapping] = None):
-        env = SnapEnviron(environ=environ)
+    def __init__(self, env: Optional[SnapEnviron] = None):
+        if env is None:
+            env = SnapEnviron()
         for key in self.__slots__:
             setattr(self, key, Path(env[key.upper()]))
 

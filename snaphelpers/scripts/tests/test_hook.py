@@ -22,7 +22,7 @@ def mock_get_hooks(mocker, hooks):
     mocker.patch.object(hook, 'get_hooks', lambda: hooks)
 
 
-@pytest.mark.usefixtures('snap_apply_environ', 'mock_get_hooks')
+@pytest.mark.usefixtures('snap_apply_env', 'mock_get_hooks')
 class TestHookScript:
 
     def test_run_hook(self, hook_calls):

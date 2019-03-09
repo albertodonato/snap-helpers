@@ -6,7 +6,6 @@ from typing import (
     Dict,
     Iterable,
     List,
-    Mapping,
     NamedTuple,
     Optional,
     Sequence,
@@ -36,9 +35,11 @@ class SnapCtl:
     def __init__(
             self,
             executable: str = '/usr/bin/snapctl',
-            environ: Optional[Mapping[str, str]] = None):
+            env: Optional[SnapEnviron] = None):
+        if env is None:
+            env = SnapEnviron()
         self._executable = executable
-        self._instance_name = SnapEnviron(environ=environ).INSTANCE_NAME
+        self._instance_name = env.INSTANCE_NAME
 
     def start(self, *services: str, enable: bool = False):
         """Start all or specified services in the snap.

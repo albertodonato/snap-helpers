@@ -14,16 +14,16 @@ class TestIsSnap:
         environ = {'SNAP': value}
         assert is_snap(environ=environ) == expected
 
-    def test_default_env(self, snap_apply_environ):
+    def test_default_env(self, snap_apply_env):
         assert is_snap()
 
 
 class TestSnapEnviron:
 
-    def test_to_dict(self, snap_environ):
+    def test_to_dict(self, snap_env):
         # ignored environment variables
-        snap_environ.update({'OTHER': 'value', 'PATH': '/bin:/usr/bin'})
-        env = SnapEnviron(environ=snap_environ)
+        snap_env.update({'OTHER': 'value', 'PATH': '/bin:/usr/bin'})
+        env = SnapEnviron(environ=snap_env)
         assert dict(env) == {
             'NAME': 'mysnap',
             'COMMON': '/var/snap/mysnap/common',
@@ -36,27 +36,27 @@ class TestSnapEnviron:
             'VERSION': '0.1.2'
         }
 
-    def test_len(self, snap_environ):
-        env = SnapEnviron(environ=snap_environ)
-        assert len(env) == len(snap_environ)
+    def test_len(self, snap_env):
+        env = SnapEnviron(environ=snap_env)
+        assert len(env) == len(snap_env)
 
-    def test_getitem(self, snap_environ):
-        env = SnapEnviron(environ=snap_environ)
+    def test_getitem(self, snap_env):
+        env = SnapEnviron(environ=snap_env)
         assert env['DATA'] == '/var/snap/mysnap/123'
 
-    def test_setitem_not_allowed(self, snap_environ):
-        env = SnapEnviron(environ=snap_environ)
+    def test_setitem_not_allowed(self, snap_env):
+        env = SnapEnviron(environ=snap_env)
         with pytest.raises(TypeError):
             env['FOO'] = 'bar'
 
-    def test_getattr(self, snap_environ):
-        env = SnapEnviron(environ=snap_environ)
+    def test_getattr(self, snap_env):
+        env = SnapEnviron(environ=snap_env)
         assert env.VERSION == '0.1.2'
 
-    def test_getattr_not_found(self, snap_environ):
-        env = SnapEnviron(environ=snap_environ)
+    def test_getattr_not_found(self, snap_env):
+        env = SnapEnviron(environ=snap_env)
         with pytest.raises(AttributeError):
             env.FOO
 
-    def test_default_env(self, snap_environ, snap_apply_environ):
-        assert SnapEnviron().SNAP == snap_environ['SNAP']
+    def test_default_env(self, snap_env, snap_apply_env):
+        assert SnapEnviron().SNAP == snap_env['SNAP']

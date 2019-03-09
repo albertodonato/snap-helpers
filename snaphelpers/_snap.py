@@ -28,10 +28,10 @@ class Snap:
     paths: SnapPaths
 
     def __init__(self, environ: Optional[Mapping[str, str]] = None):
-        self.ctl = SnapCtl(environ=environ)
-        self.config = SnapConfig(snapctl=self.ctl)
         self.environ = SnapEnviron(environ=environ)
-        self.paths = SnapPaths(environ=environ)
+        self.ctl = SnapCtl(env=self.environ)
+        self.paths = SnapPaths(env=self.environ)
+        self.config = SnapConfig(snapctl=self.ctl)
 
     def __str__(self):
         return (

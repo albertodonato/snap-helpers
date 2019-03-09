@@ -15,13 +15,13 @@ def snapctl_calls():
 
 
 @pytest.fixture
-def snapctl(snap_apply_environ, snapctl_calls):
+def snapctl(snap_apply_env, snapctl_calls):
     snapctl = SnapCtl(executable='/not/here')
     snapctl._run = lambda *args: snapctl_calls.append(args)
     yield snapctl
 
 
-@pytest.mark.usefixtures('snap_apply_environ')
+@pytest.mark.usefixtures('snap_apply_env')
 class TestSnapCtl:
 
     def test_get(self, tmpdir):
