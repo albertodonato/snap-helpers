@@ -7,6 +7,10 @@ from .._snap import Snap
 
 class TestSnap:
 
+    def test_str(self, snap_environ):
+        snap = Snap(environ=snap_environ)
+        assert str(snap) == 'Snap(mysnap 0.1.2 123)'
+
     @pytest.mark.parametrize(
         'name', ['name', 'instance_name', 'version', 'revision'])
     def test_properties(self, name, snap_environ):
