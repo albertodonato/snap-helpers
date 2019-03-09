@@ -22,13 +22,120 @@ snap-helpers - Interact with the Snap system within a Snap
    Full documentation is available on ReadTheDocs_.
 
 
+The library exposes a top-level ``snaphelpers.Snap`` object which provides
+access to:
+
+- snap details:
+
+  .. code:: python
+
+     >>> snap = snaphelpers.Snap()
+     >>> snap.name
+     'snap-helpers'
+     >>> snap.instance_name
+     'snap-helpers'
+     >>> snap.version
+     '0+git.fdf80cd'
+     >>> snap.revision
+     'x1'
+
+- paths:
+
+  .. code:: python
+
+     >>> snap.paths.common
+     PosixPath('/var/snap/snap-helpers/common')
+     >>> snap.paths.data
+     PosixPath('/var/snap/snap-helpers/x1')
+     >>> snap.paths.snap
+     PosixPath('/snap/snap-helpers/x1')
+     >>> snap.paths.user_common
+     PosixPath('/home/ack/snap/snap-helpers/common')
+     >>> snap.paths.user_data
+     PosixPath('/home/ack/snap/snap-helpers/x1')
+
+- snap-related environment variables:
+
+  .. code:: python
+
+     >>> pprint.pprint(dict(snap.environ))
+     {'ARCH': 'amd64',
+      'COMMON': '/var/snap/snap-helpers/common',
+      'CONTEXT': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
+      'COOKIE': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
+      'DATA': '/var/snap/snap-helpers/x1',
+      'INSTANCE_KEY': '',
+      'INSTANCE_NAME': 'snap-helpers',
+      'LIBRARY_PATH': '/var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void',
+      'NAME': 'snap-helpers',
+      'REEXEC': '',
+      'REVISION': 'x1',
+      'SNAP': '/snap/snap-helpers/x1',
+      'USER_COMMON': '/home/ack/snap/snap-helpers/common',
+      'USER_DATA': '/home/ack/snap/snap-helpers/x1',
+      'VERSION': '0+git.fdf80cd'}
+     >>> snap.environ.ARCH
+     'amd64'
+
+- configuration options:
+
+  .. code:: python
+
+     >>> snap.config.set({'foo.bar': 'baz', 'asdf': 3})  # this needs to be run as root
+     >>> options = snap.config.get_options('foo', 'asdf')
+     >>> options['foo']
+     {'bar': 'baz'}
+     >>> options['foo.bar']
+     'baz'
+     >>> options['asdf']
+     3
+     >>> options.as_dict()
+     {'asdf': 3, 'foo': {'bar': 'baz'}}
+
+
+Hook helpers
+------------
+
+The library provides helpers to reduce boilerplate when setting up hooks for the snap.
+
+Hooks can be defined by simply registering functions to be called as hooks via
+``entry_points`` in the application ``setup.py``:
+
+.. code:: python
+
+   setup(
+       # ...
+       entry_points={
+           'snaphelpers.hooks': [
+               'configure = testapp:configure_hook',
+               'install = testapp:install_hook'
+           ]
+       }
+   )
+
+Hook functions are called with a ``Snap`` objects as argument:
+
+.. code:: python
+
+   def install_hook(snap: snaphelpers.Snap):
+       # ...
+
+
+   def configure_hook(snap: snaphelpers.Snap):
+       # ...
+
+
+``snap-helpers`` will take care of the hooks plumbing (i.e. creating hook files
+in ``$SNAP/snap/hooks``).
+
+
 Testing with the snap
 ---------------------
 
-The `snap-helpers` snap provides a way to easily test code using the library in
+The ``snap-helpers`` snap provides a way to easily test code using the library in
 a real snap environment with strict confinement.
 
-It provides the `python` and `ipython` commands:
+It provides the ``python`` and ``ipython`` commands:
 
 .. code::
 
