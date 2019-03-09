@@ -2,6 +2,7 @@ from copy import deepcopy
 
 import pytest
 
+from ._ctl import SnapCtl
 from ._env import SnapEnviron
 
 
@@ -50,21 +51,31 @@ def snap_config():
     }
 
 
+@pytest.fixture
+def snapctl(mocker, snap_apply_env):
+    """A SnapCtl instance with a mocked run method."""
+    snapctl = SnapCtl(executable='/not/here')
+    snapctl.run = mocker.Mock(return_value='')
+    yield snapctl
+
+
 class FakeSnapCtl:
+    """A fake SnapCtl implementation."""
 
-    def __init__(self, configs):
-        self.configs = configs
+    def __init__(self, configs=None, services=None):
+        self._configs = configs or {}
+        self._services = services or []
 
-    def get(self, *keys):
+    def config_get(self, *keys):
         options = {}
         for key in keys:
-            if key in self.configs:
-                options[key] = deepcopy(self.configs[key])
+            if key in self._configs:
+                options[key] = deepcopy(self._configs[key])
         return options
 
-    def set(self, configs):
+    def config_set(self, configs):
         for key, value in configs.items():
-            old_conf = conf = self.configs
+            old_conf = conf = self._configs
             for token in key.split('.'):
                 entry = conf.get(token)
                 if not isinstance(entry, dict):
@@ -73,8 +84,11 @@ class FakeSnapCtl:
                 old_conf, conf = conf, conf[token]
             old_conf[token] = value
 
+    def services(self):
+        return deepcopy(self._services)
+
 
 @pytest.fixture
-def snapctl(snap_config):
+def fake_snapctl(snap_config):
     """A fake SnapCtl handling the config."""
     yield FakeSnapCtl(configs=snap_config)

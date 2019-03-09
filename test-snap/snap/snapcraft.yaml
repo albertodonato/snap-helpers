@@ -34,18 +34,25 @@ hooks:
     plugs: []
 
 parts:
+  # use a separate part for snap-helpers to install from the local copy rather
+  # than the PyPI release
+  snap-helpers:
+    plugin: python
+    python-version: python3
+    source: ..
+
   snap-helpers-testapp:
     plugin: python
     python-version: python3
     source: .
-    requirements:
-      - requirements.txt
     python-packages:
       - ipython
     build-packages:
       - python3-dev
     stage-packages:
       - libpython3.6
+    after:
+      - snap-helpers
     override-build: |
       set -e
 

@@ -7,6 +7,7 @@ from ._conf import SnapConfig
 from ._ctl import SnapCtl
 from ._env import SnapEnviron
 from ._path import SnapPaths
+from ._service import SnapServices
 
 
 class EnvironProperty:
@@ -23,15 +24,16 @@ class Snap:
     """Top-level wrapper for a Snap."""
 
     config: SnapConfig
-    ctl: SnapCtl
     environ: SnapEnviron
     paths: SnapPaths
+    services: SnapServices
 
     def __init__(self, environ: Optional[Mapping[str, str]] = None):
         self.environ = SnapEnviron(environ=environ)
-        self.ctl = SnapCtl(env=self.environ)
         self.paths = SnapPaths(env=self.environ)
-        self.config = SnapConfig(snapctl=self.ctl)
+        snapctl = SnapCtl(env=self.environ)
+        self.config = SnapConfig(snapctl=snapctl)
+        self.services = SnapServices(snapctl=snapctl)
 
     def __str__(self):
         return (

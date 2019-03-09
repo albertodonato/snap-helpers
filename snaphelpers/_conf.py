@@ -68,7 +68,7 @@ class SnapConfigOptions:
 
     def fetch(self):
         """Fetch (or refresh) configuration for the set of keys."""
-        self._config = self._snapctl.get(*self._keys)
+        self._config = self._snapctl.config_get(*self._keys)
 
     def as_dict(self) -> Dict[str, Any]:
         """Return the configuration as a :class:`dict`."""
@@ -112,4 +112,4 @@ class SnapConfig:
         :param options: a dict with configs. Keys can use dotted notation.
 
         """
-        self._snapctl.set(options)
+        self._snapctl.config_set(options)

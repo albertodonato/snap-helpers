@@ -6,7 +6,7 @@ from argparse import (
 import os
 from pathlib import Path
 from typing import (
-    Dict,
+    Mapping,
     Optional,
 )
 
@@ -24,8 +24,9 @@ exec "${{SNAP}}/snap/command-chain/snapcraft-runner" \
 class SnapHelpersScript(Script):
     """Tool to perform snap-helpers tasks."""
 
-    def __init__(self, environ: Optional[Dict[str, str]] = None):
-        self.environ = environ or os.environ
+    def __init__(self, environ: Optional[Mapping[str, str]] = None):
+        if environ is None:
+            environ = os.environ
 
     def get_parser(self) -> ArgumentParser:
         parser = ArgumentParser(

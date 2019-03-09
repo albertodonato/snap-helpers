@@ -2,15 +2,19 @@
 
 .. _home:
 
+.. include:: ../README.rst
+
+
+Table of contents
+=================
+
 .. toctree::
-   :hidden:
    :maxdepth: 3
 
    configuration.rst
    hooks.rst
+   services.rst
    mod-snaphelpers.rst
-
-.. include:: ../README.rst
 
 
 Indices and tables

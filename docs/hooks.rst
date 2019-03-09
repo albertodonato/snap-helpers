@@ -32,6 +32,7 @@ For instance:
        }
    )
 
+
 will register functions for the ``configure`` and ``install`` hooks.
 These functions are called with a :class:`Snap` instance as argument:
 
@@ -86,6 +87,7 @@ to set up hooks:
 
          snapcraftctl build
          snap-helpers write-hooks
+
 
 This will create the corresponding hook scripts in ``$SNAP/snap/hooks/``.
 

@@ -1,10 +1,12 @@
 import json
 import re
-from subprocess import check_output
+from subprocess import (
+    PIPE,
+    Popen,
+)
 from typing import (
     Any,
     Dict,
-    Iterable,
     List,
     NamedTuple,
     Optional,
@@ -21,6 +23,20 @@ class ServiceInfo(NamedTuple):
     enabled: bool
     active: bool
     notes: List[str]
+
+
+class SnapCtlError(Exception):
+    """A snapctl command failed."""
+
+    returncode: int
+    error: str
+
+    def __init__(self, process: Popen):
+        self.returncode = process.returncode
+        self.error = process.stderr.read().decode('utf-8')
+        super().__init__(
+            f'Call to snapctl failed with error {self.returncode}: ' +
+            self.error)
 
 
 class SnapCtl:
@@ -49,33 +65,39 @@ class SnapCtl:
         :param enable: whether to also enable services at startup.
 
         """
-        args = ['start']
-        if enable:
-            args.append('--enable')
-        if services:
-            args.extend(self._service_names(services))
-        self._run(*args)
+        self._run_for_services('start', services, options={'enable': enable})
 
     def stop(self, *services: str, disable: bool = False):
         """Stop all or specified services in the snap.
 
-        :param services: a list of services defined in the snap to stop..
+        :param services: a list of services defined in the snap to stop.
           If not specified, all services will be stopped.
         :param disable: whether to also disable services at startup.
 
         """
-        args = ['stop']
-        if disable:
-            args.append('--disable')
-        if services:
-            args.extend(self._service_names(services))
-        self._run(*args)
+        self._run_for_services('stop', services, options={'disable': disable})
 
-    def services(self) -> List[ServiceInfo]:
-        """Return info about services in the snap."""
-        lines = self._run('services').splitlines()[1:]
+    def restart(self, *services: str, reload: bool = False):
+        """Restart all or specified services in the snap.
+
+        :param services: a list of services defined in the snap to restart.
+          If not specified, all services will be restarted.
+        :param reload: whether to reload services if supported.
+
+        """
+        self._run_for_services('restart', services, options={'reload': reload})
+
+    def services(self, *services: str) -> List[ServiceInfo]:
+        """Return info about services in the snap.
+
+        :param services: a list of services to return info for.
+          If not specified, all services are returned.
+
+        """
+        lines = self._run_for_services('services', services)
         service_infos = []
-        for line in lines:
+        # skip header
+        for line in lines.splitlines()[1:]:
             match = self._SERVICE_RE.match(line)
             if match:
                 info = match.groupdict()
@@ -90,33 +112,52 @@ class SnapCtl:
                         notes=notes))
         return service_infos
 
-    def get(self, *keys: str) -> Dict[str, Any]:
+    def config_get(self, *keys: str) -> Dict[str, Any]:
         """Return the snap config.
 
         :param keys: a list of config keys to return.
 
         """
         conf: Dict[str, Any]
-        conf = json.loads(self._run('get', '-d', *keys))
+        conf = json.loads(self.run('get', '-d', *keys))
         return conf
 
-    def set(self, configs: Dict[str, Any]):
+    def config_set(self, configs: Dict[str, Any]):
         """Set snap configs.
 
         :param configs: a dict with configs. Keys can use dotted notation.
 
         """
         args = [f'{key}={json.dumps(value)}' for key, value in configs.items()]
-        self._run('set', *args)
+        self.run('set', *args)
 
-    def _run(self, *args: str) -> str:
+    def run(self, *args: str) -> str:
         """Execute the command return its output.
 
         ":param args: command args.
 
         """
-        output: bytes = check_output([self._executable, *args])
+        process = Popen([self._executable, *args], stdout=PIPE, stderr=PIPE)
+        process.wait()
+        if process.returncode:
+            raise SnapCtlError(process)
+        output: bytes = process.stdout.read()
         return output.decode('utf-8')
 
-    def _service_names(self, services: Sequence[str]) -> Iterable[str]:
-        return (f'{self._instance_name}.{service}' for service in services)
+    def _run_for_services(
+            self,
+            cmd: str,
+            services: Sequence[str],
+            options: Optional[Dict[str, bool]] = None) -> str:
+        opts: List[str] = []
+        if options:
+            opts = [
+                f'--{option}' for option, value in options.items() if value
+            ]
+        if services:
+            service_names = [
+                f'{self._instance_name}.{service}' for service in services
+            ]
+        else:
+            service_names = [self._instance_name]
+        return self.run(cmd, *opts, *service_names)

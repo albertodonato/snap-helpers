@@ -1,3 +1,0 @@
-# install snap-helpers from the local dir
---find-links=..
-snap-helpers

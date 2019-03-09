@@ -8,22 +8,28 @@ from ._conf import (
     SnapConfig,
     SnapConfigOptions,
 )
-from ._ctl import SnapCtl
+from ._ctl import (
+    SnapCtl,
+    SnapCtlError,
+)
 from ._env import (
     is_snap,
     SnapEnviron,
 )
 from ._path import SnapPaths
+from ._service import SnapServices
 from ._snap import Snap
 
 __all__ = [
     'is_snap',
     'Snap',
     'SnapCtl',
+    'SnapCtlError',
     'SnapConfig',
     'SnapConfigOptions',
     'SnapEnviron',
     'SnapPaths',
+    'SnapServices',
     '__version__',
 ]
 
