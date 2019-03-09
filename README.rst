@@ -31,9 +31,9 @@ access to:
 
      >>> snap = snaphelpers.Snap()
      >>> snap.name
-     'snap-helpers'
+     'testapp'
      >>> snap.instance_name
-     'snap-helpers'
+     'testapp'
      >>> snap.version
      '0+git.fdf80cd'
      >>> snap.revision
@@ -44,15 +44,15 @@ access to:
   .. code:: python
 
      >>> snap.paths.common
-     PosixPath('/var/snap/snap-helpers/common')
+     PosixPath('/var/snap/testapp/common')
      >>> snap.paths.data
-     PosixPath('/var/snap/snap-helpers/x1')
+     PosixPath('/var/snap/testapp/x1')
      >>> snap.paths.snap
-     PosixPath('/snap/snap-helpers/x1')
+     PosixPath('/snap/testapp/x1')
      >>> snap.paths.user_common
-     PosixPath('/home/ack/snap/snap-helpers/common')
+     PosixPath('/home/ack/snap/testapp/common')
      >>> snap.paths.user_data
-     PosixPath('/home/ack/snap/snap-helpers/x1')
+     PosixPath('/home/ack/snap/testapp/x1')
 
 - snap-related environment variables:
 
@@ -60,19 +60,19 @@ access to:
 
      >>> pprint.pprint(dict(snap.environ))
      {'ARCH': 'amd64',
-      'COMMON': '/var/snap/snap-helpers/common',
+      'COMMON': '/var/snap/testapp/common',
       'CONTEXT': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
       'COOKIE': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
-      'DATA': '/var/snap/snap-helpers/x1',
+      'DATA': '/var/snap/testapp/x1',
       'INSTANCE_KEY': '',
-      'INSTANCE_NAME': 'snap-helpers',
+      'INSTANCE_NAME': 'testapp',
       'LIBRARY_PATH': '/var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void',
-      'NAME': 'snap-helpers',
+      'NAME': 'testapp',
       'REEXEC': '',
       'REVISION': 'x1',
-      'SNAP': '/snap/snap-helpers/x1',
-      'USER_COMMON': '/home/ack/snap/snap-helpers/common',
-      'USER_DATA': '/home/ack/snap/snap-helpers/x1',
+      'SNAP': '/snap/testapp/x1',
+      'USER_COMMON': '/home/ack/snap/testapp/common',
+      'USER_DATA': '/home/ack/snap/testapp/x1',
       'VERSION': '0+git.fdf80cd'}
      >>> snap.environ.ARCH
      'amd64'
