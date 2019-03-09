@@ -18,6 +18,13 @@ def snapctl_calls():
 def snapctl(snap_apply_env, snapctl_calls):
     snapctl = SnapCtl(executable='/not/here')
     snapctl._run = lambda *args: snapctl_calls.append(args)
+    snapctl.output = ''
+
+    def run(*args):
+        snapctl_calls.append(args)
+        return snapctl.output
+
+    snapctl._run = run
     yield snapctl
 
 
@@ -38,6 +45,11 @@ class TestSnapCtl:
         executable.chmod(0o755)
         snapctl = SnapCtl(executable=str(executable))
         assert snapctl.get('foo', 'bar') == data
+
+    def test_get_calls(self, snapctl, snapctl_calls):
+        snapctl.output = '{}'
+        snapctl.get('foo', 'bar')
+        assert snapctl_calls == [('get', '-d', 'foo', 'bar')]
 
     def test_set(self, snapctl, snapctl_calls):
         snapctl.set({'foo.bar': 123, 'baz': [1, 2, 3]})

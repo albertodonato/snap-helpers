@@ -97,7 +97,7 @@ class SnapCtl:
 
         """
         conf: Dict[str, Any]
-        conf = json.loads(self._run('get', *keys))
+        conf = json.loads(self._run('get', '-d', *keys))
         return conf
 
     def set(self, configs: Dict[str, Any]):
