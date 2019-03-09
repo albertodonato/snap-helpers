@@ -1,23 +1,12 @@
 snap-helpers - Interact with the Snap system within a Snap
 ==========================================================
 
-|Build Status| |Coverage Status| |Documentation Status|
-
-..
-   |Latest Version| |Build Status| |Coverage Status| |Documentation Status|
+|Latest Version| |Build Status| |Coverage Status| |Documentation Status|
 
 
-   Installation
-   ------------
+A Python library to interact with snap configuration and properties from inside a snap.
 
-   snap-helpers can be installed from PyPI_.
-
-   As a user run::
-
-     $ pip install snap-helpers
-
-The library exposes a top-level ``snaphelpers.Snap`` object which provides
-access to:
+It exposes a top-level ``snaphelpers.Snap`` object which provides access to:
 
 - snap details:
 
@@ -158,14 +147,26 @@ The snap can be built and installed as follows:
    $ sudo snap install --dangerous snap-helpers_*.snap
 
 
+Installation
+------------
+
+``snap-helpers`` can be installed from PyPI_.
+
+Run:
+
+.. code:: shell
+
+   $ pip install snap-helpers
+
+
 Documentation
 -------------
 
 Full documentation is available on ReadTheDocs_.
 
 
+.. _PyPI: https://pypi.org/
 .. _ReadTheDocs: https://snap-helpers.readthedocs.io/en/latest/
-.. _PyPI: https://pypi.python.org/
 
 .. |Latest Version| image:: https://img.shields.io/pypi/v/snap-helpers.svg
    :target: https://pypi.python.org/pypi/snap-helpers
