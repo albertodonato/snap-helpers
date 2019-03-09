@@ -36,8 +36,7 @@ class Snap:
     def __str__(self):
         return (
             f'{self.__class__.__name__}'
-            f'({self.name} {self.version} {self.revision})'
-        )
+            f'({self.name} {self.version} {self.revision})')
 
     name = EnvironProperty('NAME')
     instance_name = EnvironProperty('INSTANCE_NAME')
