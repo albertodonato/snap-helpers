@@ -9,7 +9,7 @@ tests_require = ['pytest', 'pytest-mock']
 
 config = {
     'name': 'snap-helpers',
-    'version': '0.0.1',
+    'version': '0.1.0',
     'license': 'LGPLv3+',
     'description': (
         'Helpers for interacting with the Snap system within a Snap'),
@@ -36,11 +36,12 @@ config = {
     },
     'keywords': 'snap snappy snapcraft',
     'classifiers': [
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         (
             'License :: OSI Approved :: '
             'GNU Lesser General Public License v3 or later (LGPLv3+)'),
-        'Programming Language :: Python :: 3 :: Only'
+        'Programming Language :: Python :: 3 :: Only',
+        'Topic :: System :: Archiving :: Packaging'
     ]
 }
 
