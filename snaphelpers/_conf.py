@@ -66,6 +66,13 @@ class SnapConfigOptions:
             return False
         return True
 
+    def get(self, key: str, default: Any = None) -> Any:
+        """Return value for a key, with a default."""
+        try:
+            return self[key]
+        except UnknownConfigKey:
+            return default
+
     def fetch(self):
         """Fetch (or refresh) configuration for the set of keys."""
         self._config = self._snapctl.config_get(*self._keys)

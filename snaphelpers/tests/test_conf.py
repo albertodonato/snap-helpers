@@ -67,6 +67,23 @@ class TestSnapConfigOptions:
         options.fetch()
         assert (key in options) == contained
 
+    @pytest.mark.parametrize(
+        'key,value', [
+            ('foo', 123), ('baz.aaa', 'nested'),
+            ('baz.bbb.ccc', 'more nested'), ('blah', [1, 2, 3])
+        ])
+    def test_get(self, key, value, fake_snapctl):
+        options = SnapConfigOptions(
+            ['foo', 'baz', 'blah'], snapctl=fake_snapctl)
+        options.fetch()
+        assert options.get(key, None) == value
+
+    def test_get_default(self, fake_snapctl):
+        options = SnapConfigOptions(
+            ['foo', 'baz', 'blah'], snapctl=fake_snapctl)
+        options.fetch()
+        assert options.get('something.else', 'this') == 'this'
+
 
 class TestSnapConfig:
 
