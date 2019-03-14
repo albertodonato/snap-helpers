@@ -1,3 +1,9 @@
+v0.1.2 - 2019-03-14
+===================
+
+- Print out hooks being created in ``snap-helpers write-hooks``.
+
+
 v0.1.1 - 2019-03-12
 ===================
 
