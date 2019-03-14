@@ -52,12 +52,19 @@ class SnapHelpersScript(Script):
         with (src_dir / 'snap' / 'snapcraft.yaml').open() as fd:
             content = yaml.load(fd)
 
+        hooks = content.get('hooks')
+        if not hooks:
+            print('No hooks defined in the snap.')
+            return
+
         hooks_dir = prime_dir / 'snap' / 'hooks'
         if not hooks_dir.exists():
             hooks_dir.mkdir(parents=True)
 
-        for hookname in content.get('hooks', {}):
+        print('Writing hook files...')
+        for hookname in hooks:
             hook_file = hooks_dir / hookname
+            print(f' {hookname} -> {hook_file.absolute()}')
             hook_file.write_text(HOOK_TEMPLATE.format(hookname=hookname))
             hook_file.chmod(0o755)
 

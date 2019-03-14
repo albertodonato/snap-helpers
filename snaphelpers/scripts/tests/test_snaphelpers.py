@@ -57,7 +57,7 @@ class TestSnapHelpersScript:
         assert (
             'SNAPCRAFT_PRIME environment variable not defined' in str(e.value))
 
-    def test_write_hooks_create_files(self, prime_dir, snapcraft_yaml):
+    def test_write_hooks_create_files(self, capsys, prime_dir, snapcraft_yaml):
         script = SnapHelpersScript()
         script(['write-hooks'])
         hooks_dir = prime_dir / 'snap' / 'hooks'
@@ -68,3 +68,15 @@ class TestSnapHelpersScript:
         assert (
             '"${SNAP}/bin/snap-helpers-hook" "install"' in
             install_hook.read_text())
+        out = capsys.readouterr().out
+        assert 'Writing hook files' in out
+        assert f'configure -> {hooks_dir}/configure' in out
+        assert f'install -> {hooks_dir}/install' in out
+
+    def test_write_hooks_no_hooks(self, capsys, prime_dir, snapcraft_yaml):
+        snapcraft_yaml.write_text('{}')
+        script = SnapHelpersScript()
+        script(['write-hooks'])
+        hooks_dir = prime_dir / 'snap' / 'hooks'
+        assert not hooks_dir.exists()
+        assert 'No hooks defined in the snap' in capsys.readouterr().out
