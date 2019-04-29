@@ -1,3 +1,9 @@
+v0.1.4 - 2019-04-29
+===================
+
+- Revert ``Snap.revision`` change as it can contain letters (e.g. ``x1``).
+
+
 v0.1.3 - 2019-04-29
 ===================
 
