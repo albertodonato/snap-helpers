@@ -37,8 +37,8 @@ class TestSnapService:
         info = ServiceInfo(
             name='serv1', enabled=True, active=False, notes=['foo', 'bar'])
         assert (
-            SnapService(info, snapctl=snapctl) == SnapService(
-                info, snapctl=snapctl))
+            SnapService(info,
+                        snapctl=snapctl) == SnapService(info, snapctl=snapctl))
 
     def test_eq_other_info(self, snapctl):
         info1 = ServiceInfo(

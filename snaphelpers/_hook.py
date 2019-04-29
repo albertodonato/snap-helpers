@@ -7,9 +7,10 @@ import pkg_resources
 
 from ._snap import Snap
 
+Hook = Callable[[Snap], None]
 
-def get_hooks(
-        pkg_resources=pkg_resources) -> Dict[str, Callable[[Snap], None]]:
+
+def get_hooks(pkg_resources=pkg_resources) -> Dict[str, Hook]:
     """Return registered snap hooks.
 
     Resources registreed in setup.py as `snaphelpers.hooks` are loaded as
