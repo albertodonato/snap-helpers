@@ -1,3 +1,9 @@
+v0.1.3 - 2019-04-29
+===================
+
+- Change ``Snap.revision`` to be an ``int``, so it can be compared.
+
+ 
 v0.1.2 - 2019-03-14
 ===================
 
