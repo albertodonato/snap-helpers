@@ -50,7 +50,7 @@ class SnapHelpersScript(Script):
         prime_dir = self._ensure_env_path('SNAPCRAFT_PRIME')
 
         with (src_dir / 'snap' / 'snapcraft.yaml').open() as fd:
-            content = yaml.load(fd)
+            content = yaml.safe_load(fd)
 
         hooks = content.get('hooks')
         if not hooks:

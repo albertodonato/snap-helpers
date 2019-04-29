@@ -1,4 +1,6 @@
 from typing import (
+    Any,
+    Callable,
     Mapping,
     Optional,
 )
@@ -13,11 +15,16 @@ from ._service import SnapServices
 class EnvironProperty:
     """Wrapper to get properties from a :class:`SanpEnviron` instance."""
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, converter: Callable[[str], Any] = str):
         self.name = name
+        self.converter = converter
 
     def __get__(self, instance, owner):
-        return getattr(instance.environ, self.name)
+        value = getattr(instance.environ, self.name)
+        try:
+            return self.converter(value)
+        except ValueError:
+            return None
 
 
 class Snap:
@@ -43,4 +50,4 @@ class Snap:
     name = EnvironProperty('NAME')
     instance_name = EnvironProperty('INSTANCE_NAME')
     version = EnvironProperty('VERSION')
-    revision = EnvironProperty('REVISION')
+    revision = EnvironProperty('REVISION', converter=int)

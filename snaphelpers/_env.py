@@ -1,4 +1,4 @@
-import collections
+from collections import abc
 import os
 from typing import (
     Iterator,
@@ -14,7 +14,7 @@ def is_snap(environ: Optional[Mapping[str, str]] = None) -> bool:
     return bool(environ.get('SNAP', ''))
 
 
-class SnapEnviron(collections.Mapping):
+class SnapEnviron(abc.Mapping):
     """Environment variables related to the Snap.
 
     This provides read-only access to environment variables starting with
