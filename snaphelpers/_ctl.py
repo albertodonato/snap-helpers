@@ -132,9 +132,9 @@ class SnapCtl:
         self.run('set', *args)
 
     def run(self, *args: str) -> str:
-        """Execute the command return its output.
+        """Execute the command and return its output.
 
-        ":param args: command args.
+        :param args: command args.
 
         """
         process = Popen([self._executable, *args], stdout=PIPE, stderr=PIPE)
