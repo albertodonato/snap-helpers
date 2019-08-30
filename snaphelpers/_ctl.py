@@ -1,3 +1,4 @@
+from enum import Enum
 import json
 import re
 from subprocess import (
@@ -23,6 +24,15 @@ class ServiceInfo(NamedTuple):
     enabled: bool
     active: bool
     notes: List[str]
+
+
+class SnapHealthStatus(Enum):
+    """Possible values for snap health status."""
+
+    OKAY = "okay"
+    WAITING = "waiting"
+    BLOCKED = "blocked"
+    ERROR = "error"
 
 
 class SnapCtlError(Exception):
@@ -130,6 +140,25 @@ class SnapCtl:
         """
         args = [f'{key}={json.dumps(value)}' for key, value in configs.items()]
         self.run('set', *args)
+
+    def set_health(
+            self,
+            status: SnapHealthStatus,
+            message: Optional[str] = None,
+            code: Optional[str] = None):
+        """Set snap health.
+
+        :param status: the status to set
+        :param message: an optional message string
+        :param code: an optional code string
+
+        """
+        args = [status.value]
+        if message is not None:
+            args.append(message)
+        if code is not None:
+            args.extend(['--code', code])
+        self.run('set-health', *args)
 
     def run(self, *args: str) -> str:
         """Execute the command and return its output.

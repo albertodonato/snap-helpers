@@ -8,6 +8,7 @@ from .._ctl import (
     ServiceInfo,
     SnapCtl,
     SnapCtlError,
+    SnapHealthStatus,
 )
 
 
@@ -140,3 +141,17 @@ class TestSnapCtl:
         assert snapctl.run.mock_calls == [
             call('services', 'mysnap_inst.service1', 'mysnap_inst.service3')
         ]
+
+    @pytest.mark.parametrize(
+        'status,message,code,call_args', [
+            (
+                SnapHealthStatus.BLOCKED, 'some message', 'a-b-c',
+                ['blocked', 'some message', '--code', 'a-b-c']),
+            (SnapHealthStatus.OKAY, None, None, ['okay']),
+            (
+                SnapHealthStatus.WAITING, 'some message', None,
+                ['waiting', 'some message']),
+        ])
+    def test_set_health(self, snapctl, status, message, code, call_args):
+        snapctl.set_health(status, message=message, code=code)
+        assert snapctl.run.mock_calls == [call('set-health', *call_args)]

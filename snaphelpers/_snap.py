@@ -6,6 +6,7 @@ from typing import (
 from ._conf import SnapConfig
 from ._ctl import SnapCtl
 from ._env import SnapEnviron
+from ._health import SnapHealth
 from ._path import SnapPaths
 from ._service import SnapServices
 
@@ -25,6 +26,7 @@ class Snap:
 
     config: SnapConfig
     environ: SnapEnviron
+    health: SnapHealth
     paths: SnapPaths
     services: SnapServices
 
@@ -33,6 +35,7 @@ class Snap:
         self.paths = SnapPaths(env=self.environ)
         snapctl = SnapCtl(env=self.environ)
         self.config = SnapConfig(snapctl=snapctl)
+        self.health = SnapHealth(snapctl=snapctl)
         self.services = SnapServices(snapctl=snapctl)
 
     def __str__(self):

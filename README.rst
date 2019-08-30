@@ -76,6 +76,14 @@ It exposes a top-level ``snaphelpers.Snap`` object which provides access to:
      {'asdf': 3, 'foo': {'bar': 'baz'}}
 
 
+- setting snap health status:
+
+  .. code:: python
+
+     >>> snap.health.okay()
+     >>> snap.health.blocked('waiting for foo', code='wait-foo')
+
+
 Hook helpers
 ------------
 

@@ -16,6 +16,7 @@ from ._env import (
     is_snap,
     SnapEnviron,
 )
+from ._health import SnapHealth
 from ._path import SnapPaths
 from ._service import SnapServices
 from ._snap import Snap
@@ -28,6 +29,7 @@ __all__ = [
     'SnapConfig',
     'SnapConfigOptions',
     'SnapEnviron',
+    'SnapHealth',
     'SnapPaths',
     'SnapServices',
     '__version__',
