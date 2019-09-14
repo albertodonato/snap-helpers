@@ -10,10 +10,12 @@ This provides methods for each of the supported health statuses:
 
   .. code:: python
 
-     >>> snap.health.okay()
-     >>> snap.health.waiting('foo must happen first', code='wait-foo')
-     >>> snap.health.blocked('nothing to do for now')
-     >>> snap.health.error('something is wrong', code='bar-wrong')
+     >>> from snaphelpers import SnapHealth
+     >>> health = SnapHealth()
+     >>> health.okay()
+     >>> health.waiting('foo must happen first', code='wait-foo')
+     >>> health.blocked('nothing to do for now')
+     >>> health.error('something is wrong', code='bar-wrong')
 
 Note that for any status other than ``okay``, a message is required. Error code
 is optional.
