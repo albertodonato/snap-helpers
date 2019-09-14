@@ -1,7 +1,7 @@
 Managing snap services
 ======================
 
-Snaps can define commands to be run as services (by systemd).
+Snaps can define commands to be run as services (via systemd).
 
 The list of services defined in the snap, along with their status, is
 accessible via :class:`.SnapServices.list()`.This returns a dict with

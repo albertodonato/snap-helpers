@@ -76,12 +76,24 @@ It exposes a top-level ``snaphelpers.Snap`` object which provides access to:
      {'asdf': 3, 'foo': {'bar': 'baz'}}
 
 
-- setting snap health status:
+- setting snap health status, along with message and optional status code:
 
   .. code:: python
 
      >>> snap.health.okay()
-     >>> snap.health.blocked('waiting for foo', code='wait-foo')
+     >>> snap.health.waiting('foo must happen first', code='wait-foo')
+
+  Health status (when different from ``okay``) is visible from the ``snap``
+  CLI::
+
+    $ snap info snap-helpers
+    name:    snap-helpers
+    summary: Test snap for snap-helpers
+    health:
+      status:  waiting
+      message: foo must happen first
+      code:    wait-foo
+      checked: today at 16:23 CEST
 
 
 Hook helpers

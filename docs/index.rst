@@ -12,6 +12,7 @@ Table of contents
    :maxdepth: 3
 
    configuration.rst
+   health.rst
    hooks.rst
    services.rst
    mod-snaphelpers.rst
