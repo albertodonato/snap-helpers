@@ -9,7 +9,7 @@ tests_require = ['pytest', 'pytest-mock']
 
 config = {
     'name': 'snap-helpers',
-    'version': '0.1.5',
+    'version': '0.1.6',
     'license': 'LGPLv3+',
     'description': (
         'Helpers for interacting with the Snap system within a Snap'),
