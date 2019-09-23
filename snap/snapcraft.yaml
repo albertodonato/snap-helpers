@@ -10,6 +10,12 @@ confinement: strict
 base: core18
 
 apps:
+  snap-helpers:
+    command: bin/snap-helpers-shell
+    plugs:
+      - home
+      - network
+      - network-bind
   python:
     command: usr/bin/python3
     plugs:
@@ -34,3 +40,7 @@ parts:
       - python3-dev
     stage-packages:
       - libpython3.6
+
+  local:
+    plugin: dump
+    source: snap/local

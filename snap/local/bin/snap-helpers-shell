@@ -1,0 +1,9 @@
+#!/usr/bin/env python3
+
+from IPython import embed
+from snaphelpers import Snap
+
+# export the object for the current snap globally
+snap = Snap()
+
+embed(header='Use the "snap" variable for an instance for the current snap.')
