@@ -127,7 +127,6 @@ Hook functions are called with a ``Snap`` object as argument:
    def configure_hook(snap: snaphelpers.Snap):
        # ...
 
-
 ``snap-helpers`` will take care of the hooks plumbing (i.e. creating hook files
 in ``$SNAP/snap/hooks``).
 
@@ -138,11 +137,22 @@ Testing with the snap
 The ``snap-helpers`` snap provides a way to easily test code using the library in
 a real snap environment with strict confinement.
 
-It provides the ``python`` and ``ipython`` commands:
+It provides an IPython_ shell which automatically imports the ``snaphelpers``
+module and provides a ``Snap`` instance for the current snap.
 
 .. code::
 
-   $ snap-helpers.python -c 'from pprint import pprint; import snaphelpers; pprint(dict(snaphelpers.SnapEnviron()))'
+   $ snap-helpers
+   Python 3.6.8 (default, Aug 20 2019, 17:12:48)
+   Type 'copyright', 'credits' or 'license' for more information
+   IPython 7.8.0 -- An enhanced Interactive Python. Type '?' for help.
+
+
+   Use the "snap" variable for an instance for the current snap.
+
+   In [1]: import pprint
+
+   In [2]: pprint.pprint(dict(snap.environ))
    {'ARCH': 'amd64',
     'COMMON': '/var/snap/snap-helpers/common',
     'CONTEXT': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
@@ -157,7 +167,7 @@ It provides the ``python`` and ``ipython`` commands:
     'SNAP': '/snap/snap-helpers/x1',
     'USER_COMMON': '/home/ack/snap/snap-helpers/common',
     'USER_DATA': '/home/ack/snap/snap-helpers/x1',
-    'VERSION': '0+git.26e1e9d'}
+    'VERSION': '0.1.6+git1.4a0b997'}
 
 The snap can be built and installed as follows:
 
@@ -185,6 +195,7 @@ Documentation
 Full documentation is available on ReadTheDocs_.
 
 
+.. _IPython: https://ipython.org/
 .. _PyPI: https://pypi.org/
 .. _ReadTheDocs: https://snap-helpers.readthedocs.io/en/latest/
 
