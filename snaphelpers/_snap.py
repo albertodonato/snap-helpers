@@ -32,8 +32,8 @@ class Snap:
 
     def __init__(self, environ: Optional[Mapping[str, str]] = None):
         self.environ = SnapEnviron(environ=environ)
-        self.paths = SnapPaths(env=self.environ)
-        snapctl = SnapCtl(env=self.environ)
+        self.paths = SnapPaths(environ=self.environ)
+        snapctl = SnapCtl(environ=self.environ)
         self.config = SnapConfig(snapctl=snapctl)
         self.health = SnapHealth(snapctl=snapctl)
         self.services = SnapServices(snapctl=snapctl)
