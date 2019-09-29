@@ -4,7 +4,8 @@ summary: Test snap for snap-helpers
 description: |
   Test snap for snap-helpers.
 
-  It provides python and ipython shells.
+  It provides python and ipython shells to test the `snaphelpers` library.
+
 grade: stable
 confinement: strict
 base: core18
