@@ -7,6 +7,7 @@ from ._conf import SnapConfig
 from ._ctl import SnapCtl
 from ._env import SnapEnviron
 from ._health import SnapHealth
+from ._meta import SnapMetadataFiles
 from ._path import SnapPaths
 from ._service import SnapServices
 
@@ -37,6 +38,7 @@ class Snap:
         self.config = SnapConfig(snapctl=snapctl)
         self.health = SnapHealth(snapctl=snapctl)
         self.services = SnapServices(snapctl=snapctl)
+        self.metadata_files = SnapMetadataFiles(environ=self.environ)
 
     def __str__(self):
         return (
