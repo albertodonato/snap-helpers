@@ -57,6 +57,46 @@ class TestSnapCtl:
         snapctl.config_set({"foo.bar": 123, "baz": [1, 2, 3]})
         assert snapctl.run.mock_calls == [call("set", "foo.bar=123", "baz=[1, 2, 3]")]
 
+    def test_config_unset(self, snapctl):
+        snapctl.config_unset("foo.bar", "baz")
+        assert snapctl.run.mock_calls == [call("set", "foo.bar!", "baz!")]
+
+    def test_connection_set(self, snapctl):
+        snapctl.connection_set("myplug", {"foo.bar": 123, "baz": [1, 2, 3]})
+        assert snapctl.run.mock_calls == [
+            call("set", ":myplug", "foo.bar=123", "baz=[1, 2, 3]")
+        ]
+
+    def test_connection_unset(self, snapctl):
+        snapctl.connection_unset("myslot", "foo.bar", "baz")
+        assert snapctl.run.mock_calls == [call("set", ":myslot", "foo.bar!", "baz!")]
+
+    @pytest.mark.parametrize(
+        "remote,call_args",
+        [
+            (False, ["get", "-d", ":myplug", "foo", "bar"]),
+            (True, ["get", "-d", "--slot", ":myplug", "foo", "bar"]),
+        ],
+    )
+    def test_plug_get(self, snapctl, remote, call_args):
+        output = {"foo": 123, "bar": "BAR"}
+        snapctl.run.return_value = json.dumps(output)
+        assert snapctl.plug_get("myplug", "foo", "bar", remote=remote) == output
+        assert snapctl.run.mock_calls == [call(*call_args)]
+
+    @pytest.mark.parametrize(
+        "remote,call_args",
+        [
+            (False, ["get", "-d", ":myslot", "foo", "bar"]),
+            (True, ["get", "-d", "--plug", ":myslot", "foo", "bar"]),
+        ],
+    )
+    def test_slot_get(self, snapctl, remote, call_args):
+        output = {"foo": 123, "bar": "BAR"}
+        snapctl.run.return_value = json.dumps(output)
+        assert snapctl.slot_get("myslot", "foo", "bar", remote=remote) == output
+        assert snapctl.run.mock_calls == [call(*call_args)]
+
     def test_start(self, snapctl):
         snapctl.start()
         assert snapctl.run.mock_calls == [call("start", "mysnap_inst")]

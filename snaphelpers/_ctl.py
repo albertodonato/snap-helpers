@@ -12,6 +12,7 @@ from typing import (
     NamedTuple,
     Optional,
     Sequence,
+    Tuple,
 )
 
 from ._env import SnapEnviron
@@ -125,7 +126,7 @@ class SnapCtl:
         return service_infos
 
     def config_get(self, *keys: str) -> Dict[str, Any]:
-        """Return the snap config.
+        """Return the snap configuration.
 
         :param keys: a list of config keys to return.
 
@@ -135,13 +136,60 @@ class SnapCtl:
         return conf
 
     def config_set(self, configs: Dict[str, Any]):
-        """Set snap configs.
+        """Set snap configuration.
 
         :param configs: a dict with configs. Keys can use dotted notation.
 
         """
-        args = [f"{key}={json.dumps(value)}" for key, value in configs.items()]
-        self.run("set", *args)
+        self.run("set", *self._set_args(configs))
+
+    def config_unset(self, *keys: str):
+        """Unset snap configuration keys.
+
+        :param keys: config keys to unset.
+
+        """
+        self.run("set", *self._unset_args(keys))
+
+    def connection_set(self, name: str, configs: Dict[str, Any]):
+        """Set plug or slot configuration.
+
+        :param name: the plug/slot name.
+        :param configs: a dict with configs. Keys can use dotted notation.
+
+        """
+        self.run("set", f":{name}", *self._set_args(configs))
+
+    def connection_unset(self, name: str, *keys: str):
+        """Unset plug or slot configuration.
+
+        :param name: the plug/slot name.
+        :param keys: keys to unset. Dotted notation can be used.
+
+        """
+        self.run("set", f":{name}", *self._unset_args(keys))
+
+    def plug_get(self, name: str, *keys: str, remote: bool = False) -> Dict[str, Any]:
+        """Return plug configuration.
+
+        :param name: the plug name.
+        :param keys: a list of config keys to return.
+        :param remote: if True, return configs from the remote end.
+
+        """
+        remote_type = "slot" if remote else None
+        return self._connection_get(name, keys, remote_type=remote_type)
+
+    def slot_get(self, name: str, *keys: str, remote: bool = False) -> Dict[str, Any]:
+        """Return slot configuration.
+
+        :param name: the slot name.
+        :param keys: a list of config keys to return.
+        :param remote: if True, return configs from the remote end.
+
+        """
+        remote_type = "plug" if remote else None
+        return self._connection_get(name, keys, remote_type=remote_type)
 
     def set_health(
         self,
@@ -190,3 +238,21 @@ class SnapCtl:
         else:
             service_names = [self._instance_name]
         return self.run(cmd, *opts, *service_names)
+
+    def _set_args(self, configs: Dict[str, Any]) -> List[str]:
+        return [f"{key}={json.dumps(value)}" for key, value in configs.items()]
+
+    def _unset_args(self, configs: Tuple[str, ...]) -> List[str]:
+        return [f"{key}!" for key in configs]
+
+    def _connection_get(
+        self, name: str, keys: Tuple[str, ...], remote_type: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        args = ["get", "-d"]
+        if remote_type:
+            args.append(f"--{remote_type}")
+        args.append(f":{name}")
+        args.extend(keys)
+        conf: Dict[str, Any]
+        conf = json.loads(self.run(*args))
+        return conf
