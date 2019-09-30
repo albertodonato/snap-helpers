@@ -70,13 +70,16 @@ class MetadataFileProperty:
 class SnapMetadataFiles:
     """Metadata files for a snap.
 
-    This provide access to metadata files content via :class:SnapMetadataFile:
+    This provide access to metadata files content via :class:`SnapMetadataFile`
     instances.
 
     """
 
+    #: Content of the ``snap/metadata.yaml`` file.
     manifest = MetadataFileProperty('snap/manifest.yaml')
+    #: Content of the ``meta/snap.yaml`` file.
     snap = MetadataFileProperty('meta/snap.yaml')
+    #: Content of the ``snap/snapcraft.yaml`` file.
     snapcraft = MetadataFileProperty('snap/snapcraft.yaml')
 
     def __init__(self, environ: Optional[SnapEnviron] = None):

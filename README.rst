@@ -75,7 +75,6 @@ It exposes a top-level ``snaphelpers.Snap`` object which provides access to:
      >>> options.as_dict()
      {'asdf': 3, 'foo': {'bar': 'baz'}}
 
-
 - setting snap health status, along with message and optional status code:
 
   .. code:: python
@@ -94,6 +93,40 @@ It exposes a top-level ``snaphelpers.Snap`` object which provides access to:
       message: foo must happen first
       code:    wait-foo
       checked: today at 16:23 CEST
+
+- content of snap metadata files such as:
+
+  - ``snap/metadata.yaml``
+  - ``meta/snap.yaml``
+  - ``snap/snapcraft.yaml``
+
+  These can be accessed as follows:
+
+  .. code:: python
+
+     >>> snap.metadata_files.snap
+     SnapMetadataFile(/snap/snap-helpers/x3/meta/snap.yaml)
+     >>> pprint(dict(snap.metadata_files.snap))
+     {'apps': {'ipython': {'command': 'snap/command-chain/snapcraft-runner '
+                                      '$SNAP/command-ipython.wrapper',
+                           'plugs': ['home', 'network', 'network-bind']},
+               'python': {'command': 'snap/command-chain/snapcraft-runner '
+                                     '$SNAP/command-python.wrapper',
+                          'plugs': ['home', 'network', 'network-bind']},
+               'snap-helpers': {'command': 'snap/command-chain/snapcraft-runner '
+                                           '$SNAP/command-snap-helpers.wrapper',
+                                'plugs': ['home', 'network', 'network-bind']}},
+      'architectures': ['amd64'],
+      'base': 'core18',
+      'confinement': 'strict',
+      'description': 'Test snap for snap-helpers.\n'
+                     '\n'
+                     'It provides python and ipython shells to test the '
+                     '`snaphelpers` library.\n',
+      'grade': 'stable',
+      'name': 'snap-helpers',
+      'summary': 'Test snap for snap-helpers',
+      'version': '0.1.6+git6.37370cd'}
 
 
 Hook helpers

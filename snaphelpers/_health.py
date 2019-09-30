@@ -11,7 +11,7 @@ STATUS_CODE_RE = re.compile(r'^[a-z](?:-?[a-z0-9])+$')
 
 
 class SnapHealth:
-    """"Snap health.
+    """Snap health.
 
     This provides an interfaces for setting health for the snap.
 
