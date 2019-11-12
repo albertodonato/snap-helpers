@@ -16,7 +16,7 @@ class UnknownConfigKey(Exception):
 
     def __init__(self, key: str):
         self.key = key
-        super().__init__(f'Unknown config key: {key}')
+        super().__init__(f"Unknown config key: {key}")
 
 
 class InvalidKey(Exception):
@@ -26,7 +26,7 @@ class InvalidKey(Exception):
 
     def __init__(self, key: str):
         self.key = key
-        super().__init__(f'Invalid top-level key: {key}')
+        super().__init__(f"Invalid top-level key: {key}")
 
 
 class SnapConfigOptions:
@@ -49,7 +49,7 @@ class SnapConfigOptions:
     def __getitem__(self, item: str) -> Any:
         """Return value for a configuration key."""
         config = self._config
-        for key in item.split('.'):
+        for key in item.split("."):
             if not isinstance(config, dict):
                 raise UnknownConfigKey(item)
             try:
@@ -97,7 +97,7 @@ class SnapConfig:
     def get_options(self, *keys: str) -> SnapConfigOptions:
         """Return a :data:`SnapConfigOptions` for the specified keys."""
         for key in keys:
-            if '.' in key:
+            if "." in key:
                 raise InvalidKey(key)
         options = SnapConfigOptions(keys=keys, snapctl=self._snapctl)
         options.fetch()
@@ -109,7 +109,7 @@ class SnapConfig:
         It raises :class:`UnknownConfigKey` if the option doesn't exist.
 
         """
-        top_key = key.split('.', maxsplit=1)[0]
+        top_key = key.split(".", maxsplit=1)[0]
         options = self.get_options(top_key)
         return options[key]
 

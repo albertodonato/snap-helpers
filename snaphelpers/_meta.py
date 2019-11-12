@@ -28,7 +28,7 @@ class SnapMetadataFile(Mapping):
         return str(self._path)
 
     def __repr__(self):
-        return f'{self.__class__.__name__}({self._path})'
+        return f"{self.__class__.__name__}({self._path})"
 
     def __getitem__(self, item: str):
         self._ensure_loaded()
@@ -63,7 +63,7 @@ class MetadataFileProperty:
         self.local_path = local_path
 
     def __get__(self, instance, owner) -> SnapMetadataFile:
-        path = Path(instance._environ['SNAP']) / self.local_path
+        path = Path(instance._environ["SNAP"]) / self.local_path
         return SnapMetadataFile(path)
 
 
@@ -76,11 +76,11 @@ class SnapMetadataFiles:
     """
 
     #: Content of the ``snap/metadata.yaml`` file.
-    manifest = MetadataFileProperty('snap/manifest.yaml')
+    manifest = MetadataFileProperty("snap/manifest.yaml")
     #: Content of the ``meta/snap.yaml`` file.
-    snap = MetadataFileProperty('meta/snap.yaml')
+    snap = MetadataFileProperty("meta/snap.yaml")
     #: Content of the ``snap/snapcraft.yaml`` file.
-    snapcraft = MetadataFileProperty('snap/snapcraft.yaml')
+    snapcraft = MetadataFileProperty("snap/snapcraft.yaml")
 
     def __init__(self, environ: Optional[SnapEnviron] = None):
         self._environ = environ or SnapEnviron()

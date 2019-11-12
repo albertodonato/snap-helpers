@@ -30,6 +30,12 @@ class Snap:
     health: SnapHealth
     paths: SnapPaths
     services: SnapServices
+    metadata_files: SnapMetadataFiles
+
+    name = EnvironProperty("NAME")
+    instance_name = EnvironProperty("INSTANCE_NAME")
+    version = EnvironProperty("VERSION")
+    revision = EnvironProperty("REVISION")
 
     def __init__(self, environ: Optional[Mapping[str, str]] = None):
         self.environ = SnapEnviron(environ=environ)
@@ -42,10 +48,6 @@ class Snap:
 
     def __str__(self):
         return (
-            f'{self.__class__.__name__}'
-            f'({self.name} {self.version} {self.revision})')
-
-    name = EnvironProperty('NAME')
-    instance_name = EnvironProperty('INSTANCE_NAME')
-    version = EnvironProperty('VERSION')
-    revision = EnvironProperty('REVISION')
+            f"{self.__class__.__name__}"
+            f"({self.name} {self.version} {self.revision})"
+        )

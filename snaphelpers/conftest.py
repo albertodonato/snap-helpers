@@ -10,15 +10,15 @@ from ._env import SnapEnviron
 def snap_env():
     """Environment variables defined in a snap."""
     yield {
-        'SNAP': '/snap/mysnap/123',
-        'SNAP_COMMON': '/var/snap/mysnap/common',
-        'SNAP_DATA': '/var/snap/mysnap/123',
-        'SNAP_INSTANCE_NAME': 'mysnap_inst',
-        'SNAP_NAME': 'mysnap',
-        'SNAP_REVISION': '123',
-        'SNAP_USER_COMMON': '/home/user/snap/mysnap/common',
-        'SNAP_USER_DATA': '/home/s/snap/mysnap/123',
-        'SNAP_VERSION': '0.1.2'
+        "SNAP": "/snap/mysnap/123",
+        "SNAP_COMMON": "/var/snap/mysnap/common",
+        "SNAP_DATA": "/var/snap/mysnap/123",
+        "SNAP_INSTANCE_NAME": "mysnap_inst",
+        "SNAP_NAME": "mysnap",
+        "SNAP_REVISION": "123",
+        "SNAP_USER_COMMON": "/home/user/snap/mysnap/common",
+        "SNAP_USER_DATA": "/home/s/snap/mysnap/123",
+        "SNAP_VERSION": "0.1.2",
     }
 
 
@@ -39,23 +39,18 @@ def snap_apply_env(monkeypatch, snap_env):
 def snap_config():
     """A sample snap configuration."""
     yield {
-        'foo': 123,
-        'bar': 'BAR',
-        'baz': {
-            'aaa': 'nested',
-            'bbb': {
-                'ccc': 'more nested'
-            }
-        },
-        'blah': [1, 2, 3]
+        "foo": 123,
+        "bar": "BAR",
+        "baz": {"aaa": "nested", "bbb": {"ccc": "more nested"}},
+        "blah": [1, 2, 3],
     }
 
 
 @pytest.fixture
 def snapctl(mocker, snap_apply_env):
     """A SnapCtl instance with a mocked run method."""
-    snapctl = SnapCtl(executable='/not/here')
-    snapctl.run = mocker.Mock(return_value='')
+    snapctl = SnapCtl(executable="/not/here")
+    snapctl.run = mocker.Mock(return_value="")
     yield snapctl
 
 
@@ -76,7 +71,7 @@ class FakeSnapCtl:
     def config_set(self, configs):
         for key, value in configs.items():
             old_conf = conf = self._configs
-            for token in key.split('.'):
+            for token in key.split("."):
                 entry = conf.get(token)
                 if not isinstance(entry, dict):
                     conf[token] = {}

@@ -7,11 +7,10 @@ from .._script import Script
 
 
 class SampleScript(Script):
-
     def get_parser(self):
         parser = ArgumentParser()
-        parser.add_argument('foo')
-        parser.add_argument('bar')
+        parser.add_argument("foo")
+        parser.add_argument("bar")
         return parser
 
     def run(self, options: Namespace):
@@ -19,8 +18,7 @@ class SampleScript(Script):
 
 
 class TestScript:
-
     def test_run(self):
         script = SampleScript()
-        script(args=['FOO', 'BAR'])
-        assert script.options == Namespace(foo='FOO', bar='BAR')
+        script(args=["FOO", "BAR"])
+        assert script.options == Namespace(foo="FOO", bar="BAR")

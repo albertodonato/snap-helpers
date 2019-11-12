@@ -7,7 +7,7 @@ from ._ctl import (
 )
 
 # Valid format for the status code
-STATUS_CODE_RE = re.compile(r'^[a-z](?:-?[a-z0-9])+$')
+STATUS_CODE_RE = re.compile(r"^[a-z](?:-?[a-z0-9])+$")
 
 
 class SnapHealth:
@@ -49,9 +49,10 @@ class SnapHealth:
         self._set_health(SnapHealthStatus.ERROR, message, code)
 
     def _set_health(
-            self, status: SnapHealthStatus, message: str, code: Optional[str]):
+        self, status: SnapHealthStatus, message: str, code: Optional[str]
+    ):
         if not message:
-            raise ValueError('Health status message must not be empty')
+            raise ValueError("Health status message must not be empty")
         if code is not None and not STATUS_CODE_RE.match(code):
-            raise ValueError('Invalid health status code format')
+            raise ValueError("Invalid health status code format")
         self._snapctl.set_health(status, message=message, code=code)

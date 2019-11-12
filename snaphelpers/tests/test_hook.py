@@ -21,18 +21,16 @@ def hook_calls():
 
 @pytest.fixture
 def entry_points(hook_calls):
-
     def make_load(name):
-
         def load():
             hook_calls.append(name)
-            return f'loaded-{name}'
+            return f"loaded-{name}"
 
         return load
 
     yield [
-        MockEntryPoint(name='install', load=make_load('install')),
-        MockEntryPoint(name='configure', load=make_load('configure'))
+        MockEntryPoint(name="install", load=make_load("install")),
+        MockEntryPoint(name="configure", load=make_load("configure")),
     ]
 
 
@@ -44,10 +42,9 @@ def mock_pkg_resources(mocker, entry_points):
 
 
 class TestGetHooks:
-
     def test_hooks(self, mock_pkg_resources, hook_calls):
         assert get_hooks(pkg_resources=mock_pkg_resources) == {
-            'configure': 'loaded-configure',
-            'install': 'loaded-install'
+            "configure": "loaded-configure",
+            "install": "loaded-install",
         }
-        assert hook_calls == ['install', 'configure']
+        assert hook_calls == ["install", "configure"]

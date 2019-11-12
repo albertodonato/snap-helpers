@@ -13,8 +13,9 @@ class HookScript(Script):
 
     def get_parser(self) -> ArgumentParser:
         parser = ArgumentParser(
-            description='Run the specified hook registered via pkg_resources')
-        parser.add_argument('hook', help='name of the hook to run')
+            description="Run the specified hook registered via pkg_resources"
+        )
+        parser.add_argument("hook", help="name of the hook to run")
         return parser
 
     def run(self, options: Namespace):

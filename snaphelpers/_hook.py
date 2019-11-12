@@ -33,5 +33,5 @@ def get_hooks(pkg_resources=pkg_resources) -> Dict[str, Hook]:
     """
     return {
         entry.name: entry.load()
-        for entry in pkg_resources.iter_entry_points('snaphelpers.hooks')
+        for entry in pkg_resources.iter_entry_points("snaphelpers.hooks")
     }
