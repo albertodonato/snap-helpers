@@ -45,8 +45,7 @@ class SnapCtlError(Exception):
         self.returncode = process.returncode
         self.error = process.stderr.read().decode("utf-8")
         super().__init__(
-            f"Call to snapctl failed with error {self.returncode}: "
-            + self.error
+            f"Call to snapctl failed with error {self.returncode}: " + self.error
         )
 
 
@@ -187,13 +186,9 @@ class SnapCtl:
     ) -> str:
         opts: List[str] = []
         if options:
-            opts = [
-                f"--{option}" for option, value in options.items() if value
-            ]
+            opts = [f"--{option}" for option, value in options.items() if value]
         if services:
-            service_names = [
-                f"{self._instance_name}.{service}" for service in services
-            ]
+            service_names = [f"{self._instance_name}.{service}" for service in services]
         else:
             service_names = [self._instance_name]
         return self.run(cmd, *opts, *service_names)

@@ -7,9 +7,7 @@ from .._env import (
 
 
 class TestIsSnap:
-    @pytest.mark.parametrize(
-        "value,expected", [("/snap/mysnap/12", True), ("", False)]
-    )
+    @pytest.mark.parametrize("value,expected", [("/snap/mysnap/12", True), ("", False)])
     def test_with_env(self, value, expected):
         environ = {"SNAP": value}
         assert is_snap(environ=environ) == expected

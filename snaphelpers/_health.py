@@ -48,9 +48,7 @@ class SnapHealth:
         """
         self._set_health(SnapHealthStatus.ERROR, message, code)
 
-    def _set_health(
-        self, status: SnapHealthStatus, message: str, code: Optional[str]
-    ):
+    def _set_health(self, status: SnapHealthStatus, message: str, code: Optional[str]):
         if not message:
             raise ValueError("Health status message must not be empty")
         if code is not None and not STATUS_CODE_RE.match(code):

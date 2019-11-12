@@ -29,9 +29,7 @@ class SnapHelpersScript(Script):
             environ = os.environ
 
     def get_parser(self) -> ArgumentParser:
-        parser = ArgumentParser(
-            description="Tool to perform snap-helpers tasks"
-        )
+        parser = ArgumentParser(description="Tool to perform snap-helpers tasks")
         subparsers = parser.add_subparsers(
             metavar="ACTION", dest="action", help="action to perform"
         )

@@ -36,9 +36,7 @@ class TestSnapConfigOptions:
         ],
     )
     def test_getitem(self, key, value, fake_snapctl):
-        options = SnapConfigOptions(
-            ["foo", "baz", "blah"], snapctl=fake_snapctl
-        )
+        options = SnapConfigOptions(["foo", "baz", "blah"], snapctl=fake_snapctl)
         options.fetch()
         assert options[key] == value
 
@@ -81,16 +79,12 @@ class TestSnapConfigOptions:
         ],
     )
     def test_get(self, key, value, fake_snapctl):
-        options = SnapConfigOptions(
-            ["foo", "baz", "blah"], snapctl=fake_snapctl
-        )
+        options = SnapConfigOptions(["foo", "baz", "blah"], snapctl=fake_snapctl)
         options.fetch()
         assert options.get(key, None) == value
 
     def test_get_default(self, fake_snapctl):
-        options = SnapConfigOptions(
-            ["foo", "baz", "blah"], snapctl=fake_snapctl
-        )
+        options = SnapConfigOptions(["foo", "baz", "blah"], snapctl=fake_snapctl)
         options.fetch()
         assert options.get("something.else", "this") == "this"
 
@@ -109,9 +103,7 @@ class TestSnapConfig:
         config = SnapConfig(snapctl=fake_snapctl)
         assert config.get(key) == value
 
-    @pytest.mark.parametrize(
-        "key", ["not-here", "foo.not-here", "baz.aaa.not-here"]
-    )
+    @pytest.mark.parametrize("key", ["not-here", "foo.not-here", "baz.aaa.not-here"])
     def test_config_get_not_found(self, key, fake_snapctl):
         config = SnapConfig(snapctl=fake_snapctl)
         with pytest.raises(UnknownConfigKey):

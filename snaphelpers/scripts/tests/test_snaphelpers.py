@@ -45,18 +45,14 @@ class TestSnapHelpersScript:
         script = SnapHelpersScript()
         with pytest.raises(RuntimeError) as e:
             script(["write-hooks"])
-        assert "SNAPCRAFT_PART_SRC environment variable not defined" in str(
-            e.value
-        )
+        assert "SNAPCRAFT_PART_SRC environment variable not defined" in str(e.value)
 
     def test_write_hooks_missing_prime_dir(self, monkeypatch):
         monkeypatch.delenv("SNAPCRAFT_PRIME")
         script = SnapHelpersScript()
         with pytest.raises(RuntimeError) as e:
             script(["write-hooks"])
-        assert "SNAPCRAFT_PRIME environment variable not defined" in str(
-            e.value
-        )
+        assert "SNAPCRAFT_PRIME environment variable not defined" in str(e.value)
 
     def test_write_hooks_create_files(self, capsys, prime_dir, snapcraft_yaml):
         script = SnapHelpersScript()
@@ -64,13 +60,9 @@ class TestSnapHelpersScript:
         hooks_dir = prime_dir / "snap" / "hooks"
         configure_hook, install_hook = sorted(hooks_dir.iterdir())
         assert (
-            '"${SNAP}/bin/snap-helpers-hook" "configure"'
-            in configure_hook.read_text()
+            '"${SNAP}/bin/snap-helpers-hook" "configure"' in configure_hook.read_text()
         )
-        assert (
-            '"${SNAP}/bin/snap-helpers-hook" "install"'
-            in install_hook.read_text()
-        )
+        assert '"${SNAP}/bin/snap-helpers-hook" "install"' in install_hook.read_text()
         out = capsys.readouterr().out
         assert "Writing hook files" in out
         assert f"configure -> {hooks_dir}/configure" in out

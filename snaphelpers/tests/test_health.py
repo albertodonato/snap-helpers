@@ -19,9 +19,7 @@ class TestSnapHealth:
     def test_other_statuses(self, snapctl, snaphealth, status):
         method = getattr(snaphealth, status)
         method("some message")
-        assert snapctl.run.mock_calls == [
-            call("set-health", status, "some message")
-        ]
+        assert snapctl.run.mock_calls == [call("set-health", status, "some message")]
 
     @pytest.mark.parametrize("status", ["waiting", "blocked", "error"])
     def test_other_statuses_code(self, snapctl, snaphealth, status):

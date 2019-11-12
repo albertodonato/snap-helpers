@@ -10,9 +10,7 @@ class TestSnap:
         snap = Snap(environ=snap_env)
         assert str(snap) == "Snap(mysnap 0.1.2 123)"
 
-    @pytest.mark.parametrize(
-        "name", ["name", "instance_name", "version", "revision"]
-    )
+    @pytest.mark.parametrize("name", ["name", "instance_name", "version", "revision"])
     def test_properties(self, name, snap_env):
         snap = Snap(environ=snap_env)
         assert getattr(snap, name) == snap_env[f"SNAP_{name.upper()}"]
