@@ -35,10 +35,17 @@ class SnapHelpersScript(Script):
         )
         subparsers.required = True
 
-        subparsers.add_parser(
+        write_hooks = subparsers.add_parser(
             "write-hooks",
             help="Write hook files",
             formatter_class=ArgumentDefaultsHelpFormatter,
+        )
+        write_hooks.add_argument(
+            "-X",
+            "--exclude",
+            nargs="*",
+            default=[],
+            help="don't create scripts for specified hooks (even if present in snapcraft.yaml)",
         )
         return parser
 
@@ -62,8 +69,14 @@ class SnapHelpersScript(Script):
         if not hooks_dir.exists():
             hooks_dir.mkdir(parents=True)
 
+        unknown_hooks = set(options.exclude).difference(hooks)
+        if unknown_hooks:
+            hooks_list = ", ".join(sorted(unknown_hooks))
+            raise RuntimeError(f"The following hook(s) are not defined: {hooks_list}")
         print("Writing hook files...")
         for hookname in hooks:
+            if hookname in options.exclude:
+                continue
             hook_file = hooks_dir / hookname
             print(f" {hookname} -> {hook_file.absolute()}")
             hook_file.write_text(HOOK_TEMPLATE.format(hookname=hookname))

@@ -29,7 +29,7 @@ def snapcraft_env(monkeypatch, src_dir, prime_dir):
 
 @pytest.fixture
 def snapcraft_yaml(src_dir):
-    content = {"hooks": {"install": {}, "configure": {}}}
+    content = {"hooks": {"install": {}, "configure": {}, "remove": {}}}
     snap_dir = src_dir / "snap"
     snap_dir.mkdir(parents=True)
     snapcraft_yaml = snap_dir / "snapcraft.yaml"
@@ -58,15 +58,17 @@ class TestSnapHelpersScript:
         script = SnapHelpersScript()
         script(["write-hooks"])
         hooks_dir = prime_dir / "snap" / "hooks"
-        configure_hook, install_hook = sorted(hooks_dir.iterdir())
+        configure_hook, install_hook, remove_hook = sorted(hooks_dir.iterdir())
         assert (
             '"${SNAP}/bin/snap-helpers-hook" "configure"' in configure_hook.read_text()
         )
         assert '"${SNAP}/bin/snap-helpers-hook" "install"' in install_hook.read_text()
+        assert '"${SNAP}/bin/snap-helpers-hook" "remove"' in remove_hook.read_text()
         out = capsys.readouterr().out
         assert "Writing hook files" in out
         assert f"configure -> {hooks_dir}/configure" in out
         assert f"install -> {hooks_dir}/install" in out
+        assert f"remove -> {hooks_dir}/remove" in out
 
     def test_write_hooks_no_hooks(self, capsys, prime_dir, snapcraft_yaml):
         snapcraft_yaml.write_text("{}")
@@ -75,3 +77,26 @@ class TestSnapHelpersScript:
         hooks_dir = prime_dir / "snap" / "hooks"
         assert not hooks_dir.exists()
         assert "No hooks defined in the snap" in capsys.readouterr().out
+
+    def test_write_hooks_exlcude(self, capsys, prime_dir, snapcraft_yaml):
+        script = SnapHelpersScript()
+        script(["write-hooks", "--exclude", "install", "remove"])
+        hooks_dir = prime_dir / "snap" / "hooks"
+        # only the configure hook is created
+        [configure_hook] = hooks_dir.iterdir()
+        assert (
+            '"${SNAP}/bin/snap-helpers-hook" "configure"' in configure_hook.read_text()
+        )
+        out = capsys.readouterr().out
+        assert "Writing hook files" in out
+        assert f"configure -> {hooks_dir}/configure" in out
+        assert f"install -> {hooks_dir}/install" not in out
+        assert f"remove -> {hooks_dir}/remove" not in out
+
+    def test_write_hooks_exclude_unknown(self, prime_dir, snapcraft_yaml):
+        script = SnapHelpersScript()
+        with pytest.raises(RuntimeError) as e:
+            script(["write-hooks", "--exclude", "invalid1", "invalid2"])
+        assert (
+            str(e.value) == "The following hook(s) are not defined: invalid1, invalid2"
+        )
