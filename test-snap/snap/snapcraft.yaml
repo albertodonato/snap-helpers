@@ -27,12 +27,6 @@ apps:
     command: bin/service2
     daemon: simple
 
-hooks:
-  configure:
-    plugs: []
-  install:
-    plugs: []
-
 parts:
   # use a separate part for snap-helpers to install from the local copy rather
   # than the PyPI release

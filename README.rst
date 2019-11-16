@@ -142,9 +142,9 @@ Hooks can be defined by simply registering functions to be called as hooks via
    setup(
        # ...
        entry_points={
-           'snaphelpers.hooks': [
-               'configure = testapp:configure_hook',
-               'install = testapp:install_hook'
+           "snaphelpers.hooks": [
+               "configure = testapp:configure_hook",
+               "install = testapp:install_hook",
            ]
        }
    )
@@ -162,6 +162,15 @@ Hook functions are called with a ``Snap`` object as argument:
 
 ``snap-helpers`` will take care of the hooks plumbing (i.e. creating hook files
 in ``$SNAP/snap/hooks``).
+
+Alternatively, the configuration can be done in ``setup.cfg``:
+
+.. code:: ini
+
+   [options.entry_points]
+   snaphelpers.hooks =
+       install = testapp:install_hook
+       configure = testapp:configure_hook
 
 
 Testing with the snap

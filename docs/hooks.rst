@@ -25,13 +25,12 @@ For instance:
    setup(
        # ...
        entry_points={
-           'snaphelpers.hooks': [
-               'configure = testapp:configure_hook',
-               'install = testapp:install_hook'
+           "snaphelpers.hooks": [
+               "configure = testapp:configure_hook",
+               "install = testapp:install_hook"
            ]
        }
    )
-
 
 will register functions for the ``configure`` and ``install`` hooks.
 These functions are called with a :class:`Snap` instance as argument:
@@ -46,33 +45,32 @@ These functions are called with a :class:`Snap` instance as argument:
        # ...
 
 
+Alternatively, hooks can be defined in ``setup.cfg``:
+
+.. code:: ini
+
+   [options.entry_points]
+   snaphelpers.hooks =
+       install = testapp:install_hook
+       configure = testapp:configure_hook
+
+
 Setting up hooks during snap build
 ----------------------------------
 
 The library provides a ``snap-helpers-hook`` script that is installed in the
-snap which is called hook with the hook name as argument. The script takes care
-of calling the function registered for the hook (if one is defined).
+snap. It must be called called with the hook name as sole argument, and takes care
+of calling the function registered for the hook via ``snaphelpers.hooks``.
 
 A ``snap-helpers`` tool is also provided to handle the plumbing during snap
-builds, and create the hook scripts, based on which hooks are defined in the
-application's ``snapcraft.yaml``
+builds, and create the hook scripts based on which are defined in ``snaphelpers.hooks``.
 
-All that's needed is callign ``snap-helpers write-hooks`` as part of the
+All that's needed is calling ``snap-helpers write-hooks`` as part of the
 application build process in the snap.
 
-In the example above, the application would have hooks defined in its
-``snapcraft.yaml`` such as (plug definitions are purely an example)
-
-.. code:: yaml
-
-   hooks:
-     configure:
-       plugs:
-         - media
-     install:
-       plugs:
-         - network
-
+The tool looks up Python packages installed in the snap that define
+``snaphelper.hooks``, and creates hook scripts under ``$SNAP/snap/hooks`` for
+each one of them.
 
 The application part just needs to ``override-build`` to call ``snap-helpers``
 to set up hooks:
@@ -88,8 +86,6 @@ to set up hooks:
          snapcraftctl build
          snap-helpers write-hooks
 
-
-This will create the corresponding hook scripts in ``$SNAP/snap/hooks/``.
 
 For a complete example, see the ``snap-helpers-testapp`` snap in the
 ``test-snap/`` dir.

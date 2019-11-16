@@ -1,4 +1,8 @@
 from copy import deepcopy
+from typing import (
+    Callable,
+    NamedTuple,
+)
 
 import pytest
 
@@ -87,3 +91,38 @@ class FakeSnapCtl:
 def fake_snapctl(snap_config):
     """A fake SnapCtl handling the config."""
     yield FakeSnapCtl(configs=snap_config)
+
+
+class FakeEntryPoint(NamedTuple):
+    """A fake entry point."""
+
+    name: str
+    load: Callable
+
+
+@pytest.fixture
+def snap_hooks_calls():
+    """Collect calls to snap hooks."""
+    yield []
+
+
+@pytest.fixture
+def entry_point_names():
+    """Keep nakes for fake entry points to generate."""
+    yield ["configure", "install"]
+
+
+@pytest.fixture
+def entry_points(snap_hooks_calls, entry_point_names):
+    """Return fake entry points."""
+
+    def make_load(name):
+        def load():
+            snap_hooks_calls.append(name)
+            return f"loaded-{name}"
+
+        return load
+
+    yield (
+        FakeEntryPoint(name=name, load=make_load(name)) for name in entry_point_names
+    )

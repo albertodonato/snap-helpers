@@ -10,8 +10,10 @@ from typing import (
     Optional,
 )
 
-import yaml
-
+from .._hook import (
+    get_hooks,
+    HOOKS_ENTRY_POINT,
+)
 from ._script import Script
 
 HOOK_TEMPLATE = """#!/bin/sh
@@ -54,15 +56,15 @@ class SnapHelpersScript(Script):
         getattr(self, f"_action_{action}")(options)
 
     def _action_write_hooks(self, options: Namespace):
-        src_dir = self._ensure_env_path("SNAPCRAFT_PART_SRC")
         prime_dir = self._ensure_env_path("SNAPCRAFT_PRIME")
 
-        with (src_dir / "snap" / "snapcraft.yaml").open() as fd:
-            content = yaml.safe_load(fd)
-
-        hooks = content.get("hooks")
+        hooks = list(get_hooks())
         if not hooks:
-            print("No hooks defined in the snap.")
+            print(
+                "No hooks defined in the snap.\n"
+                f'Hooks must be defined in the "{HOOKS_ENTRY_POINT}" '
+                "section of entry points."
+            )
             return
 
         hooks_dir = prime_dir / "snap" / "hooks"
