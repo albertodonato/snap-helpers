@@ -15,11 +15,11 @@ class SnapPaths:
     user_common: Path  #: the SNAP_USER_COMMON path
     user_data: Path  #: the SNAP_USER_DATA path
 
-    def __init__(self, environ: Optional[SnapEnviron] = None):
-        if environ is None:
-            environ = SnapEnviron()
+    def __init__(self, env: Optional[SnapEnviron] = None):
+        if env is None:
+            env = SnapEnviron()
         for key in self.__slots__:
-            setattr(self, key, Path(environ[key.upper()]))
+            setattr(self, key, Path(env[key.upper()]))
 
     def __repr__(self):
         name = self.__class__.__name__

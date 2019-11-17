@@ -60,14 +60,12 @@ class SnapCtl:
     )
 
     def __init__(
-        self,
-        executable: str = "/usr/bin/snapctl",
-        environ: Optional[SnapEnviron] = None,
+        self, executable: str = "/usr/bin/snapctl", env: Optional[SnapEnviron] = None
     ):
-        if environ is None:
-            environ = SnapEnviron()
+        if env is None:
+            env = SnapEnviron()
         self._executable = executable
-        self._instance_name = environ.INSTANCE_NAME
+        self._instance_name = env.INSTANCE_NAME
 
     def start(self, *services: str, enable: bool = False):
         """Start all or specified services in the snap.
