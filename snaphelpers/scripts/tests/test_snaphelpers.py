@@ -3,7 +3,10 @@ from pathlib import Path
 import pytest
 
 from .. import snaphelpers
-from ..snaphelpers import SnapHelpersScript
+from ..snaphelpers import (
+    HookScript,
+    SnapHelpersScript,
+)
 
 
 @pytest.fixture
@@ -30,6 +33,19 @@ def mock_get_hooks(mocker, entry_point_names):
         name: mocker.Mock(name=f"hook-{name}") for name in entry_point_names
     }
     yield get_hooks
+
+
+class TestHookScript:
+    def test_render(self, hooks_dir):
+        script = HookScript("install", hooks_dir)
+        assert '"${SNAP}/bin/snap-helpers-hook" "install"' in script.render()
+
+    def test_write(self, hooks_dir):
+        hooks_dir.mkdir(parents=True)
+        script = HookScript("install", hooks_dir)
+        script.write()
+        assert '"${SNAP}/bin/snap-helpers-hook" "install"' in script.path().read_text()
+        assert script.path().lstat().st_mode & 0o755 == 0o755
 
 
 @pytest.mark.usefixtures("snapcraft_env", "mock_get_hooks", "prime_dir")

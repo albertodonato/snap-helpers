@@ -5,8 +5,10 @@ from argparse import (
 )
 import os
 from pathlib import Path
+from textwrap import dedent
 from typing import (
     Mapping,
+    NamedTuple,
     Optional,
 )
 
@@ -16,11 +18,31 @@ from .._hook import (
 )
 from ._script import Script
 
-HOOK_TEMPLATE = """#!/bin/sh
 
-exec "${{SNAP}}/snap/command-chain/snapcraft-runner" \
-"${{SNAP}}/bin/snap-helpers-hook" "{hookname}"
-"""
+class HookScript(NamedTuple):
+    """A hook script."""
+
+    name: str
+    hooks_dir: Path
+
+    def render(self) -> str:
+        """Return the rendered script."""
+        return dedent(f"""\
+        #!/bin/sh
+
+        exec "${{SNAP}}/snap/command-chain/snapcraft-runner" \\
+            "${{SNAP}}/bin/snap-helpers-hook" "{self.name}"
+        """)
+
+    def path(self) -> Path:
+        """Return the path of f the script."""
+        return self.hooks_dir / self.name
+
+    def write(self):
+        """Write the hook script to file."""
+        path = self.path()
+        path.write_text(self.render())
+        path.chmod(0o755)
 
 
 class SnapHelpersScript(Script):
@@ -79,10 +101,9 @@ class SnapHelpersScript(Script):
         for hookname in hooks:
             if hookname in options.exclude:
                 continue
-            hook_file = hooks_dir / hookname
-            print(f" {hookname} -> {hook_file.absolute()}")
-            hook_file.write_text(HOOK_TEMPLATE.format(hookname=hookname))
-            hook_file.chmod(0o755)
+            hook_script = HookScript(hookname, hooks_dir)
+            print(f" {hookname} -> {hook_script.path().absolute()}")
+            hook_script.write()
 
     def _ensure_env_path(self, name: str) -> Path:
         value = os.environ.get(name)
