@@ -21,7 +21,7 @@ def snap_env():
         "SNAP_NAME": "mysnap",
         "SNAP_REVISION": "123",
         "SNAP_USER_COMMON": "/home/user/snap/mysnap/common",
-        "SNAP_USER_DATA": "/home/s/snap/mysnap/123",
+        "SNAP_USER_DATA": "/home/user/snap/mysnap/123",
         "SNAP_VERSION": "0.1.2",
     }
 

@@ -29,7 +29,7 @@ class TestSnapEnviron:
             "REVISION": "123",
             "SNAP": "/snap/mysnap/123",
             "USER_COMMON": "/home/user/snap/mysnap/common",
-            "USER_DATA": "/home/s/snap/mysnap/123",
+            "USER_DATA": "/home/user/snap/mysnap/123",
             "VERSION": "0.1.2",
         }
 
