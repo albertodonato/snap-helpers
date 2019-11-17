@@ -27,12 +27,14 @@ class HookScript(NamedTuple):
 
     def render(self) -> str:
         """Return the rendered script."""
-        return dedent(f"""\
-        #!/bin/sh
+        return dedent(
+            f"""\
+            #!/bin/sh
 
-        exec "${{SNAP}}/snap/command-chain/snapcraft-runner" \\
-            "${{SNAP}}/bin/snap-helpers-hook" "{self.name}"
-        """)
+            exec "${{SNAP}}/snap/command-chain/snapcraft-runner" \\
+                "${{SNAP}}/bin/snap-helpers-hook" "{self.name}"
+            """
+        )
 
     def path(self) -> Path:
         """Return the path of f the script."""
