@@ -1,3 +1,13 @@
+v0.2.0 - 2019-11-20
+===================
+
+- Provide access to metadata files (``manifest.yaml``, ``snap.yaml`` and
+  ``snapcraft.yaml``).
+- Read list of hooks from ``entry_points`` instead of ``snapcraft.yaml``
+  (there's no need to declare all hooks in this file anymore for
+  ``snap-helpers`` to find them).
+
+
 v0.1.6 - 2019-09-18
 ===================
 
