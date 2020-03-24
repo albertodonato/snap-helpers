@@ -12,7 +12,14 @@ description: |
 license: LGPL-3.0
 grade: stable
 confinement: strict
-base: core18
+base: core20
+
+slots:
+  snap-helpers-lib:
+    interface: content
+    content: snap-helpers-lib
+    read:
+      - $SNAP/lib/python3.8/site-packages/snaphelpers
 
 apps:
   snap-helpers:
@@ -38,7 +45,7 @@ parts:
     build-packages:
       - python3-dev
     stage-packages:
-      - libpython3.6
+      - libpython3.8
 
   local:
     plugin: dump

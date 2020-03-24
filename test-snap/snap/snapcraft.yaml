@@ -5,7 +5,14 @@ description: |
   Snap for a test application using snap-helpers.
 grade: stable
 confinement: strict
-base: core18
+base: core20
+
+plugs:
+  snap-helpers-lib:
+    interface: content
+    content: snap-helpers-lib
+    target: $SNAP/lib/python3.8/site-packages/snaphelpers
+    default-provider: snap-helpers
 
 apps:
   python:
@@ -44,11 +51,9 @@ parts:
     build-packages:
       - python3-dev
     stage-packages:
-      - libpython3.6
+      - libpython3.8
     after:
       - snap-helpers
     override-build: |
-      set -e
-
       snapcraftctl build
       snap-helpers write-hooks
