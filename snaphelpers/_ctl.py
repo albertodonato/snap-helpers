@@ -7,7 +7,9 @@ from subprocess import (
 )
 from typing import (
     Any,
+    cast,
     Dict,
+    IO,
     List,
     NamedTuple,
     Optional,
@@ -44,7 +46,7 @@ class SnapCtlError(Exception):
 
     def __init__(self, process: Popen):
         self.returncode = process.returncode
-        self.error = process.stderr.read().decode("utf-8")
+        self.error = cast(IO, process.stderr).read().decode("utf-8")
         super().__init__(
             f"Call to snapctl failed with error {self.returncode}: " + self.error
         )
@@ -169,6 +171,18 @@ class SnapCtl:
         """
         self.run("set", f":{name}", *self._unset_args(keys))
 
+    def is_connected(self, name: str) -> bool:
+        """Return whether a plug or slot is connected.
+
+        :param name: the plug or slot name.
+
+        """
+        try:
+            self.run("is-connected", name)
+        except SnapCtlError:
+            return False
+        return True
+
     def plug_get(self, name: str, *keys: str, remote: bool = False) -> Dict[str, Any]:
         """Return plug configuration.
 
@@ -221,7 +235,7 @@ class SnapCtl:
         process.wait()
         if process.returncode:
             raise SnapCtlError(process)
-        output: bytes = process.stdout.read()
+        output: bytes = cast(IO, process.stdout).read()
         return output.decode("utf-8")
 
     def _run_for_services(

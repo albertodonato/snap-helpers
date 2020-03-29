@@ -71,6 +71,22 @@ class TestSnapCtl:
         snapctl.connection_unset("myslot", "foo.bar", "baz")
         assert snapctl.run.mock_calls == [call("set", ":myslot", "foo.bar!", "baz!")]
 
+    @pytest.mark.parametrize("code,connected", [(0, True), (1, False)])
+    def test_is_connected(self, tmpdir, code, connected):
+        executable = tmpdir / "snapctl"
+        executable.write_text(
+            dedent(
+                f"""\
+                #!/bin/sh
+                exit {code}
+                """
+            ),
+            "utf-8",
+        )
+        executable.chmod(0o755)
+        snapctl = SnapCtl(executable=str(executable))
+        assert snapctl.is_connected("myslot") == connected
+
     @pytest.mark.parametrize(
         "remote,call_args",
         [
