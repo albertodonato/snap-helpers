@@ -67,7 +67,12 @@ class SnapConfigOptions:
         return True
 
     def get(self, key: str, default: Any = None) -> Any:
-        """Return value for a key, with a default."""
+        """Return value for a key, with a default.
+
+        :param key: name of the key to return.
+        :param default: value to return if the key is not found.
+
+        """
         try:
             return self[key]
         except UnknownConfigKey:
@@ -95,7 +100,10 @@ class SnapConfig:
         self._snapctl = snapctl or SnapCtl()
 
     def get_options(self, *keys: str) -> SnapConfigOptions:
-        """Return a :data:`SnapConfigOptions` for the specified keys."""
+        """Return a :data:`SnapConfigOptions` for the specified keys.
+
+        :param keys: keys to read configuration for.
+        """
         for key in keys:
             if "." in key:
                 raise InvalidKey(key)
@@ -106,7 +114,8 @@ class SnapConfig:
     def get(self, key: str) -> Any:
         """Return value for a single key.
 
-        It raises :class:`UnknownConfigKey` if the option doesn't exist.
+        :param key: key to get config for, possibly with dotted notation.
+        :raises UnknownConfigKey: if the option doesn't exist.
 
         """
         top_key = key.split(".", maxsplit=1)[0]
