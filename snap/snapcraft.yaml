@@ -1,10 +1,15 @@
 name: snap-helpers
 version: git
-summary: Test snap for snap-helpers
+summary: Test snap for the snap-helpers Python library.
 description: |
-  Test snap for snap-helpers.
+  Test snap for the [snap-helpers](https://pypi.org/project/snap-helpers/)
+  library.
 
-  It provides python and ipython shells to test the `snaphelpers` library.
+  It provides python and ipython shells to interact and test the `snaphelpers`
+  library.
+
+  See the [project repository](https://github.com/albertodonato/snap-helpers)
+  for more details.
 
 grade: stable
 confinement: strict
