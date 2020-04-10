@@ -2,14 +2,12 @@ name: snap-helpers
 version: git
 summary: Test snap for the snap-helpers Python library.
 description: |
-  Test snap for the [snap-helpers](https://pypi.org/project/snap-helpers/)
-  library.
+  Test snap for the snap-helpers Python library.
 
   It provides python and ipython shells to interact and test the `snaphelpers`
   library.
 
-  See the [project repository](https://github.com/albertodonato/snap-helpers)
-  for more details.
+  See the https://github.com/albertodonato/snap-helpers for more details.
 
 license: LGPL-3.0
 grade: stable
