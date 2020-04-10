@@ -11,6 +11,7 @@ description: |
   See the [project repository](https://github.com/albertodonato/snap-helpers)
   for more details.
 
+license: LGPL-3.0
 grade: stable
 confinement: strict
 base: core18
