@@ -27,12 +27,6 @@ apps:
       - home
       - network
       - network-bind
-  ipython:
-    command: bin/ipython3
-    plugs:
-      - home
-      - network
-      - network-bind
 
 parts:
   snap-helpers:

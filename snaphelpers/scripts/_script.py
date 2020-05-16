@@ -20,6 +20,7 @@ class Script(ABC):
         """Return a parser for the script.
 
         Subclasses must implement this method.
+
         """
 
     @abstractmethod
