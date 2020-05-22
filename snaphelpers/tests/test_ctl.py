@@ -18,7 +18,7 @@ class TestSnapCtl:
         executable = tmpdir / "snapctl"
         executable.write_text(
             dedent(
-                f"""\
+                """\
                 #!/bin/sh
                 echo foo bar
                 """
@@ -33,7 +33,7 @@ class TestSnapCtl:
         executable = tmpdir / "snapctl"
         executable.write_text(
             dedent(
-                f"""\
+                """\
                 #!/bin/sh
                 echo 'fail!' >&2
                 exit 1
@@ -157,7 +157,7 @@ class TestSnapCtl:
 
     def test_services(self, snapctl):
         snapctl.run.return_value = dedent(
-            f"""\
+            """\
             Service          Startup   Current   Notes
             mysnap.service1  disabled  inactive  foo,bar
             mysnap.service2  enabled   active    -
@@ -175,7 +175,7 @@ class TestSnapCtl:
 
     def test_services_with_services(self, snapctl):
         snapctl.run.return_value = dedent(
-            f"""\
+            """\
             Service          Startup   Current   Notes
             mysnap.service1  disabled  inactive  foo,bar
             mysnap.service3  enabled   inactive  baz

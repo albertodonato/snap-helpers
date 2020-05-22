@@ -16,7 +16,7 @@ from .._service import (
 @pytest.fixture
 def snap_service_status_output(snapctl):
     yield dedent(
-        f"""\
+        """\
         Service               Startup   Current   Notes
         mysnap_inst.serv1     disabled  inactive  foo,bar
         """
