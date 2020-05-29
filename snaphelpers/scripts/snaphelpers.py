@@ -37,7 +37,7 @@ class HookScript(NamedTuple):
         )
 
     def path(self) -> Path:
-        """Return the path of f the script."""
+        """Return the path of the script."""
         return self.hooks_dir / self.name
 
     def write(self):
@@ -71,7 +71,7 @@ class SnapHelpersScript(Script):
             "--exclude",
             nargs="*",
             default=[],
-            help="don't create scripts for specified hooks (even if present in snapcraft.yaml)",
+            help="don't create scripts for specified hooks",
         )
         return parser
 
