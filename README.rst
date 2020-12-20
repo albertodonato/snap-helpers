@@ -1,7 +1,7 @@
 snap-helpers - Interact with the Snap system within a Snap
 ==========================================================
 
-|Latest Version| |Build Status| |Coverage Status| |Documentation Status|
+|Latest Version| |Build Status| |Coverage Status| |Documentation|
 
 
 A Python library to interact with snap configuration and properties from inside a snap.
@@ -242,10 +242,14 @@ Full documentation is available on ReadTheDocs_.
 .. _ReadTheDocs: https://snap-helpers.readthedocs.io/en/latest/
 
 .. |Latest Version| image:: https://img.shields.io/pypi/v/snap-helpers.svg
+   :alt: Latest Version
    :target: https://pypi.python.org/pypi/snap-helpers
-.. |Build Status| image:: https://img.shields.io/travis/albertodonato/snap-helpers.svg
-   :target: https://travis-ci.com/albertodonato/snap-helpers
+.. |Build Status| image:: https://github.com/albertodonato/snap-helpers/workflows/CI/badge.svg
+   :alt: Build Status
+   :target: https://github.com/albertodonato/snap-helpers/actions?query=workflow%3ACI
 .. |Coverage Status| image:: https://img.shields.io/codecov/c/github/albertodonato/snap-helpers/master.svg
+   :alt: Coverage Status
    :target: https://codecov.io/gh/albertodonato/snap-helpers
-.. |Documentation Status| image:: https://readthedocs.org/projects/snap-helpers/badge/?version=stable
+.. |Documentation| image:: https://readthedocs.org/projects/snap-helpers/badge/?version=stable
+   :alt: Documentation
    :target: https://snap-helpers.readthedocs.io/en/stable/?badge=stable
