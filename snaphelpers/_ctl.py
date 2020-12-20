@@ -260,7 +260,10 @@ class SnapCtl:
         return [f"{key}!" for key in configs]
 
     def _connection_get(
-        self, name: str, keys: Tuple[str, ...], remote_type: Optional[str] = None,
+        self,
+        name: str,
+        keys: Tuple[str, ...],
+        remote_type: Optional[str] = None,
     ) -> Dict[str, Any]:
         args = ["get", "-d"]
         if remote_type:

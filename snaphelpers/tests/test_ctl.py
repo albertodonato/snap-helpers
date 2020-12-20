@@ -166,7 +166,10 @@ class TestSnapCtl:
         )
         assert snapctl.services() == [
             ServiceInfo(
-                name="service1", enabled=False, active=False, notes=["foo", "bar"],
+                name="service1",
+                enabled=False,
+                active=False,
+                notes=["foo", "bar"],
             ),
             ServiceInfo(name="service2", enabled=True, active=True, notes=[]),
             ServiceInfo(name="service3", enabled=True, active=False, notes=["baz"]),
@@ -183,7 +186,10 @@ class TestSnapCtl:
         )
         assert snapctl.services("service1", "service3") == [
             ServiceInfo(
-                name="service1", enabled=False, active=False, notes=["foo", "bar"],
+                name="service1",
+                enabled=False,
+                active=False,
+                notes=["foo", "bar"],
             ),
             ServiceInfo(name="service3", enabled=True, active=False, notes=["baz"]),
         ]
