@@ -247,7 +247,7 @@ Full documentation is available on ReadTheDocs_.
 .. |Build Status| image:: https://github.com/albertodonato/snap-helpers/workflows/CI/badge.svg
    :alt: Build Status
    :target: https://github.com/albertodonato/snap-helpers/actions?query=workflow%3ACI
-.. |Coverage Status| image:: https://img.shields.io/codecov/c/github/albertodonato/snap-helpers/master.svg
+.. |Coverage Status| image:: https://img.shields.io/codecov/c/github/albertodonato/snap-helpers/main.svg
    :alt: Coverage Status
    :target: https://codecov.io/gh/albertodonato/snap-helpers
 .. |Documentation| image:: https://readthedocs.org/projects/snap-helpers/badge/?version=stable
