@@ -59,8 +59,8 @@ Setting up hooks during snap build
 ----------------------------------
 
 The library provides a ``snap-helpers-hook`` script that is installed in the
-snap. It must be called called with the hook name as sole argument, and takes care
-of calling the function registered for the hook via ``snaphelpers.hooks``.
+snap. It must be called with the hook name as sole argument, and takes care of
+calling the function registered for the hook via ``snaphelpers.hooks``.
 
 A ``snap-helpers`` tool is also provided to handle the plumbing during snap
 builds, and create the hook scripts based on which are defined in ``snaphelpers.hooks``.
