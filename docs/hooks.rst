@@ -81,8 +81,6 @@ to set up hooks:
      my-app:
        # ...
        override-build: |
-         set -e
-
          snapcraftctl build
          snap-helpers write-hooks
 
