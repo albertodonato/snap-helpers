@@ -5,13 +5,13 @@ description: |
   Snap for a test application using snap-helpers.
 grade: stable
 confinement: strict
-base: core20
+base: core22
 
 plugs:
   snap-helpers-lib:
     interface: content
     content: snap-helpers-lib
-    target: $SNAP/lib/python3.8/site-packages/snaphelpers
+    target: $SNAP/lib/python3.10/site-packages/snaphelpers
     default-provider: snap-helpers
 
 apps:
@@ -35,19 +35,14 @@ apps:
     daemon: simple
 
 parts:
-  # use a separate part for snap-helpers to install from the local copy rather
-  # than the PyPI release
-  snap-helpers:
-    plugin: python
-    source: ..
-
   snap-helpers-testapp:
     plugin: python
     source: .
+    source-type: git
     python-packages:
       - ipython
     after:
       - snap-helpers
     override-build: |
-      snapcraftctl build
+      craftctl default
       snap-helpers write-hooks
