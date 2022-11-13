@@ -29,10 +29,13 @@ class HookScript(NamedTuple):
         """Return the rendered script."""
         return dedent(
             f"""\
-            #!/bin/sh
-
-            exec "${{SNAP}}/snap/command-chain/snapcraft-runner" \\
-                "${{SNAP}}/bin/snap-helpers-hook" "{self.name}"
+            #!/bin/sh -e
+            runner="${{SNAP}}/snap/command-chain/snapcraft-runner"
+            if [ -x "$runner" ]; then
+              exec "$runner" "${{SNAP}}/bin/snap-helpers-hook" "{self.name}"
+            else
+              exec "${{SNAP}}/bin/snap-helpers-hook" "{self.name}"
+            fi
             """
         )
 
@@ -80,7 +83,7 @@ class SnapHelpersScript(Script):
         getattr(self, f"_action_{action}")(options)
 
     def _action_write_hooks(self, options: Namespace):
-        prime_dir = self._ensure_env_path("SNAPCRAFT_PRIME")
+        prime_dir = self._ensure_env_path("CRAFT_PRIME", fallback="SNAPCRAFT_PRIME")
 
         hooks = list(get_hooks())
         if not hooks:
@@ -107,8 +110,10 @@ class SnapHelpersScript(Script):
             print(f" {hookname} -> {hook_script.path().absolute()}")
             hook_script.write()
 
-    def _ensure_env_path(self, name: str) -> Path:
+    def _ensure_env_path(self, name: str, fallback: str = "") -> Path:
         value = os.environ.get(name)
+        if value is None and fallback:
+            value = os.environ.get(fallback)
         if value is None:
             raise RuntimeError(f"{name} environment variable not defined")
         return Path(value)
