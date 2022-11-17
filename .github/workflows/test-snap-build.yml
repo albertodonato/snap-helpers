@@ -1,0 +1,42 @@
+name: Test snap build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        base:
+          - core18
+          - core20
+          - core22
+      fail-fast: false
+    # ubuntu-latest doesn't work due to
+    # https://github.com/snapcore/action-build/issues/42
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v3
+
+      - name: Prepare build
+        run: |
+          dir=integration-tests
+          mkdir $dir/snap-helpers
+          cp -a setup.* snaphelpers $dir/snap-helpers
+          cp $dir/snapcraft-${{ matrix.base }}.yaml $dir/snapcraft.yaml
+
+      - name: Build snap
+        id: build-snapcraft
+        uses: snapcore/action-build@v1
+        with:
+          path: integration-tests
+
+      - name: Install snap
+        run: |
+          sudo snap install --dangerous ${{ steps.build-snapcraft.outputs.snap }}
