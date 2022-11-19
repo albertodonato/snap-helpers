@@ -1,3 +1,12 @@
+v0.3.0 - 2022-11-19
+===================
+
+- Add support in ``SnapCtl`` for interacting with plugs and slots.
+- Support ``core22``-based snaps.
+- [snap] Rebase snap on ``core22``.
+- Add integration tests.
+
+
 v0.2.0 - 2019-11-20
 ===================
 
@@ -31,7 +40,7 @@ v0.1.3 - 2019-04-29
 
 - Change ``Snap.revision`` to be an ``int``, so it can be compared.
 
- 
+
 v0.1.2 - 2019-03-14
 ===================
 
