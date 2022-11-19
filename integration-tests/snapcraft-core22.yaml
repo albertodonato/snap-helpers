@@ -7,8 +7,15 @@ confinement: strict
 base: core22
 
 apps:
-  testapp:
+  python3:
     command: bin/python3
+    plugs:
+      - home
+      - network
+      - network-bind
+
+  pytest:
+    command: bin/pytest
     plugs:
       - home
       - network
@@ -21,6 +28,7 @@ parts:
     python-packages:
       - ./snap-helpers
       - ./testapp
+      - pytest
     override-build: |
       craftctl default
       snap-helpers write-hooks

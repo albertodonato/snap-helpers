@@ -1,4 +1,4 @@
-name: Test snap build
+name: Integration tests
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  test:
+  integration-tests:
     strategy:
       matrix:
         base:
@@ -26,10 +26,7 @@ jobs:
 
       - name: Prepare build
         run: |
-          dir=integration-tests
-          mkdir $dir/snap-helpers
-          cp -a setup.* snaphelpers $dir/snap-helpers
-          cp $dir/snapcraft-${{ matrix.base }}.yaml $dir/snapcraft.yaml
+          make -C integration-tests BASE=${{ matrix.base }}
 
       - name: Build snap
         id: build-snapcraft
@@ -40,3 +37,7 @@ jobs:
       - name: Install snap
         run: |
           sudo snap install --dangerous ${{ steps.build-snapcraft.outputs.snap }}
+
+      - name: Run tests
+        run: |
+          make -C integration-tests test BASE=${{ matrix.base }}
