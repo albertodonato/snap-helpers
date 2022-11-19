@@ -41,8 +41,6 @@ parts:
     source-type: git
     python-packages:
       - ipython
-    after:
-      - snap-helpers
     override-build: |
       craftctl default
       snap-helpers write-hooks

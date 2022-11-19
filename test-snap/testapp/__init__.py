@@ -4,8 +4,7 @@ from ._hooks import (
 )
 from ._service import Service
 
+__all__ = ["configure_hook", "install_hook", "service1", "service2"]
 
-__all__ = ['configure_hook', 'install_hook', 'service1', 'service2']
-
-service1 = Service('service1')
-service2 = Service('service2')
+service1 = Service("service1")
+service2 = Service("service2")
