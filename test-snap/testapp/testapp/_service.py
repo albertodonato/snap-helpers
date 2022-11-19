@@ -12,10 +12,10 @@ class Service:
     def __init__(self, name):
         self.name = name
 
-    def __call__(self, name):
+    def __call__(self):
         snap = Snap()
-        setup_log(snap.paths.common / f"service-{name}.log")
-        logging.info(f"Service {name} started")
+        setup_log(snap.paths.common / f"service-{self.name}.log")
+        logging.info(f"Service {self.name} started")
         while True:
-            logging.info(f"Service {name} still running")
+            logging.info(f"Service {self.name} still running")
             time.sleep(100)

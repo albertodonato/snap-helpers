@@ -9,3 +9,6 @@
 .eggs
 .pybuild
 .cache
+/test-snap/snapcraft.yaml
+/test-snap/snap-helpers
+/test-snap/*.snap
