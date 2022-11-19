@@ -4,13 +4,13 @@ summary: Test applicantion using snap-helpers
 description: Test application using snap-helpers
 grade: stable
 confinement: strict
-base: core22
+base: {{ base }}
 
 plugs:
   snap-helpers-lib:
     interface: content
     content: snap-helpers-lib
-    target: $SNAP/lib/python3.10/site-packages/snaphelpers
+    target: $SNAP/lib/python{{ python_version }}/site-packages/snaphelpers
     default-provider: snap-helpers
 
 apps:
@@ -45,5 +45,5 @@ parts:
       - ./testapp
       - pytest
     override-build: |
-      craftctl default
+      {{ build_cmd }}
       snap-helpers write-hooks

@@ -24,15 +24,24 @@ jobs:
       - name: Repository checkout
         uses: actions/checkout@v3
 
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip tox
+
       - name: Prepare build
         run: |
-          make -C integration-tests BASE=${{ matrix.base }}
+          make -C test-snap setup BASE=${{ matrix.base }}
 
       - name: Build snap
         id: build-snapcraft
         uses: snapcore/action-build@v1
         with:
-          path: integration-tests
+          path: test-snap
 
       - name: Install snap
         run: |
@@ -40,4 +49,4 @@ jobs:
 
       - name: Run tests
         run: |
-          make -C integration-tests test BASE=${{ matrix.base }}
+          snap-helpers-testapp.pytest -vs integration_tests.py

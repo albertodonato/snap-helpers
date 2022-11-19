@@ -1,0 +1,9 @@
+core18:
+  python_version: ''
+  build_cmd: snapcraftctl build
+core20:
+  python_version: '3.8'
+  build_cmd: snapcraftctl build
+core22:
+  python_version: '3.10'
+  build_cmd: craftctl default
