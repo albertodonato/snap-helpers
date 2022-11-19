@@ -13,7 +13,7 @@ from ._service import SnapServices
 
 
 class EnvironProperty:
-    """Wrapper to get properties from a :class:`SanpEnviron` instance."""
+    """Wrapper to get properties from a :class:`SnapEnviron` instance."""
 
     def __init__(self, name: str):
         self.name = name
