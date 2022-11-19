@@ -13,12 +13,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Repository checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
-        python-version: "3.6"
+        python-version: "3.10"
 
     - name: Install dependencies
       run: |
@@ -32,12 +32,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Repository checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
-        python-version: "3.6"
+        python-version: "3.10"
 
     - name: Install dependencies
       run: |
@@ -48,19 +48,22 @@ jobs:
         tox -e check
 
   test:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version:
-          - "3.6"
-          - "3.7"
-          - "3.8"
+        include:
+          - python-version: "3.6"
+            platform: ubuntu-18.04
+          - python-version: "3.8"
+            platform: ubuntu-20.04
+          - python-version: "3.10"
+            platform: ubuntu-22.04
+    runs-on: ${{ matrix.platform }}
     steps:
     - name: Repository checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
 

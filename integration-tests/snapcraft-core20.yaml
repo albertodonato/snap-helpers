@@ -1,0 +1,26 @@
+name: testapp
+version: '1.0'
+summary: Test app using snap-helpers
+description: Test app using snap-helpers
+grade: stable
+confinement: strict
+base: core20
+
+apps:
+  testapp:
+    command: bin/python3
+    plugs:
+      - home
+      - network
+      - network-bind
+
+parts:
+  testapp:
+    plugin: python
+    source: .
+    python-packages:
+      - ./snap-helpers
+      - ./testapp
+    override-build: |
+      snapcraftctl build
+      snap-helpers write-hooks

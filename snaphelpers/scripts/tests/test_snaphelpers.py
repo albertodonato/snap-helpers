@@ -23,7 +23,7 @@ def hooks_dir(prime_dir):
 
 @pytest.fixture
 def snapcraft_env(monkeypatch, prime_dir):
-    monkeypatch.setenv("SNAPCRAFT_PRIME", str(prime_dir))
+    monkeypatch.setenv("CRAFT_PRIME", str(prime_dir))
 
 
 @pytest.fixture
@@ -50,12 +50,26 @@ class TestHookScript:
 
 @pytest.mark.usefixtures("snapcraft_env", "mock_get_hooks", "prime_dir")
 class TestSnapHelpersScript:
-    def test_write_hooks_missing_prime_dir(self, monkeypatch):
-        monkeypatch.delenv("SNAPCRAFT_PRIME")
+    def test_write_hooks_missing_prime_dir_env_var(self, monkeypatch):
+        monkeypatch.delenv("CRAFT_PRIME")
         script = SnapHelpersScript()
         with pytest.raises(RuntimeError) as e:
             script(["write-hooks"])
-        assert "SNAPCRAFT_PRIME environment variable not defined" in str(e.value)
+        assert "CRAFT_PRIME environment variable not defined" in str(e.value)
+
+    def test_write_hooks_missing_prime_dir_env_var_fallback(
+        self, monkeypatch, capsys, prime_dir, hooks_dir
+    ):
+        monkeypatch.delenv("CRAFT_PRIME")
+        monkeypatch.setenv("SNAPCRAFT_PRIME", str(prime_dir))
+        script = SnapHelpersScript()
+        script(["write-hooks"])
+        configure_hook, install_hook = sorted(hooks_dir.iterdir())
+        assert (
+            '"${SNAP}/bin/snap-helpers-hook" "configure"' in configure_hook.read_text()
+        )
+        assert '"${SNAP}/bin/snap-helpers-hook" "install"' in install_hook.read_text()
+        assert "Writing hook files" in capsys.readouterr().out
 
     def test_write_hooks_create_files(self, capsys, hooks_dir):
         script = SnapHelpersScript()
