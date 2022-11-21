@@ -30,12 +30,7 @@ class HookScript(NamedTuple):
         return dedent(
             f"""\
             #!/bin/sh -e
-            runner="${{SNAP}}/snap/command-chain/snapcraft-runner"
-            if [ -x "$runner" ]; then
-              exec "$runner" "${{SNAP}}/bin/snap-helpers-hook" "{self.name}"
-            else
-              exec "${{SNAP}}/bin/snap-helpers-hook" "{self.name}"
-            fi
+            exec "${{SNAP}}/bin/snap-helpers-hook" "{self.name}"
             """
         )
 
