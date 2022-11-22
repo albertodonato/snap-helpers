@@ -1,9 +1,9 @@
 from copy import deepcopy
-from typing import (
-    Callable,
-    NamedTuple,
-)
 
+from pkg_resources import (
+    Distribution,
+    EntryPoint,
+)
 import pytest
 
 from ._ctl import SnapCtl
@@ -93,36 +93,29 @@ def fake_snapctl(snap_config):
     yield FakeSnapCtl(configs=snap_config)
 
 
-class FakeEntryPoint(NamedTuple):
-    """A fake entry point."""
-
-    name: str
-    load: Callable
-
-
 @pytest.fixture
-def snap_hooks_calls():
-    """Collect calls to snap hooks."""
-    yield []
+def make_entry_points():
+    """Return an iterable with EntryPoint objects."""
 
+    def make(defs):
+        entry_points = []
+        for project_name, definition, exists in defs:
 
-@pytest.fixture
-def entry_point_names():
-    """Keep nakes for fake entry points to generate."""
-    yield ["configure", "install"]
+            if exists:
 
+                def resolve():
+                    pass
 
-@pytest.fixture
-def entry_points(snap_hooks_calls, entry_point_names):
-    """Return fake entry points."""
+            else:
 
-    def make_load(name):
-        def load():
-            snap_hooks_calls.append(name)
-            return f"loaded-{name}"
+                def resolve():
+                    raise ImportError(f"Failed importing {definition}")
 
-        return load
+            entry_point = EntryPoint.parse(
+                definition, dist=Distribution(project_name=project_name)
+            )
+            entry_point.resolve = resolve
+            entry_points.append(entry_point)
+        return entry_points
 
-    yield (
-        FakeEntryPoint(name=name, load=make_load(name)) for name in entry_point_names
-    )
+    yield make
