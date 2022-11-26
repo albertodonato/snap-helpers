@@ -3,54 +3,58 @@ from argparse import (
     ArgumentParser,
     Namespace,
 )
+from collections import defaultdict
+from operator import attrgetter
 import os
 from pathlib import Path
 from textwrap import dedent
 from typing import (
-    Mapping,
-    NamedTuple,
-    Optional,
+    Dict,
+    List,
 )
 
 from .._hook import (
     get_hooks,
+    Hook,
     HOOKS_ENTRY_POINT,
 )
-from ._script import Script
+from ._script import (
+    Script,
+    ScriptError,
+)
 
 
-class HookScript(NamedTuple):
-    """A hook script."""
+class HookScript:
+    """A hook script to be rendered."""
 
-    name: str
-    hooks_dir: Path
+    def __init__(self, hook: Hook):
+        self.hook = hook
 
     def render(self) -> str:
         """Return the rendered script."""
         return dedent(
             f"""\
-            #!/bin/sh -e
-            exec "${{SNAP}}/bin/snap-helpers-hook" "{self.name}"
+            #!/usr/bin/env python3
+            # -*- coding: utf-8 -*-
+
+            import sys
+
+            from snaphelpers import Snap
+            from {self.hook.module} import {self.hook.import_name}
+
+            sys.exit({self.hook.path}(Snap()))
             """
         )
 
-    def path(self) -> Path:
-        """Return the path of the script."""
-        return self.hooks_dir / self.name
-
-    def write(self):
-        """Write the hook script to file."""
-        path = self.path()
+    def write(self, hooks_dir: Path):
+        """Write the hook script in the specified directory."""
+        path = hooks_dir / self.hook.name
         path.write_text(self.render())
         path.chmod(0o755)
 
 
 class SnapHelpersScript(Script):
     """Tool to perform snap-helpers tasks."""
-
-    def __init__(self, environ: Optional[Mapping[str, str]] = None):
-        if environ is None:
-            environ = os.environ
 
     def get_parser(self) -> ArgumentParser:
         parser = ArgumentParser(description="Tool to perform snap-helpers tasks")
@@ -65,11 +69,7 @@ class SnapHelpersScript(Script):
             formatter_class=ArgumentDefaultsHelpFormatter,
         )
         write_hooks.add_argument(
-            "-X",
-            "--exclude",
-            nargs="*",
-            default=[],
-            help="don't create scripts for specified hooks",
+            "--prime-dir", help="snap prime directory (default from snacraft env var)"
         )
         return parser
 
@@ -78,11 +78,15 @@ class SnapHelpersScript(Script):
         getattr(self, f"_action_{action}")(options)
 
     def _action_write_hooks(self, options: Namespace):
-        prime_dir = self._ensure_env_path("CRAFT_PRIME", fallback="SNAPCRAFT_PRIME")
+        if options.prime_dir:
+            prime_dir = Path(options.prime_dir)
+        else:
+            prime_dir = self._ensure_env_path("CRAFT_PRIME", fallback="SNAPCRAFT_PRIME")
 
-        hooks = list(get_hooks())
+        hooks = sorted(get_hooks(), key=attrgetter("name"))
+        self._validate_hooks(hooks)
         if not hooks:
-            print(
+            self.print(
                 "No hooks defined in the snap.\n"
                 f'Hooks must be defined in the "{HOOKS_ENTRY_POINT}" '
                 "section of entry points."
@@ -90,28 +94,47 @@ class SnapHelpersScript(Script):
             return
 
         hooks_dir = prime_dir / "snap" / "hooks"
-        if not hooks_dir.exists():
-            hooks_dir.mkdir(parents=True)
+        hooks_dir.mkdir(parents=True, exist_ok=True)
 
-        unknown_hooks = set(options.exclude).difference(hooks)
-        if unknown_hooks:
-            hooks_list = ", ".join(sorted(unknown_hooks))
-            raise RuntimeError(f"The following hook(s) are not defined: {hooks_list}")
-        print("Writing hook files...")
-        for hookname in hooks:
-            if hookname in options.exclude:
-                continue
-            hook_script = HookScript(hookname, hooks_dir)
-            print(f" {hookname} -> {hook_script.path().absolute()}")
-            hook_script.write()
+        self.print(f"Writing hook files to {hooks_dir.absolute()}")
+        for hook in hooks:
+            hook_script = HookScript(hook)
+            self.print(f" {hook.name}: {hook} ({hook.project})")
+            hook_script.write(hooks_dir)
 
     def _ensure_env_path(self, name: str, fallback: str = "") -> Path:
         value = os.environ.get(name)
         if value is None and fallback:
             value = os.environ.get(fallback)
         if value is None:
-            raise RuntimeError(f"{name} environment variable not defined")
+            raise ScriptError(f"{name} environment variable not defined")
         return Path(value)
+
+    def _validate_hooks(self, hooks: List[Hook]):
+        hooks_by_name: Dict[str, List[Hook]] = defaultdict(list)
+        not_found_hooks = []
+        for hook in hooks:
+            if not hook.exists:
+                not_found_hooks.append(hook)
+            hooks_by_name[hook.name].append(hook)
+
+        # check for duplicated entries
+        duplicated = sorted(
+            name for name, hooks in hooks_by_name.items() if len(hooks) > 1
+        )
+        if duplicated:
+            message = ["Multiple definitions found for hook(s):"]
+            for name in duplicated:
+                message.append(f"- {name}")
+                message.extend(f"    {hook}" for hook in sorted(hooks_by_name[name]))
+            raise ScriptError("\n".join(message))
+
+        # check that they exist
+        if not_found_hooks:
+            message = ["Hook function(s) not found:"]
+            for hook in not_found_hooks:
+                message.append(f"- {hook}")
+            raise ScriptError("\n".join(message))
 
 
 script = SnapHelpersScript()
