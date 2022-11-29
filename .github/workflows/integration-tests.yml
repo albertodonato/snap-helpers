@@ -17,9 +17,7 @@ jobs:
           - core20
           - core22
       fail-fast: false
-    # ubuntu-latest doesn't work due to
-    # https://github.com/snapcore/action-build/issues/42
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Repository checkout
         uses: actions/checkout@v3
