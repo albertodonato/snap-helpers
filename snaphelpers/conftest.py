@@ -19,6 +19,7 @@ def snap_env():
         "SNAP_DATA": "/var/snap/mysnap/123",
         "SNAP_INSTANCE_NAME": "mysnap_inst",
         "SNAP_NAME": "mysnap",
+        "SNAP_REAL_HOME": "/home/user",
         "SNAP_REVISION": "123",
         "SNAP_USER_COMMON": "/home/user/snap/mysnap/common",
         "SNAP_USER_DATA": "/home/user/snap/mysnap/123",

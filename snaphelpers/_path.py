@@ -7,10 +7,11 @@ from ._env import SnapEnviron
 class SnapPaths:
     """Paths related to the snap."""
 
-    __slots__ = ("common", "data", "snap", "user_common", "user_data")
+    __slots__ = ("common", "data", "real_home", "snap", "user_common", "user_data")
 
     common: Path  #: the SNAP_COMMON path
     data: Path  #: the SNAP_DATA path
+    real_home: Path  #: the SNAP_REAL_HOME path
     snap: Path  #: the SNAP path
     user_common: Path  #: the SNAP_USER_COMMON path
     user_data: Path  #: the SNAP_USER_DATA path

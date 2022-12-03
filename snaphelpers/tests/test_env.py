@@ -26,6 +26,7 @@ class TestSnapEnviron:
             "COMMON": "/var/snap/mysnap/common",
             "DATA": "/var/snap/mysnap/123",
             "INSTANCE_NAME": "mysnap_inst",
+            "REAL_HOME": "/home/user",
             "REVISION": "123",
             "SNAP": "/snap/mysnap/123",
             "USER_COMMON": "/home/user/snap/mysnap/common",
