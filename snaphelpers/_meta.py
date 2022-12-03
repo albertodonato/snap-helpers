@@ -20,15 +20,15 @@ class SnapMetadataFile(Mapping):
     """
 
     def __init__(self, path: Path):
-        self._path = path
+        self.path = path
         self._loaded = False
         self._data: Dict[str, Any] = {}
 
     def __str__(self):
-        return str(self._path)
+        return str(self.path)
 
     def __repr__(self):
-        return f"{self.__class__.__name__}({self._path})"
+        return f"{self.__class__.__name__}({self.path})"
 
     def __getitem__(self, item: str):
         self._ensure_loaded()
@@ -44,13 +44,13 @@ class SnapMetadataFile(Mapping):
 
     def exists(self) -> bool:
         """Return whether the file exists."""
-        return self._path.exists()
+        return self.path.exists()
 
     def _ensure_loaded(self):
         if self._loaded:
             return
 
-        with self._path.open() as fd:
+        with self.path.open() as fd:
             self._data = yaml.safe_load(fd)
 
         self._loaded = True

@@ -93,6 +93,11 @@ class TestSnapMetadataFile:
         assert metadata_file["foo"]["bar"] == sample_content["foo"]["bar"]
         assert metadata_file["baz"] == sample_content["baz"]
 
+    def test_path(self, tmpdir):
+        path = Path(tmpdir / "sample.yaml")
+        sample = SnapMetadataFile(path)
+        assert sample.path == path
+
     def test_exists_false(self):
         sample = SnapMetadataFile(Path("/not/here"))
         assert not sample.exists()
