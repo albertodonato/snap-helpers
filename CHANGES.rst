@@ -1,3 +1,11 @@
+v0.3.1 - 2022-12-03
+===================
+
+- Replace shell script for hooks, direcly generate Python scripts instead.
+- Add ``SnapPaths.real_home`` path.
+- [snap] Enable colors in IPython configuration.
+
+
 v0.3.0 - 2022-11-19
 ===================
 
