@@ -14,28 +14,30 @@ It exposes a top-level ``snaphelpers.Snap`` object which provides access to:
 
      >>> snap = snaphelpers.Snap()
      >>> snap.name
-     'testapp'
+     'snap-helpers'
      >>> snap.instance_name
-     'testapp'
+     'snap-helpers'
      >>> snap.version
-     '0+git.fdf80cd'
+     '0.3.0+git5.5794660'
      >>> snap.revision
-     'x1'
+     '138'
 
 - paths:
 
   .. code:: python
 
      >>> snap.paths.common
-     PosixPath('/var/snap/testapp/common')
+     PosixPath('/var/snap/snap-helpers/common')
      >>> snap.paths.data
-     PosixPath('/var/snap/testapp/x1')
+     PosixPath('/var/snap/snap-helpers/138')
+     >>> snap.paths.real_home
+     PosixPath('/home/ack')
      >>> snap.paths.snap
-     PosixPath('/snap/testapp/x1')
+     PosixPath('/snap/snap-helpers/138')
      >>> snap.paths.user_common
-     PosixPath('/home/ack/snap/testapp/common')
+     PosixPath('/home/ack/snap/snap-helpers/common')
      >>> snap.paths.user_data
-     PosixPath('/home/ack/snap/testapp/x1')
+     PosixPath('/home/ack/snap/snap-helpers/138')
 
 - snap-related environment variables:
 
@@ -43,20 +45,21 @@ It exposes a top-level ``snaphelpers.Snap`` object which provides access to:
 
      >>> pprint.pprint(dict(snap.environ))
      {'ARCH': 'amd64',
-      'COMMON': '/var/snap/testapp/common',
-      'CONTEXT': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
-      'COOKIE': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
-      'DATA': '/var/snap/testapp/x1',
+      'COMMON': '/var/snap/snap-helpers/common',
+      'CONTEXT': 'XbhAD8QBMDwJiEi5LcN-5fCrVeAG7qBGojWiWA0vXkx0hX-JxyqX',
+      'COOKIE': 'XbhAD8QBMDwJiEi5LcN-5fCrVeAG7qBGojWiWA0vXkx0hX-JxyqX',
+      'DATA': '/var/snap/snap-helpers/138',
       'INSTANCE_KEY': '',
-      'INSTANCE_NAME': 'testapp',
+      'INSTANCE_NAME': 'snap-helpers',
       'LIBRARY_PATH': '/var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void',
-      'NAME': 'testapp',
+      'NAME': 'snap-helpers',
+      'REAL_HOME': '/home/ack',
       'REEXEC': '',
-      'REVISION': 'x1',
-      'SNAP': '/snap/testapp/x1',
-      'USER_COMMON': '/home/ack/snap/testapp/common',
-      'USER_DATA': '/home/ack/snap/testapp/x1',
-      'VERSION': '0+git.fdf80cd'}
+      'REVISION': '138',
+      'SNAP': '/snap/snap-helpers/138',
+      'USER_COMMON': '/home/ack/snap/snap-helpers/common',
+      'USER_DATA': '/home/ack/snap/snap-helpers/138',
+      'VERSION': '0.3.0+git5.5794660'}
      >>> snap.environ.ARCH
      'amd64'
 
@@ -105,28 +108,33 @@ It exposes a top-level ``snaphelpers.Snap`` object which provides access to:
   .. code:: python
 
      >>> snap.metadata_files.snap
-     SnapMetadataFile(/snap/snap-helpers/x3/meta/snap.yaml)
-     >>> pprint(dict(snap.metadata_files.snap))
-     {'apps': {'ipython': {'command': 'snap/command-chain/snapcraft-runner '
-                                      '$SNAP/command-ipython.wrapper',
-                           'plugs': ['home', 'network', 'network-bind']},
-               'python': {'command': 'snap/command-chain/snapcraft-runner '
-                                     '$SNAP/command-python.wrapper',
+     SnapMetadataFile(/snap/snap-helpers/138/meta/snap.yaml)
+     >>> pprint.pprint(dict(snap.metadata_files.snap))
+     {'apps': {'python': {'command': 'bin/python3',
                           'plugs': ['home', 'network', 'network-bind']},
-               'snap-helpers': {'command': 'snap/command-chain/snapcraft-runner '
-                                           '$SNAP/command-snap-helpers.wrapper',
+               'snap-helpers': {'command': 'bin/snap-helpers-shell',
                                 'plugs': ['home', 'network', 'network-bind']}},
       'architectures': ['amd64'],
-      'base': 'core18',
+      'base': 'core22',
       'confinement': 'strict',
-      'description': 'Test snap for snap-helpers.\n'
+      'description': 'Test snap for the snap-helpers Python library.\n'
                      '\n'
-                     'It provides python and ipython shells to test the '
-                     '`snaphelpers` library.\n',
+                     'It provides python and ipython shells to interact and test '
+                     'the `snaphelpers`\n'
+                     'library.\n'
+                     '\n'
+                     'See the https://github.com/albertodonato/snap-helpers for '
+                     'more details.\n',
+      'environment': {'LD_LIBRARY_PATH': '${SNAP_LIBRARY_PATH}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}:$SNAP/lib',
+                      'PATH': '$SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin:$PATH'},
       'grade': 'stable',
+      'license': 'LGPL-3.0',
       'name': 'snap-helpers',
-      'summary': 'Test snap for snap-helpers',
-      'version': '0.1.6+git6.37370cd'}
+      'slots': {'snap-helpers-lib': {'content': 'snap-helpers-lib',
+                                     'interface': 'content',
+                                     'read': ['$SNAP/lib/python3.10/site-packages/snaphelpers']}},
+      'summary': 'Test snap for the snap-helpers Python library.',
+      'version': '0.3.0+git5.5794660'}
 
 
 Hook helpers
@@ -149,6 +157,16 @@ Hooks can be defined by simply registering functions to be called as hooks via
        }
    )
 
+or in ``setup.cfg`` with:
+
+.. code:: ini
+
+   [options.entry_points]
+   snaphelpers.hooks =
+       install = testapp:install_hook
+       configure = testapp:configure_hook
+
+
 Hook functions are called with a ``Snap`` object as argument:
 
 .. code:: python
@@ -163,14 +181,6 @@ Hook functions are called with a ``Snap`` object as argument:
 ``snap-helpers`` will take care of the hooks plumbing (i.e. creating hook files
 in ``$SNAP/snap/hooks``).
 
-Alternatively, the configuration can be done in ``setup.cfg``:
-
-.. code:: ini
-
-   [options.entry_points]
-   snaphelpers.hooks =
-       install = testapp:install_hook
-       configure = testapp:configure_hook
 
 
 Testing with the snap
@@ -185,9 +195,9 @@ module and provides a ``Snap`` instance for the current snap.
 .. code::
 
    $ snap-helpers
-   Python 3.6.8 (default, Aug 20 2019, 17:12:48)
+   Python 3.10.4 (main, Jun 29 2022, 12:14:53) [GCC 11.2.0]
    Type 'copyright', 'credits' or 'license' for more information
-   IPython 7.8.0 -- An enhanced Interactive Python. Type '?' for help.
+   IPython 8.7.0 -- An enhanced Interactive Python. Type '?' for help.
 
 
    Use the "snap" variable for an instance for the current snap.
@@ -197,25 +207,26 @@ module and provides a ``Snap`` instance for the current snap.
    In [2]: pprint.pprint(dict(snap.environ))
    {'ARCH': 'amd64',
     'COMMON': '/var/snap/snap-helpers/common',
-    'CONTEXT': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
-    'COOKIE': 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
-    'DATA': '/var/snap/snap-helpers/x1',
+    'CONTEXT': 'XbhAD8QBMDwJiEi5LcN-5fCrVeAG7qBGojWiWA0vXkx0hX-JxyqX',
+    'COOKIE': 'XbhAD8QBMDwJiEi5LcN-5fCrVeAG7qBGojWiWA0vXkx0hX-JxyqX',
+    'DATA': '/var/snap/snap-helpers/138',
     'INSTANCE_KEY': '',
     'INSTANCE_NAME': 'snap-helpers',
     'LIBRARY_PATH': '/var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd/void',
     'NAME': 'snap-helpers',
+    'REAL_HOME': '/home/ack',
     'REEXEC': '',
-    'REVISION': 'x1',
-    'SNAP': '/snap/snap-helpers/x1',
+    'REVISION': '138',
+    'SNAP': '/snap/snap-helpers/138',
     'USER_COMMON': '/home/ack/snap/snap-helpers/common',
-    'USER_DATA': '/home/ack/snap/snap-helpers/x1',
-    'VERSION': '0.1.6+git1.4a0b997'}
+    'USER_DATA': '/home/ack/snap/snap-helpers/138',
+    'VERSION': '0.3.0+git5.5794660'}
 
 The snap can be built and installed as follows:
 
 .. code:: shell
 
-   $ snapcraft
+   $ snapcraft -v
    $ sudo snap install --dangerous snap-helpers_*.snap
 
 
