@@ -1,3 +1,5 @@
+from __future__ import annotations  # for subscritable Popen type
+
 from enum import Enum
 import json
 import re
@@ -44,9 +46,9 @@ class SnapCtlError(Exception):
     returncode: int
     error: str
 
-    def __init__(self, process: Popen):
+    def __init__(self, process: Popen[bytes]):
         self.returncode = process.returncode
-        self.error = cast(IO, process.stderr).read().decode("utf-8")
+        self.error = cast(IO[bytes], process.stderr).read().decode("utf-8")
         super().__init__(
             f"Call to snapctl failed with error {self.returncode}: " + self.error
         )
@@ -70,7 +72,7 @@ class SnapCtl:
         self._executable = executable
         self._instance_name = env.INSTANCE_NAME
 
-    def start(self, *services: str, enable: bool = False):
+    def start(self, *services: str, enable: bool = False) -> None:
         """Start all or specified services in the snap.
 
         :param services: a list of services defined in the snap to start.
@@ -80,7 +82,7 @@ class SnapCtl:
         """
         self._run_for_services("start", services, options={"enable": enable})
 
-    def stop(self, *services: str, disable: bool = False):
+    def stop(self, *services: str, disable: bool = False) -> None:
         """Stop all or specified services in the snap.
 
         :param services: a list of services defined in the snap to stop.
@@ -90,7 +92,7 @@ class SnapCtl:
         """
         self._run_for_services("stop", services, options={"disable": disable})
 
-    def restart(self, *services: str, reload: bool = False):
+    def restart(self, *services: str, reload: bool = False) -> None:
         """Restart all or specified services in the snap.
 
         :param services: a list of services defined in the snap to restart.
@@ -137,7 +139,7 @@ class SnapCtl:
         conf = json.loads(self.run("get", "-d", *keys))
         return conf
 
-    def config_set(self, configs: Dict[str, Any]):
+    def config_set(self, configs: Dict[str, Any]) -> None:
         """Set snap configuration.
 
         :param configs: a dict with configs. Keys can use dotted notation.
@@ -145,7 +147,7 @@ class SnapCtl:
         """
         self.run("set", *self._set_args(configs))
 
-    def config_unset(self, *keys: str):
+    def config_unset(self, *keys: str) -> None:
         """Unset snap configuration keys.
 
         :param keys: config keys to unset.
@@ -153,7 +155,7 @@ class SnapCtl:
         """
         self.run("set", *self._unset_args(keys))
 
-    def connection_set(self, name: str, configs: Dict[str, Any]):
+    def connection_set(self, name: str, configs: Dict[str, Any]) -> None:
         """Set plug or slot configuration.
 
         :param name: the plug/slot name.
@@ -162,7 +164,7 @@ class SnapCtl:
         """
         self.run("set", f":{name}", *self._set_args(configs))
 
-    def connection_unset(self, name: str, *keys: str):
+    def connection_unset(self, name: str, *keys: str) -> None:
         """Unset plug or slot configuration.
 
         :param name: the plug/slot name.
@@ -210,7 +212,7 @@ class SnapCtl:
         status: SnapHealthStatus,
         message: Optional[str] = None,
         code: Optional[str] = None,
-    ):
+    ) -> None:
         """Set snap health.
 
         :param status: the status to set
@@ -235,7 +237,7 @@ class SnapCtl:
         process.wait()
         if process.returncode:
             raise SnapCtlError(process)
-        output: bytes = cast(IO, process.stdout).read()
+        output: bytes = cast(IO[bytes], process.stdout).read()
         return output.decode("utf-8")
 
     def _run_for_services(

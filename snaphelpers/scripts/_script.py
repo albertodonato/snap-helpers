@@ -25,7 +25,7 @@ class ScriptError(Exception):
 class Script(ABC):
     """A Script."""
 
-    def __init__(self, stdout: IO = sys.stdout, stderr: IO = sys.stderr):
+    def __init__(self, stdout: IO[str] = sys.stdout, stderr: IO[str] = sys.stderr):
         self.stdout = stdout
         self.stderr = stderr
 

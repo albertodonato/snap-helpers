@@ -59,6 +59,12 @@ class TestSnapService:
             info, snapctl=SnapCtl()
         )
 
+    def test_eq_different_object(self, snapctl):
+        info = ServiceInfo(
+            name="serv", enabled=True, active=False, notes=["foo", "bar"]
+        )
+        assert SnapService(info, snapctl=snapctl) != object()
+
     @pytest.mark.parametrize("action", ["start", "stop", "restart"])
     def test_actions(self, action, snapctl, snap_service_status_output):
         snapctl.run.side_effect = ["", snap_service_status_output]

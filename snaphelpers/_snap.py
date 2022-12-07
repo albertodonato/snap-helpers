@@ -1,4 +1,6 @@
 from typing import (
+    Any,
+    cast,
     Mapping,
     Optional,
 )
@@ -18,8 +20,8 @@ class EnvironProperty:
     def __init__(self, name: str):
         self.name = name
 
-    def __get__(self, instance, owner):
-        return getattr(instance.environ, self.name)
+    def __get__(self, instance: "Snap", owner: Any) -> str:
+        return cast(str, getattr(instance.environ, self.name))
 
 
 class Snap:
@@ -46,7 +48,7 @@ class Snap:
         self.services = SnapServices(snapctl=snapctl)
         self.metadata_files = SnapMetadataFiles(environ=self.environ)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (
             f"{self.__class__.__name__}" f"({self.name} {self.version} {self.revision})"
         )
