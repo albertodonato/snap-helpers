@@ -1,5 +1,5 @@
 core18:
-  python_version: ''
+  python_version: '3.6'
   build_cmd: snapcraftctl build
 core20:
   python_version: '3.8'
