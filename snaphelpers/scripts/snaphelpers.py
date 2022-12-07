@@ -99,7 +99,7 @@ class SnapHelpersScript(Script):
         self.print(f"Writing hook files to {hooks_dir.absolute()}")
         for hook in hooks:
             hook_script = HookScript(hook)
-            self.print(f" {hook.name}: {hook} ({hook.project})")
+            self.print(f" {hook.name}: {hook}")
             hook_script.write(hooks_dir)
 
     def _ensure_env_path(self, name: str, fallback: str = "") -> Path:
