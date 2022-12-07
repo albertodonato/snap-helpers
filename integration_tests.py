@@ -24,7 +24,7 @@ def test_hook(snap: Snap, hook: str):
 @pytest.mark.parametrize("hook", HOOKS)
 def test_hook_called(snap: Snap, hook: str):
     content = (snap.paths.common / "hooks.log").read_text()
-    assert f"Hook called: {hook}" in content
+    assert f"hooks.{hook} INFO | hook called" in content
 
 
 @pytest.mark.parametrize("service", SERVICES)
