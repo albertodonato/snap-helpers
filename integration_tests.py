@@ -1,4 +1,3 @@
-import contextlib
 import pytest
 
 from snaphelpers import Snap
@@ -40,9 +39,7 @@ def test_service(snap: Snap, service: str):
 def test_config_set_unset(snap: Snap):
     # Unset the test keys before running the test proper just in case
     # it has been set by another test.
-    with contextlib.suppress(UnknownConfigKey):
-        snap.config.unset(['foo', 'goo'])
-    # Start Test:
+    snap.config.unset(['foo', 'goo', 'test'])
     with pytest.raises(UnknownConfigKey):
         assert snap.config.get('foo')
     with pytest.raises(UnknownConfigKey):
