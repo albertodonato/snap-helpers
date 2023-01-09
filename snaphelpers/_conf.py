@@ -2,6 +2,7 @@ from copy import deepcopy
 from typing import (
     Any,
     Dict,
+    List,
     Optional,
     Sequence,
 )
@@ -129,3 +130,11 @@ class SnapConfig:
 
         """
         self._snapctl.config_set(options)
+
+    def unset(self, options: List[str]):
+        """Unset snap configuration keys.
+
+        :param options: A list of keys to unset. Keys can use dotted notation.
+
+        """
+        self._snapctl.config_unset(*options)

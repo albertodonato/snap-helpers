@@ -1,6 +1,7 @@
 import pytest
 
 from snaphelpers import Snap
+from snaphelpers._conf import UnknownConfigKey
 
 HOOKS = {"configure", "install"}
 SERVICES = {"service1", "service2"}
@@ -33,3 +34,25 @@ def test_service(snap: Snap, service: str):
     assert service in services
     assert services[service].enabled
     assert services[service].active
+
+
+def test_config_set_unset(snap: Snap):
+    # Unset the test keys before running the test proper just in case
+    # it has been set by another test.
+    try:
+        snap.config.unset(['foo', 'goo'])
+    except UnknownConfigKey:
+        pass
+    # Start Test:
+    with pytest.raises(UnknownConfigKey):
+        assert snap.config.get('foo')
+    with pytest.raises(UnknownConfigKey):
+        assert snap.config.get('goo')
+    snap.config.set({'foo': 'bar', 'goo': 'car'})
+    assert snap.config.get('foo') == 'bar'
+    assert snap.config.get('goo') == 'car'
+    snap.config.unset(['foo', 'goo'])
+    with pytest.raises(UnknownConfigKey):
+        assert snap.config.get('foo')
+    with pytest.raises(UnknownConfigKey):
+        assert snap.config.get('goo')
