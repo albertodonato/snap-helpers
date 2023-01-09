@@ -36,14 +36,14 @@ jobs:
           make -C test-snap setup BASE=${{ matrix.base }}
 
       - name: Build snap
-        id: build-snapcraft
+        id: build-snap
         uses: snapcore/action-build@v1
         with:
           path: test-snap
 
       - name: Install snap
         run: |
-          sudo snap install --dangerous ${{ steps.build-snapcraft.outputs.snap }}
+          sudo snap install --dangerous ${{ steps.build-snap.outputs.snap }}
 
       - name: Run tests
         run: |
