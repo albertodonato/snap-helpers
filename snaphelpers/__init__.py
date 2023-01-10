@@ -4,8 +4,10 @@ from packaging.version import parse
 from pkg_resources import get_distribution
 
 from ._conf import (
+    InvalidKey,
     SnapConfig,
     SnapConfigOptions,
+    UnknownConfigKey,
 )
 from ._ctl import (
     SnapCtl,
@@ -22,6 +24,7 @@ from ._snap import Snap
 
 __all__ = [
     "is_snap",
+    "InvalidKey",
     "Snap",
     "SnapCtl",
     "SnapCtlError",
@@ -31,6 +34,7 @@ __all__ = [
     "SnapHealth",
     "SnapPaths",
     "SnapServices",
+    "UnknownConfigKey",
     "__version__",
 ]
 
