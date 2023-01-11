@@ -1,7 +1,6 @@
 import pytest
 
 from snaphelpers import Snap
-from snaphelpers._conf import UnknownConfigKey
 
 HOOKS = {"configure", "install"}
 SERVICES = {"service1", "service2"}
