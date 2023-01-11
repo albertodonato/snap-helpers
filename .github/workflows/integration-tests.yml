@@ -47,4 +47,6 @@ jobs:
 
       - name: Run tests
         run: |
-          snap-helpers-testapp.pytest -vs integration_tests.py
+          snap_common=/var/snap/snap-helpers-testapp/common
+          sudo cp integration_tests.py $snap_common
+          env -C $snap_common -- sudo snap-helpers-testapp.pytest -vs integration_tests.py
