@@ -84,6 +84,20 @@ class FakeSnapCtl:
                 old_conf, conf = conf, conf[token]
             old_conf[token] = value
 
+    def config_unset(self, *keys):
+        for key in keys:
+            old_conf = conf = self._configs
+            key_parts = key.split(".")
+            for index, token in enumerate(key_parts):
+                try:
+                    old_conf, conf = conf, conf[token]
+                except KeyError:
+                    # if the token is not present in conf then there is
+                    # nothing to delete
+                    break
+            else:
+                del old_conf[key_parts[index]]
+
     def services(self):
         return deepcopy(self._services)
 

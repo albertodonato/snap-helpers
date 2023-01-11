@@ -136,3 +136,12 @@ class TestSnapConfig:
         assert fake_snapctl._configs["two"] == {"three": 3}
         options = config.get_options("one", "two")
         assert options.as_dict() == {"one": 1, "two": {"three": 3}}
+
+    def test_unset(self, fake_snapctl):
+        config = SnapConfig(snapctl=fake_snapctl)
+        config.set({"one": 1, "two": {"three": 3}})
+        config.unset(["one", "two.three"])
+        assert "one" not in fake_snapctl._configs.keys()
+        assert "three" not in fake_snapctl._configs["two"].keys()
+        assert "two" in fake_snapctl._configs.keys()
+        config.unset(["nonexistant"])
