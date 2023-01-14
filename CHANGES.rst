@@ -1,3 +1,11 @@
+v0.3.2 - 2023-01-14
+===================
+
+- Add ``SnapConfig.unset``.
+- Rework the test snap and Add integration tests.
+- [gh] Add actions for running integration tests against supported bases.
+
+
 v0.3.1 - 2022-12-03
 ===================
 
