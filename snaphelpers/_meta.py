@@ -14,10 +14,12 @@ from ._env import SnapEnviron
 class SnapMetadataFile(Mapping):
     """A YAML metadata file from the snap.
 
-    The content is read at the first access, and is accessible as a normal
+    The content is read at the first access, and is accessible as a regular
     dict.
 
     """
+
+    path: Path  #: the file Path
 
     def __init__(self, path: Path):
         self.path = path
