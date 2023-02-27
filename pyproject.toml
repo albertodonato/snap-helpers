@@ -1,10 +1,55 @@
-[tool.coverage.report]
-show_missing = true
-fail_under = 100.0
-skip_covered = true
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = [
+  "setuptools",
+  "setuptools-scm",
+]
 
-[tool.coverage.run]
-source = ["snaphelpers"]
+[project]
+name = "snap-helpers"
+version = "0.3.2"
+description = "Helpers for interacting with the Snap system within a Snap"
+readme = "README.rst"
+keywords = [
+  "snap",
+  "snapcraft",
+  "snappy",
+]
+license = {file = "LICENSE.txt"}
+maintainers = [
+    {name = "Alberto Donato", email = "alberto.donato@gmail.com"},
+]
+authors = [
+    {name = "Alberto Donato", email = "alberto.donato@gmail.com"},
+]
+requires-python = ">=3.6"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: System :: Archiving :: Packaging",
+    "Topic :: System :: Software Distribution",
+]
+dependencies = [
+  "packaging",
+  "PyYAML",
+]
+[project.optional-dependencies]
+testing = [
+  "pytest",
+  "pytest-mock",
+]
+[project.urls]
+changelog = "https://github.com/albertodonato/snap-helpers/blob/main/CHANGES.rst"
+documentation = "https://readthedocs.org/projects/snap-helpers/"
+homepage = "https://github.com/albertodonato/snap-helpers"
+repository = "https://github.com/albertodonato/snap-helpers"
+[project.scripts]
+snap-helpers = "snaphelpers.scripts.snaphelpers:script"
+
+[tool.setuptools.packages.find]
+include = ["snaphelpers*"]
 
 [tool.isort]
 combine_as_imports = true
@@ -16,8 +61,20 @@ multi_line_output = 3
 order_by_type = false
 use_parentheses = true
 
+[tool.flake8]
+ignore = ["E203", "E501", "W503"]
+max-line-length = 80
+select = ["C", "E", "F", "W", "B", "B950"]
+
+[tool.coverage.report]
+fail_under = 100.0
+show_missing = true
+skip_covered = true
+
+[tool.coverage.run]
+source = ["snaphelpers"]
+
 [tool.mypy]
-exclude = ["test_*"]
 ignore_missing_imports = true
 install_types = true
 non_interactive = true
