@@ -167,7 +167,7 @@ class TestSnapHelpersScript:
             """
         )
 
-    def test_write_hooks_not_foudn(self, script, hooks_dir, mock_get_hooks):
+    def test_write_hooks_not_found(self, script, hooks_dir, mock_get_hooks):
         mock_get_hooks(
             defs=[
                 ("pkg1", "configure = pkg1.hooks:hook.configure", True),
