@@ -115,7 +115,6 @@ def make_entry_points():
     def make(defs):
         entry_points = []
         for project_name, definition, exists in defs:
-
             if exists:
 
                 def resolve():
