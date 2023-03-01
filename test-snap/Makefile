@@ -15,7 +15,7 @@ clean:
 
 snap-helpers:
 	mkdir -p $@
-	cp -a ../setup.* ../snaphelpers $@
+	cp -a ../pyproject.toml ../snaphelpers $@
 .PHONY: snap-helpers
 
 snapcraft.yaml:
