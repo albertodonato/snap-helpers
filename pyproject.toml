@@ -2,12 +2,10 @@
 build-backend = "setuptools.build_meta"
 requires = [
   "setuptools",
-  "setuptools-scm",
 ]
 
 [project]
 name = "snap-helpers"
-version = "0.3.2"
 description = "Helpers for interacting with the Snap system within a Snap"
 readme = "README.rst"
 keywords = [
@@ -31,8 +29,10 @@ classifiers = [
     "Topic :: System :: Archiving :: Packaging",
     "Topic :: System :: Software Distribution",
 ]
+dynamic = [
+  "version",
+]
 dependencies = [
-  "packaging",
   "PyYAML",
 ]
 [project.optional-dependencies]
@@ -51,6 +51,9 @@ snap-helpers = "snaphelpers.scripts.snaphelpers:script"
 [tool.setuptools.packages.find]
 include = ["snaphelpers*"]
 
+[tool.setuptools.dynamic]
+version = {attr = "snaphelpers.__version__"}
+
 [tool.isort]
 combine_as_imports = true
 force_grid_wrap = 2
@@ -59,6 +62,7 @@ from_first = false
 include_trailing_comma = true
 multi_line_output = 3
 order_by_type = false
+profile = "black"
 use_parentheses = true
 
 [tool.flake8]

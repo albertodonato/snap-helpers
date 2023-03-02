@@ -1,8 +1,5 @@
 """Helpers for interacting with the Snap system within a Snap."""
 
-from packaging.version import parse
-from pkg_resources import get_distribution
-
 from ._conf import (
     InvalidKey,
     SnapConfig,
@@ -38,4 +35,4 @@ __all__ = [
     "__version__",
 ]
 
-__version__ = parse(get_distribution("snap-helpers").version)
+__version__ = "0.3.2"
