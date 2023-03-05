@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from .._path import SnapPaths
+from snaphelpers._path import SnapPaths
 
 
 class TestSnapPaths:

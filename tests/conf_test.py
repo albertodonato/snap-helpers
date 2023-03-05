@@ -1,6 +1,6 @@
 import pytest
 
-from .._conf import (
+from snaphelpers._conf import (
     InvalidKey,
     SnapConfig,
     SnapConfigOptions,

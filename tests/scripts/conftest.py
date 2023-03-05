@@ -6,7 +6,7 @@ from io import StringIO
 
 import pytest
 
-from ._script import Script
+from snaphelpers.scripts._script import Script
 
 
 class SampleScript(Script):

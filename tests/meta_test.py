@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from .._meta import (
+from snaphelpers._meta import (
     SnapMetadataFile,
     SnapMetadataFiles,
 )

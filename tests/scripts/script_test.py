@@ -1,6 +1,6 @@
 from argparse import Namespace
 
-from .._script import ScriptError
+from snaphelpers.scripts._script import ScriptError
 
 
 class TestScript:

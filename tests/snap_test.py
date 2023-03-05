@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from .._snap import Snap
+from snaphelpers._snap import Snap
 
 
 class TestSnap:

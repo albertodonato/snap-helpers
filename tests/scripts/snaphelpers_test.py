@@ -4,9 +4,9 @@ from textwrap import dedent
 
 import pytest
 
-from .. import snaphelpers
-from ..._hook import Hook
-from ..snaphelpers import (
+from snaphelpers._hook import Hook
+from snaphelpers.scripts import snaphelpers
+from snaphelpers.scripts.snaphelpers import (
     HookScript,
     SnapHelpersScript,
 )
