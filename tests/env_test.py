@@ -1,6 +1,6 @@
 import pytest
 
-from .._env import (
+from snaphelpers._env import (
     is_snap,
     SnapEnviron,
 )

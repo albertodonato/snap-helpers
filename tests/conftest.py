@@ -6,8 +6,10 @@ from pkg_resources import (
 )
 import pytest
 
-from ._ctl import SnapCtl
-from ._env import SnapEnviron
+from snaphelpers import (
+    SnapCtl,
+    SnapEnviron,
+)
 
 
 @pytest.fixture

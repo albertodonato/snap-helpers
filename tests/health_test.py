@@ -2,7 +2,7 @@ from unittest.mock import call
 
 import pytest
 
-from .._health import SnapHealth
+from snaphelpers._health import SnapHealth
 
 
 @pytest.fixture

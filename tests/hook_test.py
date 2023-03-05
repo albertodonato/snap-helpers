@@ -4,7 +4,7 @@ from pkg_resources import (
 )
 import pytest
 
-from .._hook import (
+from snaphelpers._hook import (
     get_hooks,
     Hook,
 )

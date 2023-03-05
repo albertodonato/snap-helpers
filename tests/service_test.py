@@ -3,11 +3,11 @@ from unittest.mock import call
 
 import pytest
 
-from .._ctl import (
+from snaphelpers._ctl import (
     ServiceInfo,
     SnapCtl,
 )
-from .._service import (
+from snaphelpers._service import (
     SnapService,
     SnapServices,
 )
