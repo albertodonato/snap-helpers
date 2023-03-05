@@ -182,6 +182,14 @@ Hook functions are called with a ``Snap`` object as argument:
 in ``$SNAP/snap/hooks``).
 
 
+Supported bases
+---------------
+
+Currently supported snap bases are:
+
+- `core20` (Python3.8)
+- `core22` (Python3.10)
+
 
 Testing with the snap
 ---------------------
