@@ -13,7 +13,6 @@ jobs:
     strategy:
       matrix:
         base:
-          - core18
           - core20
           - core22
       fail-fast: false
