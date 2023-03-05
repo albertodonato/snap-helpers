@@ -79,6 +79,7 @@ skip_covered = true
 source = ["snaphelpers"]
 
 [tool.mypy]
+exclude = ["test_*"]
 ignore_missing_imports = true
 install_types = true
 non_interactive = true

@@ -28,7 +28,7 @@ class ServiceInfo(NamedTuple):
     name: str
     enabled: bool
     active: bool
-    notes: List[str]
+    notes: list[str]
 
 
 class SnapHealthStatus(Enum):
@@ -65,7 +65,7 @@ class SnapCtl:
     )
 
     def __init__(
-        self, executable: str = "/usr/bin/snapctl", env: Optional[SnapEnviron] = None
+        self, executable: str = "/usr/bin/snapctl", env: SnapEnviron | None = None
     ):
         if env is None:
             env = SnapEnviron()
@@ -102,7 +102,7 @@ class SnapCtl:
         """
         self._run_for_services("restart", services, options={"reload": reload})
 
-    def services(self, *services: str) -> List[ServiceInfo]:
+    def services(self, *services: str) -> list[ServiceInfo]:
         """Return info about services in the snap.
 
         :param services: a list of services to return info for.
@@ -116,7 +116,7 @@ class SnapCtl:
             match = self._SERVICE_RE.match(line)
             if match:
                 info = match.groupdict()
-                notes: List[str] = []
+                notes: list[str] = []
                 if info["notes"] != "-":
                     notes = info["notes"].split(",")
                 service_infos.append(
@@ -129,17 +129,17 @@ class SnapCtl:
                 )
         return service_infos
 
-    def config_get(self, *keys: str) -> Dict[str, Any]:
+    def config_get(self, *keys: str) -> dict[str, Any]:
         """Return the snap configuration.
 
         :param keys: a list of config keys to return.
 
         """
-        conf: Dict[str, Any]
+        conf: dict[str, Any]
         conf = json.loads(self.run("get", "-d", *keys))
         return conf
 
-    def config_set(self, configs: Dict[str, Any]) -> None:
+    def config_set(self, configs: dict[str, Any]) -> None:
         """Set snap configuration.
 
         :param configs: a dict with configs. Keys can use dotted notation.
@@ -155,7 +155,7 @@ class SnapCtl:
         """
         self.run("set", *self._unset_args(keys))
 
-    def connection_set(self, name: str, configs: Dict[str, Any]) -> None:
+    def connection_set(self, name: str, configs: dict[str, Any]) -> None:
         """Set plug or slot configuration.
 
         :param name: the plug/slot name.
@@ -185,7 +185,7 @@ class SnapCtl:
             return False
         return True
 
-    def plug_get(self, name: str, *keys: str, remote: bool = False) -> Dict[str, Any]:
+    def plug_get(self, name: str, *keys: str, remote: bool = False) -> dict[str, Any]:
         """Return plug configuration.
 
         :param name: the plug name.
@@ -196,7 +196,7 @@ class SnapCtl:
         remote_type = "slot" if remote else None
         return self._connection_get(name, keys, remote_type=remote_type)
 
-    def slot_get(self, name: str, *keys: str, remote: bool = False) -> Dict[str, Any]:
+    def slot_get(self, name: str, *keys: str, remote: bool = False) -> dict[str, Any]:
         """Return slot configuration.
 
         :param name: the slot name.
@@ -210,8 +210,8 @@ class SnapCtl:
     def set_health(
         self,
         status: SnapHealthStatus,
-        message: Optional[str] = None,
-        code: Optional[str] = None,
+        message: str | None = None,
+        code: str | None = None,
     ) -> None:
         """Set snap health.
 
@@ -244,9 +244,9 @@ class SnapCtl:
         self,
         cmd: str,
         services: Sequence[str],
-        options: Optional[Dict[str, bool]] = None,
+        options: dict[str, bool] | None = None,
     ) -> str:
-        opts: List[str] = []
+        opts: list[str] = []
         if options:
             opts = [f"--{option}" for option, value in options.items() if value]
         if services:
@@ -255,23 +255,23 @@ class SnapCtl:
             service_names = [self._instance_name]
         return self.run(cmd, *opts, *service_names)
 
-    def _set_args(self, configs: Dict[str, Any]) -> List[str]:
+    def _set_args(self, configs: dict[str, Any]) -> list[str]:
         return [f"{key}={json.dumps(value)}" for key, value in configs.items()]
 
-    def _unset_args(self, configs: Tuple[str, ...]) -> List[str]:
+    def _unset_args(self, configs: tuple[str, ...]) -> list[str]:
         return [f"{key}!" for key in configs]
 
     def _connection_get(
         self,
         name: str,
-        keys: Tuple[str, ...],
-        remote_type: Optional[str] = None,
-    ) -> Dict[str, Any]:
+        keys: tuple[str, ...],
+        remote_type: str | None = None,
+    ) -> dict[str, Any]:
         args = ["get", "-d"]
         if remote_type:
             args.append(f"--{remote_type}")
         args.append(f":{name}")
         args.extend(keys)
-        conf: Dict[str, Any]
+        conf: dict[str, Any]
         conf = json.loads(self.run(*args))
         return conf
