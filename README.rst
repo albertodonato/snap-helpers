@@ -163,8 +163,16 @@ or in ``setup.cfg`` with:
 
    [options.entry_points]
    snaphelpers.hooks =
-       install = testapp:install_hook
        configure = testapp:configure_hook
+       install = testapp:install_hook
+
+or in ``pyproject.toml`` with:
+
+.. code:: toml
+
+   [project.entry-points."snaphelpers.hooks"]
+   configure = "testapp:configure_hook"
+   install = "testapp:install_hook"
 
 
 Hook functions are called with a ``Snap`` object as argument:

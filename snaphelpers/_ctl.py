@@ -10,13 +10,9 @@ from subprocess import (
 from typing import (
     Any,
     cast,
-    Dict,
     IO,
-    List,
     NamedTuple,
-    Optional,
     Sequence,
-    Tuple,
 )
 
 from ._env import SnapEnviron
