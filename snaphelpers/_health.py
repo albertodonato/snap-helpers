@@ -20,11 +20,11 @@ class SnapHealth:
     def __init__(self, snapctl: Optional[SnapCtl] = None):
         self._snapctl = snapctl or SnapCtl()
 
-    def okay(self):
+    def okay(self) -> None:
         """Set the status of the snap to "okay"."""
         self._snapctl.set_health(SnapHealthStatus.OKAY)
 
-    def waiting(self, message: str, code: Optional[str] = None):
+    def waiting(self, message: str, code: Optional[str] = None) -> None:
         """Set the status of the snap to "waiting".
 
         :param message: a message string for the status
@@ -32,7 +32,7 @@ class SnapHealth:
         """
         self._set_health(SnapHealthStatus.WAITING, message, code)
 
-    def blocked(self, message: str, code: Optional[str] = None):
+    def blocked(self, message: str, code: Optional[str] = None) -> None:
         """Set the status of the snap to "blocked".
 
         :param message: a message string for the status
@@ -40,7 +40,7 @@ class SnapHealth:
         """
         self._set_health(SnapHealthStatus.BLOCKED, message, code)
 
-    def error(self, message: str, code: Optional[str] = None):
+    def error(self, message: str, code: Optional[str] = None) -> None:
         """Set the status of the snap to "error".
 
         :param message: a message string for the status
@@ -48,7 +48,9 @@ class SnapHealth:
         """
         self._set_health(SnapHealthStatus.ERROR, message, code)
 
-    def _set_health(self, status: SnapHealthStatus, message: str, code: Optional[str]):
+    def _set_health(
+        self, status: SnapHealthStatus, message: str, code: Optional[str]
+    ) -> None:
         if not message:
             raise ValueError("Health status message must not be empty")
         if code is not None and not STATUS_CODE_RE.match(code):

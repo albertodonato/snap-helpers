@@ -1,4 +1,5 @@
 from typing import (
+    Any,
     Dict,
     Optional,
 )
@@ -16,14 +17,16 @@ class SnapService:
         self._info = info
         self._snapctl = snapctl or SnapCtl()
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr: str) -> Any:
         # forward attributes defined in ServiceInfo
         return getattr(self._info, attr)
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: Any) -> bool:
+        if not isinstance(other, SnapService):
+            return NotImplemented
         return self._info == other._info and self._snapctl is other._snapctl
 
-    def start(self, enable: bool = False):
+    def start(self, enable: bool = False) -> None:
         """Start the service.
 
         :param enable: whether to also enable the service at startup.
@@ -32,7 +35,7 @@ class SnapService:
         self._snapctl.start(self.name, enable=enable)
         self.refresh_status()
 
-    def stop(self, disable: bool = False):
+    def stop(self, disable: bool = False) -> None:
         """Stop the service.
 
         :param disable: whether to also disable the service at startup.
@@ -41,7 +44,7 @@ class SnapService:
         self._snapctl.stop(self.name, disable=disable)
         self.refresh_status()
 
-    def restart(self, reload: bool = False):
+    def restart(self, reload: bool = False) -> None:
         """Restart the service.
 
         :param reload: whether to reload the service if supported.
@@ -50,7 +53,7 @@ class SnapService:
         self._snapctl.restart(self.name, reload=reload)
         self.refresh_status()
 
-    def refresh_status(self):
+    def refresh_status(self) -> None:
         """Update the status of the ervice service."""
         [self._info] = self._snapctl.services(self.name)
 
@@ -68,7 +71,7 @@ class SnapServices:
             for info in self._snapctl.services()
         }
 
-    def start(self, enable: bool = False):
+    def start(self, enable: bool = False) -> None:
         """Start all services.
 
         :param enable: whether to also enable services at startup.
@@ -76,7 +79,7 @@ class SnapServices:
         """
         self._snapctl.start(enable=enable)
 
-    def stop(self, disable: bool = False):
+    def stop(self, disable: bool = False) -> None:
         """Stop all services.
 
         :param disable: whether to also disable services at startup.
@@ -84,7 +87,7 @@ class SnapServices:
         """
         self._snapctl.stop(disable=disable)
 
-    def restart(self, reload: bool = False):
+    def restart(self, reload: bool = False) -> None:
         """Restart all services.
 
         :param reload: whether to reload services if supported.

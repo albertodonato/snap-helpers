@@ -1,4 +1,3 @@
-from collections import abc
 import os
 from typing import (
     Iterator,
@@ -14,7 +13,7 @@ def is_snap(environ: Optional[Mapping[str, str]] = None) -> bool:
     return bool(environ.get("SNAP", ""))
 
 
-class SnapEnviron(abc.Mapping):
+class SnapEnviron(Mapping[str, str]):
     """Environment variables related to the Snap.
 
     This provides read-only access to environment variables starting with
@@ -50,7 +49,7 @@ class SnapEnviron(abc.Mapping):
     def __len__(self) -> int:
         return len(self._env)
 
-    def __iter__(self) -> Iterator:
+    def __iter__(self) -> Iterator[str]:
         return iter(self._env)
 
     def __getattr__(self, attr: str) -> str:

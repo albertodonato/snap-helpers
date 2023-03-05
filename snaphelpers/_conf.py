@@ -79,7 +79,7 @@ class SnapConfigOptions:
         except UnknownConfigKey:
             return default
 
-    def fetch(self):
+    def fetch(self) -> None:
         """Fetch (or refresh) configuration for the set of keys."""
         self._config = self._snapctl.config_get(*self._keys)
 
@@ -123,7 +123,7 @@ class SnapConfig:
         options = self.get_options(top_key)
         return options[key]
 
-    def set(self, options: Dict[str, Any]):
+    def set(self, options: Dict[str, Any]) -> None:
         """Set config options.
 
         :param options: a dict with configs. Keys can use dotted notation.
@@ -131,7 +131,7 @@ class SnapConfig:
         """
         self._snapctl.config_set(options)
 
-    def unset(self, options: List[str]):
+    def unset(self, options: List[str]) -> None:
         """Unset snap configuration keys.
 
         :param options: A list of keys to unset. Keys can use dotted notation.

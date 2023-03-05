@@ -1,8 +1,9 @@
-from collections.abc import Mapping
 from pathlib import Path
 from typing import (
     Any,
     Dict,
+    Iterator,
+    Mapping,
     Optional,
 )
 
@@ -11,7 +12,7 @@ import yaml
 from ._env import SnapEnviron
 
 
-class SnapMetadataFile(Mapping):
+class SnapMetadataFile(Mapping[str, Any]):
     """A YAML metadata file from the snap.
 
     The content is read at the first access, and is accessible as a regular
@@ -26,21 +27,21 @@ class SnapMetadataFile(Mapping):
         self._loaded = False
         self._data: Dict[str, Any] = {}
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.path)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.__class__.__name__}({self.path})"
 
-    def __getitem__(self, item: str):
+    def __getitem__(self, item: str) -> Any:
         self._ensure_loaded()
         return self._data[item]
 
-    def __len__(self):
+    def __len__(self) -> int:
         self._ensure_loaded()
         return len(self._data)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[str]:
         self._ensure_loaded()
         return iter(self._data)
 
@@ -48,7 +49,7 @@ class SnapMetadataFile(Mapping):
         """Return whether the file exists."""
         return self.path.exists()
 
-    def _ensure_loaded(self):
+    def _ensure_loaded(self) -> None:
         if self._loaded:
             return
 
@@ -64,7 +65,7 @@ class MetadataFileProperty:
     def __init__(self, local_path: str):
         self.local_path = local_path
 
-    def __get__(self, instance, owner) -> SnapMetadataFile:
+    def __get__(self, instance: "SnapMetadataFiles", owner: type) -> SnapMetadataFile:
         path = Path(instance._environ["SNAP"]) / self.local_path
         return SnapMetadataFile(path)
 

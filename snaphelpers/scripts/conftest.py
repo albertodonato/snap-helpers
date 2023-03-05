@@ -10,13 +10,13 @@ from ._script import Script
 
 
 class SampleScript(Script):
-    def get_parser(self):
+    def get_parser(self) -> ArgumentParser:
         parser = ArgumentParser()
         parser.add_argument("foo")
         parser.add_argument("bar")
         return parser
 
-    def run(self, options: Namespace):
+    def run(self, options: Namespace) -> int:
         self.options = options
         return 0
 

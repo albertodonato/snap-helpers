@@ -46,7 +46,7 @@ class HookScript:
             """
         )
 
-    def write(self, hooks_dir: Path):
+    def write(self, hooks_dir: Path) -> None:
         """Write the hook script in the specified directory."""
         path = hooks_dir / self.hook.name
         path.write_text(self.render())
@@ -73,11 +73,11 @@ class SnapHelpersScript(Script):
         )
         return parser
 
-    def run(self, options: Namespace):
+    def run(self, options: Namespace) -> None:
         action = options.action.replace("-", "_")
         getattr(self, f"_action_{action}")(options)
 
-    def _action_write_hooks(self, options: Namespace):
+    def _action_write_hooks(self, options: Namespace) -> None:
         if options.prime_dir:
             prime_dir = Path(options.prime_dir)
         else:
@@ -110,7 +110,7 @@ class SnapHelpersScript(Script):
             raise ScriptError(f"{name} environment variable not defined")
         return Path(value)
 
-    def _validate_hooks(self, hooks: List[Hook]):
+    def _validate_hooks(self, hooks: List[Hook]) -> None:
         hooks_by_name: Dict[str, List[Hook]] = defaultdict(list)
         not_found_hooks = []
         for hook in hooks:

@@ -1,3 +1,4 @@
+from types import ModuleType
 from typing import (
     cast,
     List,
@@ -20,7 +21,7 @@ class Hook(NamedTuple):
     exists: bool
 
     @classmethod
-    def from_entry_point(cls, entry: pkg_resources.EntryPoint):
+    def from_entry_point(cls, entry: pkg_resources.EntryPoint) -> "Hook":
         try:
             entry.resolve()
         except ImportError:
@@ -41,11 +42,11 @@ class Hook(NamedTuple):
         """The hook location."""
         return f"{self.module}:{self.path}"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.location} ({self.project})"
 
 
-def get_hooks(pkg_resources=pkg_resources) -> List[Hook]:
+def get_hooks(pkg_resources: ModuleType = pkg_resources) -> List[Hook]:
     """Return registered snap hooks.
 
     Resources registred as ``snaphelpers.hooks`` in ``entry_points`` are loaded
