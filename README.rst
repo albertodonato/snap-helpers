@@ -195,8 +195,8 @@ Supported snap bases
 
 Currently supported snap bases are:
 
-- ``core20`` (Python3.8)
-- ``core22`` (Python3.10)
+- ``core20`` (Python 3.8)
+- ``core22`` (Python 3.10)
 
 
 Testing with the snap
