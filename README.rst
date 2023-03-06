@@ -109,6 +109,12 @@ It exposes a top-level ``snaphelpers.Snap`` object which provides access to:
 
      >>> snap.metadata_files.snap
      SnapMetadataFile(/snap/snap-helpers/138/meta/snap.yaml)
+     >>> snap.metadata_files.snap.path
+     PosixPath('/snap/snap-helpers/138/meta/snap.yaml')
+     >>> snap.metadata_files.snap["name"]
+     'snap-helpers'
+     >>> snap.metadata_files.snap["base"]
+     'core22'
      >>> pprint.pprint(dict(snap.metadata_files.snap))
      {'apps': {'python': {'command': 'bin/python3',
                           'plugs': ['home', 'network', 'network-bind']},
