@@ -54,6 +54,9 @@ include = ["snaphelpers*"]
 [tool.setuptools.dynamic]
 version = {attr = "snaphelpers.__version__"}
 
+[tool.black]
+line-length = 79
+
 [tool.isort]
 combine_as_imports = true
 force_grid_wrap = 2

@@ -57,7 +57,9 @@ class SnapHelpersScript(Script):
     """Tool to perform snap-helpers tasks."""
 
     def get_parser(self) -> ArgumentParser:
-        parser = ArgumentParser(description="Tool to perform snap-helpers tasks")
+        parser = ArgumentParser(
+            description="Tool to perform snap-helpers tasks"
+        )
         subparsers = parser.add_subparsers(
             metavar="ACTION", dest="action", help="action to perform"
         )
@@ -69,7 +71,8 @@ class SnapHelpersScript(Script):
             formatter_class=ArgumentDefaultsHelpFormatter,
         )
         write_hooks.add_argument(
-            "--prime-dir", help="snap prime directory (default from snacraft env var)"
+            "--prime-dir",
+            help="snap prime directory (default from snacraft env var)",
         )
         return parser
 
@@ -81,7 +84,9 @@ class SnapHelpersScript(Script):
         if options.prime_dir:
             prime_dir = Path(options.prime_dir)
         else:
-            prime_dir = self._ensure_env_path("CRAFT_PRIME", fallback="SNAPCRAFT_PRIME")
+            prime_dir = self._ensure_env_path(
+                "CRAFT_PRIME", fallback="SNAPCRAFT_PRIME"
+            )
 
         hooks = sorted(get_hooks(), key=attrgetter("name"))
         self._validate_hooks(hooks)
@@ -126,7 +131,9 @@ class SnapHelpersScript(Script):
             message = ["Multiple definitions found for hook(s):"]
             for name in duplicated:
                 message.append(f"- {name}")
-                message.extend(f"    {hook}" for hook in sorted(hooks_by_name[name]))
+                message.extend(
+                    f"    {hook}" for hook in sorted(hooks_by_name[name])
+                )
             raise ScriptError("\n".join(message))
 
         # check that they exist

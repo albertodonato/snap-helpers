@@ -38,7 +38,9 @@ class TestSnapService:
         info = ServiceInfo(
             name="serv1", enabled=True, active=False, notes=["foo", "bar"]
         )
-        assert SnapService(info, snapctl=snapctl) == SnapService(info, snapctl=snapctl)
+        assert SnapService(info, snapctl=snapctl) == SnapService(
+            info, snapctl=snapctl
+        )
 
     def test_eq_other_info(self, snapctl):
         info1 = ServiceInfo(
@@ -111,8 +113,12 @@ class TestSnapServices:
 
     def test_list(self, fake_snapctl):
         services = SnapServices(snapctl=fake_snapctl)
-        info1 = ServiceInfo(name="serv1", enabled=True, active=False, notes=["foo"])
-        info2 = ServiceInfo(name="serv2", enabled=False, active=True, notes=["bar"])
+        info1 = ServiceInfo(
+            name="serv1", enabled=True, active=False, notes=["foo"]
+        )
+        info2 = ServiceInfo(
+            name="serv2", enabled=False, active=True, notes=["bar"]
+        )
         fake_snapctl._services = [info1, info2]
         assert services.list() == {
             "serv1": SnapService(info1, snapctl=fake_snapctl),

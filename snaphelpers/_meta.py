@@ -65,7 +65,9 @@ class MetadataFileProperty:
     def __init__(self, local_path: str):
         self.local_path = local_path
 
-    def __get__(self, instance: "SnapMetadataFiles", owner: type) -> SnapMetadataFile:
+    def __get__(
+        self, instance: "SnapMetadataFiles", owner: type
+    ) -> SnapMetadataFile:
         path = Path(instance._environ["SNAP"]) / self.local_path
         return SnapMetadataFile(path)
 

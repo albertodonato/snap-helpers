@@ -46,7 +46,8 @@ class SnapCtlError(Exception):
         self.returncode = process.returncode
         self.error = cast(IO[bytes], process.stderr).read().decode("utf-8")
         super().__init__(
-            f"Call to snapctl failed with error {self.returncode}: " + self.error
+            f"Call to snapctl failed with error {self.returncode}: "
+            + self.error
         )
 
 
@@ -61,7 +62,9 @@ class SnapCtl:
     )
 
     def __init__(
-        self, executable: str = "/usr/bin/snapctl", env: SnapEnviron | None = None
+        self,
+        executable: str = "/usr/bin/snapctl",
+        env: SnapEnviron | None = None,
     ):
         if env is None:
             env = SnapEnviron()
@@ -181,7 +184,9 @@ class SnapCtl:
             return False
         return True
 
-    def plug_get(self, name: str, *keys: str, remote: bool = False) -> dict[str, Any]:
+    def plug_get(
+        self, name: str, *keys: str, remote: bool = False
+    ) -> dict[str, Any]:
         """Return plug configuration.
 
         :param name: the plug name.
@@ -192,7 +197,9 @@ class SnapCtl:
         remote_type = "slot" if remote else None
         return self._connection_get(name, keys, remote_type=remote_type)
 
-    def slot_get(self, name: str, *keys: str, remote: bool = False) -> dict[str, Any]:
+    def slot_get(
+        self, name: str, *keys: str, remote: bool = False
+    ) -> dict[str, Any]:
         """Return slot configuration.
 
         :param name: the slot name.
@@ -244,9 +251,13 @@ class SnapCtl:
     ) -> str:
         opts: list[str] = []
         if options:
-            opts = [f"--{option}" for option, value in options.items() if value]
+            opts = [
+                f"--{option}" for option, value in options.items() if value
+            ]
         if services:
-            service_names = [f"{self._instance_name}.{service}" for service in services]
+            service_names = [
+                f"{self._instance_name}.{service}" for service in services
+            ]
         else:
             service_names = [self._instance_name]
         return self.run(cmd, *opts, *service_names)

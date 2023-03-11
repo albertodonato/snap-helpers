@@ -50,5 +50,6 @@ class Snap:
 
     def __str__(self) -> str:
         return (
-            f"{self.__class__.__name__}" f"({self.name} {self.version} {self.revision})"
+            f"{self.__class__.__name__}"
+            f"({self.name} {self.version} {self.revision})"
         )

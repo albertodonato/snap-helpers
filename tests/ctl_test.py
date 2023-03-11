@@ -55,7 +55,9 @@ class TestSnapCtl:
 
     def test_config_set(self, snapctl):
         snapctl.config_set({"foo.bar": 123, "baz": [1, 2, 3]})
-        assert snapctl.run.mock_calls == [call("set", "foo.bar=123", "baz=[1, 2, 3]")]
+        assert snapctl.run.mock_calls == [
+            call("set", "foo.bar=123", "baz=[1, 2, 3]")
+        ]
 
     def test_config_unset(self, snapctl):
         snapctl.config_unset("foo.bar", "baz")
@@ -69,7 +71,9 @@ class TestSnapCtl:
 
     def test_connection_unset(self, snapctl):
         snapctl.connection_unset("myslot", "foo.bar", "baz")
-        assert snapctl.run.mock_calls == [call("set", ":myslot", "foo.bar!", "baz!")]
+        assert snapctl.run.mock_calls == [
+            call("set", ":myslot", "foo.bar!", "baz!")
+        ]
 
     @pytest.mark.parametrize("code,connected", [(0, True), (1, False)])
     def test_is_connected(self, tmpdir, code, connected):
@@ -97,7 +101,9 @@ class TestSnapCtl:
     def test_plug_get(self, snapctl, remote, call_args):
         output = {"foo": 123, "bar": "BAR"}
         snapctl.run.return_value = json.dumps(output)
-        assert snapctl.plug_get("myplug", "foo", "bar", remote=remote) == output
+        assert (
+            snapctl.plug_get("myplug", "foo", "bar", remote=remote) == output
+        )
         assert snapctl.run.mock_calls == [call(*call_args)]
 
     @pytest.mark.parametrize(
@@ -110,7 +116,9 @@ class TestSnapCtl:
     def test_slot_get(self, snapctl, remote, call_args):
         output = {"foo": 123, "bar": "BAR"}
         snapctl.run.return_value = json.dumps(output)
-        assert snapctl.slot_get("myslot", "foo", "bar", remote=remote) == output
+        assert (
+            snapctl.slot_get("myslot", "foo", "bar", remote=remote) == output
+        )
         assert snapctl.run.mock_calls == [call(*call_args)]
 
     def test_start(self, snapctl):
@@ -119,7 +127,9 @@ class TestSnapCtl:
 
     def test_start_enable(self, snapctl):
         snapctl.start(enable=True)
-        assert snapctl.run.mock_calls == [call("start", "--enable", "mysnap_inst")]
+        assert snapctl.run.mock_calls == [
+            call("start", "--enable", "mysnap_inst")
+        ]
 
     def test_start_services(self, snapctl):
         snapctl.start("foo", "bar")
@@ -133,7 +143,9 @@ class TestSnapCtl:
 
     def test_stop_enable(self, snapctl):
         snapctl.stop(disable=True)
-        assert snapctl.run.mock_calls == [call("stop", "--disable", "mysnap_inst")]
+        assert snapctl.run.mock_calls == [
+            call("stop", "--disable", "mysnap_inst")
+        ]
 
     def test_stop_services(self, snapctl):
         snapctl.stop("foo", "bar")
@@ -147,7 +159,9 @@ class TestSnapCtl:
 
     def test_restart_enable(self, snapctl):
         snapctl.restart(reload=True)
-        assert snapctl.run.mock_calls == [call("restart", "--reload", "mysnap_inst")]
+        assert snapctl.run.mock_calls == [
+            call("restart", "--reload", "mysnap_inst")
+        ]
 
     def test_restart_services(self, snapctl):
         snapctl.restart("foo", "bar")
@@ -172,7 +186,9 @@ class TestSnapCtl:
                 notes=["foo", "bar"],
             ),
             ServiceInfo(name="service2", enabled=True, active=True, notes=[]),
-            ServiceInfo(name="service3", enabled=True, active=False, notes=["baz"]),
+            ServiceInfo(
+                name="service3", enabled=True, active=False, notes=["baz"]
+            ),
         ]
         assert snapctl.run.mock_calls == [call("services", "mysnap_inst")]
 
@@ -191,7 +207,9 @@ class TestSnapCtl:
                 active=False,
                 notes=["foo", "bar"],
             ),
-            ServiceInfo(name="service3", enabled=True, active=False, notes=["baz"]),
+            ServiceInfo(
+                name="service3", enabled=True, active=False, notes=["baz"]
+            ),
         ]
         assert snapctl.run.mock_calls == [
             call("services", "mysnap_inst.service1", "mysnap_inst.service3")

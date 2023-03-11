@@ -7,7 +7,9 @@ from snaphelpers import (
     UnknownConfigKey,
 )
 
-requires_root = pytest.mark.skipif(os.getuid() != 0, reason="Requires root user")
+requires_root = pytest.mark.skipif(
+    os.getuid() != 0, reason="Requires root user"
+)
 
 
 @pytest.fixture
