@@ -197,7 +197,7 @@ in ``$SNAP/snap/hooks``).
 
 
 Supported snap bases
----------------
+--------------------
 
 Currently supported snap bases are:
 
