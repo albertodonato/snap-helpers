@@ -1,11 +1,13 @@
 import argparse
-import sys
 from pathlib import Path
-from typing import Any, IO, Optional
+import sys
+from typing import (
+    Any,
+    Optional,
+)
 
-from jinja2 import Environment, Template
+from jinja2 import Template
 import yaml
-
 
 BASE_DIR = Path(__file__).parent
 TEMPLATE_FILE = BASE_DIR / "snapcraft-template.yaml"
@@ -14,12 +16,16 @@ SNAPCRAFT_FILE = BASE_DIR / "snapcraft.yaml"
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Render snapcraft.yaml for a specific base")
+    parser = argparse.ArgumentParser(
+        description="Render snapcraft.yaml for a specific base"
+    )
     parser.add_argument("base", help="core base to use")
     return parser.parse_args()
 
 
-def get_base_data(data_file: Path, base: str) -> Optional[dict[str, dict[str, Any]]]:
+def get_base_data(
+    data_file: Path, base: str
+) -> Optional[dict[str, dict[str, Any]]]:
     with data_file.open() as fd:
         data = yaml.safe_load(fd)
     base_data = data.get(base)
