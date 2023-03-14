@@ -46,7 +46,7 @@ documentation = "https://readthedocs.org/projects/snap-helpers/"
 homepage = "https://github.com/albertodonato/snap-helpers"
 repository = "https://github.com/albertodonato/snap-helpers"
 [project.scripts]
-snap-helpers = "snaphelpers.scripts.snaphelpers:script"
+snap-helpers = "snaphelpers.scripts.snap_helpers:script"
 
 [tool.setuptools.packages.find]
 include = ["snaphelpers*"]

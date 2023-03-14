@@ -5,8 +5,8 @@ from textwrap import dedent
 import pytest
 
 from snaphelpers._hook import Hook
-from snaphelpers.scripts import snaphelpers
-from snaphelpers.scripts.snaphelpers import (
+from snaphelpers.scripts import snap_helpers
+from snaphelpers.scripts.snap_helpers import (
     HookScript,
     SnapHelpersScript,
 )
@@ -36,7 +36,7 @@ def mock_get_hooks(mocker, make_entry_points):
             Hook.from_entry_point(entry_point)
             for entry_point in make_entry_points(defs)
         ]
-        get_hooks = mocker.patch.object(snaphelpers, "get_hooks")
+        get_hooks = mocker.patch.object(snap_helpers, "get_hooks")
         get_hooks.return_value = hooks
         return get_hooks
 
