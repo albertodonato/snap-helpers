@@ -111,7 +111,7 @@ class TestSnapHelpersScript:
         mock_get_hooks()
         monkeypatch.delenv("CRAFT_PRIME")
         monkeypatch.setenv("SNAPCRAFT_PRIME", str(prime_dir))
-        assert not script(["write-hooks"])
+        assert script(["write-hooks"]) == 0
         configure_hook, install_hook = sorted(hooks_dir.iterdir())
         assert "sys.exit(hook.configure(Snap()))" in configure_hook.read_text()
         assert "sys.exit(hook.install(Snap()))" in install_hook.read_text()
@@ -125,7 +125,7 @@ class TestSnapHelpersScript:
         mock_get_hooks,
     ):
         mock_get_hooks()
-        assert not script(["write-hooks", "--prime-dir", str(prime_dir)])
+        assert script(["write-hooks", "--prime-dir", str(prime_dir)]) == 0
         configure_hook, install_hook = sorted(hooks_dir.iterdir())
         assert "sys.exit(hook.configure(Snap()))" in configure_hook.read_text()
         assert "sys.exit(hook.install(Snap()))" in install_hook.read_text()
@@ -133,7 +133,7 @@ class TestSnapHelpersScript:
 
     def test_write_hooks_create_files(self, script, hooks_dir, mock_get_hooks):
         mock_get_hooks()
-        assert not script(["write-hooks"])
+        assert script(["write-hooks"]) == 0
         configure_hook, install_hook = sorted(hooks_dir.iterdir())
         assert "sys.exit(hook.configure(Snap()))" in configure_hook.read_text()
         assert "sys.exit(hook.install(Snap()))" in install_hook.read_text()
@@ -141,7 +141,15 @@ class TestSnapHelpersScript:
 
     def test_write_hooks_no_hooks(self, script, hooks_dir, mock_get_hooks):
         mock_get_hooks(defs=[])
-        assert not script(["write-hooks"])
+        assert script(["write-hooks"]) == 0
+        assert not hooks_dir.exists()
+        assert "No hooks defined in the snap" in script.stdout.getvalue()
+
+    def test_write_hooks_no_hooks_fail_empty(
+        self, script, hooks_dir, mock_get_hooks
+    ):
+        mock_get_hooks(defs=[])
+        assert script(["write-hooks", "--fail-empty"]) == 1
         assert not hooks_dir.exists()
         assert "No hooks defined in the snap" in script.stdout.getvalue()
 

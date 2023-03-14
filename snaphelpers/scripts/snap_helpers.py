@@ -75,6 +75,11 @@ class SnapHelpersScript(Script):
             "--prime-dir",
             help="snap prime directory (default from snacraft env var)",
         )
+        write_hooks.add_argument(
+            "--fail-empty",
+            help="fail if no hook is found.",
+            action="store_true",
+        )
         return parser
 
     def run(self, options: Namespace) -> int:
@@ -100,7 +105,7 @@ class SnapHelpersScript(Script):
                 f'Hooks must be defined in the "{HOOKS_ENTRY_POINT}" '
                 "section of entry points."
             )
-            return 0
+            return 1 if options.fail_empty else 0
 
         hooks_dir = prime_dir / "snap" / "hooks"
         hooks_dir.mkdir(parents=True, exist_ok=True)
