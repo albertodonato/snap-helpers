@@ -9,6 +9,7 @@ import os
 from pathlib import Path
 from textwrap import dedent
 from typing import (
+    Callable,
     Dict,
     List,
 )
@@ -76,11 +77,14 @@ class SnapHelpersScript(Script):
         )
         return parser
 
-    def run(self, options: Namespace) -> None:
-        action = options.action.replace("-", "_")
-        getattr(self, f"_action_{action}")(options)
+    def run(self, options: Namespace) -> int:
+        action_name = options.action.replace("-", "_")
+        action: Callable[[Namespace], int] = getattr(
+            self, f"_action_{action_name}"
+        )
+        return action(options)
 
-    def _action_write_hooks(self, options: Namespace) -> None:
+    def _action_write_hooks(self, options: Namespace) -> int:
         if options.prime_dir:
             prime_dir = Path(options.prime_dir)
         else:
@@ -96,7 +100,7 @@ class SnapHelpersScript(Script):
                 f'Hooks must be defined in the "{HOOKS_ENTRY_POINT}" '
                 "section of entry points."
             )
-            return
+            return 0
 
         hooks_dir = prime_dir / "snap" / "hooks"
         hooks_dir.mkdir(parents=True, exist_ok=True)
@@ -106,6 +110,8 @@ class SnapHelpersScript(Script):
             hook_script = HookScript(hook)
             self.print(f" {hook.name}: {hook}")
             hook_script.write(hooks_dir)
+
+        return 0
 
     def _ensure_env_path(self, name: str, fallback: str = "") -> Path:
         value = os.environ.get(name)

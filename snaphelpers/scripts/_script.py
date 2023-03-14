@@ -40,14 +40,14 @@ class Script(ABC):
         """
 
     @abstractmethod
-    def run(self, options: Namespace) -> Optional[int]:
+    def run(self, options: Namespace) -> int:
         """Run the script
 
         Subclasses must implement this method.
 
         """
 
-    def __call__(self, args: Optional[List[str]] = None) -> Optional[int]:
+    def __call__(self, args: Optional[List[str]] = None) -> int:
         parser = self.get_parser()
         opts = parser.parse_args(args=args)
         try:
