@@ -30,7 +30,8 @@ The :class:`.SnapService` class allows interacting with a specific service:
    (False, False)
 
 
-It's also possible to start/stop/restart all services from the :class:`.SnapServices` instance:
+It's also possible to start/stop/restart all services from the
+:class:`.SnapServices` instance:
 
 .. code:: python
 

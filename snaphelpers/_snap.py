@@ -27,16 +27,27 @@ class EnvironProperty:
 class Snap:
     """Top-level wrapper for a Snap."""
 
+    #: Access to snap configuration
     config: SnapConfig
+    #: Access to snap environment variables
     environ: SnapEnviron
+    #: Access to snap health status
     health: SnapHealth
+    #: Access to snap-specific paths
     paths: SnapPaths
+    #: Access to snap services
     services: SnapServices
+    #: Access to snap metadata files
     metadata_files: SnapMetadataFiles
 
+    #: The snap name
     name = EnvironProperty("NAME")
+    #: The snap instance name (usually same as the ``name``, unless parallel
+    # installs are used)
     instance_name = EnvironProperty("INSTANCE_NAME")
+    #: The snap version
     version = EnvironProperty("VERSION")
+    #: The snap revision
     revision = EnvironProperty("REVISION")
 
     def __init__(self, environ: Optional[Mapping[str, str]] = None):

@@ -25,7 +25,8 @@ It's possible to use dotted-notation to access subkeys.
    {'asdf': 3, 'foo': {'bar': 'baz'}}
 
 
-It's also possible to get a single value for a key (at any level) with :meth:`.SnapConfig.get`:
+It's also possible to get a single value for a key (at any level) with
+:meth:`.SnapConfig.get`:
      
 .. code:: python
 

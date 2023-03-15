@@ -21,9 +21,13 @@ from ._env import SnapEnviron
 class ServiceInfo(NamedTuple):
     """Information for a service in the snap."""
 
+    #: Name of the service
     name: str
+    #: Whether the service is enabled
     enabled: bool
+    #: Whether the service is active
     active: bool
+    #: Additional metadata about the service
     notes: list[str]
 
 
@@ -39,7 +43,9 @@ class SnapHealthStatus(Enum):
 class SnapCtlError(Exception):
     """A snapctl command failed."""
 
+    #: The process return code
     returncode: int
+    #: The error message
     error: str
 
     def __init__(self, process: Popen[bytes]):

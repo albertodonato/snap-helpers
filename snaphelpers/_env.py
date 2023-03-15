@@ -7,7 +7,11 @@ from typing import (
 
 
 def is_snap(environ: Optional[Mapping[str, str]] = None) -> bool:
-    """Return whether running in a Snap."""
+    """Return whether running in a Snap.
+
+    :param environ: optionally, the mapping with environment variables.
+
+    """
     if environ is None:
         environ = os.environ
     return bool(environ.get("SNAP", ""))

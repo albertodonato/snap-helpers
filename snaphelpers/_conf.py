@@ -13,6 +13,7 @@ from ._ctl import SnapCtl
 class UnknownConfigKey(Exception):
     """The specified config key is unknown."""
 
+    #: The unknown key
     key: str
 
     def __init__(self, key: str):
@@ -23,6 +24,7 @@ class UnknownConfigKey(Exception):
 class InvalidKey(Exception):
     """The specified key is invalid."""
 
+    #: The invalid key
     key: str
 
     def __init__(self, key: str):
