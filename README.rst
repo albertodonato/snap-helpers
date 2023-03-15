@@ -4,7 +4,8 @@ snap-helpers - Interact with the Snap system within a Snap
 |Latest Version| |Snap Package| |Build Status| |Coverage Status| |Documentation|
 
 
-A Python library to interact with snap configuration and properties from inside a snap.
+A Python library to interact with snap configuration and properties from inside
+a snap.
 
 It exposes a top-level ``snaphelpers.Snap`` object which provides access to:
 
@@ -146,10 +147,10 @@ It exposes a top-level ``snaphelpers.Snap`` object which provides access to:
 Hook helpers
 ------------
 
-The library provides helpers to reduce boilerplate when setting up hooks for the snap.
+The library provides helpers to reduce boilerplate when setting up hooks for
+the snap, by using ``entry-points`` in the package metadata.
 
-Hooks can be defined by simply registering functions to be called as hooks via
-``entry_points`` in the application ``setup.py``:
+This can be done in ``setup.py``:
 
 .. code:: python
 
@@ -163,7 +164,7 @@ Hooks can be defined by simply registering functions to be called as hooks via
        }
    )
 
-or in ``setup.cfg`` with:
+or in ``setup.cfg``:
 
 .. code:: ini
 
@@ -172,7 +173,7 @@ or in ``setup.cfg`` with:
        configure = testapp:configure_hook
        install = testapp:install_hook
 
-or in ``pyproject.toml`` with:
+or in ``pyproject.toml``:
 
 .. code:: toml
 
@@ -204,12 +205,14 @@ Currently supported snap bases are:
 - ``core20`` (Python 3.8)
 - ``core22`` (Python 3.10)
 
+The ``core18`` base (with Python 3.6) is supported until the ``0.3.2`` release.
+
 
 Testing with the snap
 ---------------------
 
-The ``snap-helpers`` snap provides a way to easily test code using the library in
-a real snap environment with strict confinement.
+The ``snap-helpers`` snap provides a way to easily test code using the library
+in a real snap environment with strict confinement.
 
 It provides an IPython_ shell which automatically imports the ``snaphelpers``
 module and provides a ``Snap`` instance for the current snap.
