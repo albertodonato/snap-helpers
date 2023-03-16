@@ -40,7 +40,7 @@ parts:
     plugin: python
     source: .
     python-packages:
-      - .  # without setup.py, snapcraft won't install the local package
+      - .
       - ipython
 
   local:
