@@ -1,4 +1,4 @@
-.. Helpers for interacting with the Snap system within a Snap documentation master file.
+.. snap-helpers documentation master file.
 
 .. _home:
 
