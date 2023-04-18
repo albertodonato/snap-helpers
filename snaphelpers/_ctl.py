@@ -15,6 +15,8 @@ from typing import (
     Sequence,
 )
 
+import yaml
+
 from ._env import SnapEnviron
 
 
@@ -236,6 +238,11 @@ class SnapCtl:
             args.extend(["--code", code])
         self.run("set-health", *args)
 
+    def system_mode(self) -> dict[str, Any]:
+        """Return info on the device current system mode."""
+        mode: dict[str, Any] = yaml.safe_load(self.run("system-mode"))
+        return mode
+
     def run(self, *args: str) -> str:
         """Execute the command and return its output.
 
@@ -285,6 +292,5 @@ class SnapCtl:
             args.append(f"--{remote_type}")
         args.append(f":{name}")
         args.extend(keys)
-        conf: dict[str, Any]
-        conf = json.loads(self.run(*args))
+        conf: dict[str, Any] = json.loads(self.run(*args))
         return conf

@@ -236,3 +236,16 @@ class TestSnapCtl:
     def test_set_health(self, snapctl, status, message, code, call_args):
         snapctl.set_health(status, message=message, code=code)
         assert snapctl.run.mock_calls == [call("set-health", *call_args)]
+
+    def test_system_mode(self, snapctl):
+        snapctl.run.return_value = dedent(
+            """\
+            system-mode: run
+            seed-loaded: true
+            """
+        )
+        assert snapctl.system_mode() == {
+            "system-mode": "run",
+            "seed-loaded": True,
+        }
+        assert snapctl.run.called_once_with("system-mode")
