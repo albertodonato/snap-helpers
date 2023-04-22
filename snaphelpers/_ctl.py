@@ -10,6 +10,7 @@ from subprocess import (
 from typing import (
     Any,
     cast,
+    Dict,
     IO,
     NamedTuple,
     Sequence,
@@ -72,7 +73,7 @@ class SnapCtl:
     def __init__(
         self,
         executable: str = "/usr/bin/snapctl",
-        env: SnapEnviron | None = None,
+        env: Optional[SnapEnviron] = None,
     ):
         if env is None:
             env = SnapEnviron()
@@ -256,7 +257,7 @@ class SnapCtl:
         args = ["--pending"]
         if action:
             args.append(f"--{action}")
-        return cast(dict[str, Any], yaml.safe_load(self.run("refresh", *args)))
+        return cast(Dict[str, Any], yaml.safe_load(self.run("refresh", *args)))
 
     def run(self, *args: str) -> str:
         """Execute the command and return its output.
