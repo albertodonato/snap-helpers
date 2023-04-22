@@ -243,6 +243,21 @@ class SnapCtl:
         mode: dict[str, Any] = yaml.safe_load(self.run("system-mode"))
         return mode
 
+    def refresh(self, action: str | None = None) -> dict[str, Any]:
+        """Return refresh state of the snap, optionally requesting an action.
+
+        To perform actions, the snap must have the ``snap-refresh-control``
+        interface.
+
+        :param action: Optional refresh action to perform, either ``proceed``
+          or ``hold``.
+
+        """
+        args = ["--pending"]
+        if action:
+            args.append(f"--{action}")
+        return cast(dict[str, Any], yaml.safe_load(self.run("refresh", *args)))
+
     def run(self, *args: str) -> str:
         """Execute the command and return its output.
 

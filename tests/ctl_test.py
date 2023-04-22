@@ -248,4 +248,27 @@ class TestSnapCtl:
             "system-mode": "run",
             "seed-loaded": True,
         }
-        assert snapctl.run.called_once_with("system-mode")
+        snapctl.run.assert_called_once_with("system-mode")
+
+    def test_refresh(self, snapctl):
+        snapctl.run.return_value = dedent(
+            """\
+            pending: none
+            channel: latest/edge
+            base: false
+            restart: false
+            """
+        )
+        assert snapctl.refresh() == {
+            "pending": "none",
+            "channel": "latest/edge",
+            "base": False,
+            "restart": False,
+        }
+        snapctl.run.assert_called_once_with("refresh", "--pending")
+
+    def test_refresh_action(self, snapctl):
+        snapctl.refresh(action="proceed")
+        snapctl.run.assert_called_once_with(
+            "refresh", "--pending", "--proceed"
+        )
