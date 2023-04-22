@@ -73,7 +73,7 @@ class SnapCtl:
     def __init__(
         self,
         executable: str = "/usr/bin/snapctl",
-        env: Optional[SnapEnviron] = None,
+        env: SnapEnviron | None = None,
     ):
         if env is None:
             env = SnapEnviron()
