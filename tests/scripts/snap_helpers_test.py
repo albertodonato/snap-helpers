@@ -26,16 +26,21 @@ def hooks_dir(prime_dir):
 
 @pytest.fixture
 def mock_get_hooks(mocker, make_entry_points):
-    defs = [
-        ("pkg1", "configure = pkg1.hooks:hook.configure", True),
-        ("pkg2", "install = pkg2.hooks:hook.install", True),
-    ]
+    defs = (
+        ("pkg1", "configure = pkg1.hooks:hook.configure"),
+        ("pkg2", "install = pkg2.hooks:hook.install"),
+    )
 
-    def mock(defs=defs):
+    def mock(defs=defs, exist=True):
         hooks = [
-            Hook.from_entry_point(entry_point)
-            for entry_point in make_entry_points(defs)
+            Hook.from_entry_point(entry_point, skip_load=True)
+            for entry_point in make_entry_points(*defs)
         ]
+        if not exist:
+            for idx, hook in enumerate(hooks):
+                hook_def = hook._asdict()
+                hook_def["exists"] = False
+                hooks[idx] = Hook(**hook_def)
         get_hooks = mocker.patch.object(snap_helpers, "get_hooks")
         get_hooks.return_value = hooks
         return get_hooks
@@ -158,10 +163,10 @@ class TestSnapHelpersScript:
     ):
         mock_get_hooks(
             defs=[
-                ("pkg1", "configure = pkg1.hooks:hook.configure", True),
-                ("pkg2", "configure = pkg2.hooks:hook.configure", True),
-                ("pkg3", "install = pkg3.hooks:hook.install", True),
-                ("pkg4", "install = pkg4.hooks:hook.install", True),
+                ("pkg1", "configure = pkg1.hooks:hook.configure"),
+                ("pkg2", "configure = pkg2.hooks:hook.configure"),
+                ("pkg3", "install = pkg3.hooks:hook.install"),
+                ("pkg4", "install = pkg4.hooks:hook.install"),
             ]
         )
         assert script(["write-hooks"]) == 1
@@ -179,17 +184,13 @@ class TestSnapHelpersScript:
         )
 
     def test_write_hooks_not_found(self, script, hooks_dir, mock_get_hooks):
-        mock_get_hooks(
-            defs=[
-                ("pkg1", "configure = pkg1.hooks:hook.configure", True),
-                ("pkg2", "install = pkg2.hooks:hook.install", False),
-            ]
-        )
+        mock_get_hooks(exist=False)
         assert script(["write-hooks"]) == 1
         assert not hooks_dir.exists()
         assert script.stderr.getvalue() == dedent(
             """\
             Hook function(s) not found:
+            - pkg1.hooks:hook.configure (pkg1)
             - pkg2.hooks:hook.install (pkg2)
             """
         )
