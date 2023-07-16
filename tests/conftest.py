@@ -1,15 +1,13 @@
 from copy import deepcopy
+from typing import NamedTuple
 
-from pkg_resources import (
-    Distribution,
-    EntryPoint,
-)
 import pytest
 
 from snaphelpers import (
     SnapCtl,
     SnapEnviron,
 )
+from snaphelpers._importlib import EntryPoints
 
 
 @pytest.fixture
@@ -114,23 +112,18 @@ def fake_snapctl(snap_config):
 def make_entry_points():
     """Return an iterable with EntryPoint objects."""
 
-    def make(defs):
+    class Distribution(NamedTuple):
+        """Fake Distribution object."""
+
+        name: str
+
+    def make(*defs):
         entry_points = []
-        for project_name, definition, exists in defs:
-            if exists:
-
-                def resolve():
-                    pass
-
-            else:
-
-                def resolve():
-                    raise ImportError(f"Failed importing {definition}")
-
-            entry_point = EntryPoint.parse(
-                definition, dist=Distribution(project_name=project_name)
+        for dist, definition in defs:
+            [entry_point] = EntryPoints._from_text_for(
+                f"[snaphelpers.hooks]\n{definition}\n",
+                Distribution(name=dist),
             )
-            entry_point.resolve = resolve
             entry_points.append(entry_point)
         return entry_points
 

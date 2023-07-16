@@ -1,20 +1,16 @@
-from pkg_resources import (
-    Distribution,
-    EntryPoint,
-)
 import pytest
 
 from snaphelpers._hook import (
     get_hooks,
     Hook,
 )
+from snaphelpers._importlib import EntryPoint
 
 
 class TestHook:
-    def test_from_entry_point(self):
-        entry_point = EntryPoint.parse(
-            "configure = foo.bar:hooks.configure",
-            dist=Distribution(project_name="proj"),
+    def test_from_entry_point(self, make_entry_points):
+        [entry_point] = make_entry_points(
+            ("proj", "configure = foo.bar:hooks.configure")
         )
         hook = Hook.from_entry_point(entry_point)
         assert hook.name == "configure"
@@ -24,48 +20,45 @@ class TestHook:
         assert hook.path == "hooks.configure"
 
     @pytest.mark.parametrize(
-        "side_effect,exists",
+        "definition,exists",
         [
-            (0, True),
-            (ImportError("module not found"), False),
+            ("os:getpid", True),
+            ("not.here:fail", False),
         ],
     )
-    def test_exists(self, mocker, side_effect, exists):
-        entry_point = EntryPoint.parse(
-            "configure = foo.bar:hooks.configure",
-            dist=Distribution(project_name="proj"),
+    def test_exists(self, definition, exists):
+        entry_point = EntryPoint(
+            name="configure",
+            value=definition,
+            group="snaphelpers.hooks",
         )
-        mocker.patch.object(entry_point, "resolve").side_effect = [side_effect]
         hook = Hook.from_entry_point(entry_point)
         assert hook.exists == exists
 
-    def test_location(self):
-        entry_point = EntryPoint.parse(
-            "configure = foo.bar:hooks.configure",
-            dist=Distribution(project_name="proj"),
+    def test_location(self, make_entry_points):
+        [entry_point] = make_entry_points(
+            ("proj", "configure = foo.bar:hooks.configure")
         )
         hook = Hook.from_entry_point(entry_point)
         assert hook.location == "foo.bar:hooks.configure"
 
-    def test_str(self):
-        entry_point = EntryPoint.parse(
-            "configure = foo.bar:hooks.configure",
-            dist=Distribution(project_name="proj"),
+    def test_str(self, make_entry_points):
+        [entry_point] = make_entry_points(
+            ("proj", "configure = foo.bar:hooks.configure")
         )
         hook = Hook.from_entry_point(entry_point)
         assert str(hook) == "foo.bar:hooks.configure (proj)"
 
 
 class TestGetHooks:
-    def test_hooks(self, mocker, make_entry_points):
-        mock_pkg_resources = mocker.Mock()
-        mock_pkg_resources.iter_entry_points.return_value = make_entry_points(
-            [
-                ("pkg1", "configure = pkg1.hooks:hook.configure", True),
-                ("pkg2", "install = pkg2.hooks:hook.install", False),
-            ]
-        )
-        hook1, hook2 = get_hooks(pkg_resources=mock_pkg_resources)
+    def test_hooks(self, make_entry_points):
+        def entry_points(group=None):
+            return make_entry_points(
+                ("pkg1", "configure = os:getpid"),
+                ("pkg2", "install = not.here:fail"),
+            )
+
+        hook1, hook2 = get_hooks(entry_points=entry_points)
         assert hook1.name == "configure"
         assert hook1.exists
         assert hook2.name == "install"

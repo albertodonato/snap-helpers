@@ -1,11 +1,14 @@
-from types import ModuleType
 from typing import (
-    cast,
+    Callable,
     List,
     NamedTuple,
 )
 
-import pkg_resources
+from ._importlib import (
+    entry_points,
+    EntryPoint,
+    EntryPoints,
+)
 
 HOOKS_ENTRY_POINT = "snaphelpers.hooks"
 
@@ -21,19 +24,23 @@ class Hook(NamedTuple):
     exists: bool
 
     @classmethod
-    def from_entry_point(cls, entry: pkg_resources.EntryPoint) -> "Hook":
-        try:
-            entry.resolve()
-        except ImportError:
-            exists = False
-        else:
-            exists = True
+    def from_entry_point(
+        cls, entry: EntryPoint, skip_load: bool = False
+    ) -> "Hook":
+        """Return a ``Hook`` from an ``EntryPoint``."""
+        project = entry.dist.name if entry.dist else ""
+        exists = True
+        if not skip_load:
+            try:
+                entry.load()
+            except ModuleNotFoundError:
+                exists = False
         return cls(
             name=entry.name,
-            project=cast(pkg_resources.Distribution, entry.dist).project_name,
-            module=entry.module_name,
-            import_name=entry.attrs[0],
-            path=".".join(entry.attrs),
+            project=project,
+            module=entry.module,
+            import_name=entry.attr.split(".")[0],
+            path=entry.attr,
             exists=exists,
         )
 
@@ -46,28 +53,24 @@ class Hook(NamedTuple):
         return f"{self.location} ({self.project})"
 
 
-def get_hooks(pkg_resources: ModuleType = pkg_resources) -> List[Hook]:
+def get_hooks(
+    entry_points: Callable[..., EntryPoints] = entry_points
+) -> List[Hook]:
     """Return registered snap hooks.
 
-    Resources registred as ``snaphelpers.hooks`` in ``entry_points`` are loaded
+    Resources registred as ``snaphelpers.hooks`` in ``entry-points`` are loaded
     as hooks, based on their name.
 
-    For example:
+    For example, in ``pyproject.toml``:
 
-    .. code:: python
+    .. code:: toml
 
-       setup(
-           # ...
-           entry_points={
-               "snaphelpers.hooks"': [
-                   "install = foo.bar:install_hook",
-                   "configure = foo.bar:configure_hook",
-               ]
-           }
-       )
+       [project.entry-points."snaphelpers.hooks"]
+       configure = "foo.bar:configure_hook"
+       install = "foo.bar:install_hook"
 
     """
     return [
         Hook.from_entry_point(entry_point)
-        for entry_point in pkg_resources.iter_entry_points(HOOKS_ENTRY_POINT)
+        for entry_point in entry_points(group=HOOKS_ENTRY_POINT)
     ]
