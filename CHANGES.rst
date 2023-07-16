@@ -1,3 +1,15 @@
+v0.4.0 - 2023-07-16
+===================
+
+- Add support for ``snapctl refresh``.
+- Add support for ``snapctl system-mode``.
+- Add option to make fail ``write-hooks`` fail when no hook is found.
+- Drop support for Python 3.6 and ``core18``. (#13)
+- Replace ``pkg_resources`` with ``importlib.metadata``. (#16)
+- Rework project setup, move to ``pyproject.toml`` only.
+- [gh] Switch to Codecov action.
+
+
 v0.3.2 - 2023-01-14
 ===================
 
