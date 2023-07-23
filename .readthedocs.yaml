@@ -6,4 +6,6 @@ build:
     python: "3.10"
 
 install:
-  requirements: docs/requirements.txt
+  - requirements: docs/requirements.txt
+  - method: pip
+    path: .
