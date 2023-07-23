@@ -13,8 +13,8 @@ import snaphelpers
 
 project = "snap-helpers"
 copyright = "{}, Alberto Donato".format(datetime.today().year)
-author = 'Alberto Donato'
-release = str(snaphelpers.__version__)
+author = "Alberto Donato"
+release = snaphelpers.__version__
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
