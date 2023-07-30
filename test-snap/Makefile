@@ -19,5 +19,5 @@ snap-helpers:
 .PHONY: snap-helpers
 
 snapcraft.yaml:
-	tox -e test-snap-snapcraft-yaml -- $(BASE)
+	tox run -e test-snap-snapcraft-yaml -- $(BASE)
 .PHONY: snapcraft.yaml
