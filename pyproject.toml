@@ -56,6 +56,9 @@ snap-helpers = "snaphelpers.scripts.snap_helpers:script"
 [tool.setuptools.packages.find]
 include = ["snaphelpers*"]
 
+[tool.setuptools.package-data]
+snaphelpers = ["py.typed"]
+
 [tool.setuptools.dynamic]
 version = {attr = "snaphelpers.__version__"}
 
