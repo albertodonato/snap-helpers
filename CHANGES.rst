@@ -1,3 +1,16 @@
+v0.4.2 - 2023-08-06
+===================
+
+- Rebuild to fix version
+
+
+v0.4.1 - 2023-08-06
+===================
+
+- Add missing py.typed marker to package
+- [docs] Fix ReadTheDocs setup
+
+
 v0.4.0 - 2023-07-16
 ===================
 
