@@ -8,11 +8,15 @@ description: |
   library.
 
   See the https://github.com/albertodonato/snap-helpers for more details.
-
 license: LGPL-3.0
+website: https://github.com/albertodonato/snap-helpers
+source-code: https://github.com/albertodonato/snap-helpers
+contact: https://github.com/albertodonato/snap-helpers/issues
+issues: https://github.com/albertodonato/snap-helpers/issues
+
+base: core22
 grade: stable
 confinement: strict
-base: core22
 
 slots:
   snap-helpers-lib:
