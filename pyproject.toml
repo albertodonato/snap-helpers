@@ -81,6 +81,11 @@ ignore = ["E203", "E501", "W503"]
 max-line-length = 80
 select = ["C", "E", "F", "W", "B", "B950"]
 
+[tool.pytest.ini_options]
+markers = [
+    "requires_root",  # Test requires to be run as root
+]
+
 [tool.coverage.report]
 fail_under = 100.0
 show_missing = true
@@ -91,7 +96,6 @@ source = ["snaphelpers"]
 omit = ["snaphelpers/_importlib.py"]
 
 [tool.mypy]
-ignore_missing_imports = true
 install_types = true
 non_interactive = true
 strict = true
