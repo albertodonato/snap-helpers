@@ -32,12 +32,12 @@ These functions are called with a :class:`.Snap` instance as argument:
 
 .. code:: python
 
-   def install_hook(snap: snaphelpers.Snap):
-       # ...
+   def install_hook(snap: snaphelpers.Snap) -> None:
+       ...
 
 
-   def configure_hook(snap: snaphelpers.Snap):
-       # ...
+   def configure_hook(snap: snaphelpers.Snap) -> None:
+       ...
 
 
 Setting up hooks during snap build
@@ -61,7 +61,7 @@ to set up hooks:
    parts:
      my-app:
        plugin: python
-       # other part configurations
+       # .. other part configurations
        python-packages:
          - snap-helpers
          # ... other dependencies
@@ -70,5 +70,5 @@ to set up hooks:
          snap-helpers write-hooks
 
 
-For a complete example, see the ``snap-helpers-testapp`` part in the sna
+For a complete example, see the ``snap-helpers-testapp`` part in the snap
 definition under the ``test-snap/`` directory.
