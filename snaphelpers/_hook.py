@@ -32,7 +32,7 @@ class Hook(NamedTuple):
         exists = True
         if not skip_load:
             try:
-                entry.load()
+                entry.load()  # type: ignore[no-untyped-call]
             except ModuleNotFoundError:
                 exists = False
         return cls(

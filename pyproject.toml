@@ -100,3 +100,4 @@ omit = ["snaphelpers/_importlib.py"]
 install_types = true
 non_interactive = true
 strict = true
+warn_unused_ignores = false
