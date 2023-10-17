@@ -4,3 +4,6 @@ core20:
 core22:
   python_version: '3.10'
   build_cmd: craftctl default
+core24:
+  python_version: '3.12'
+  build_cmd: craftctl default

@@ -15,6 +15,7 @@ jobs:
         base:
           - core20
           - core22
+          - core24
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
