@@ -1,10 +1,7 @@
 import argparse
 from pathlib import Path
 import sys
-from typing import (
-    Any,
-    Optional,
-)
+from typing import Any
 
 from jinja2 import Template
 import yaml
@@ -23,9 +20,7 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def get_base_data(
-    data_file: Path, base: str
-) -> Optional[dict[str, dict[str, Any]]]:
+def get_base_data(data_file: Path, base: str) -> dict[str, dict[str, Any]]:
     with data_file.open() as fd:
         data = yaml.safe_load(fd)
     base_data = data.get(base)
@@ -34,7 +29,9 @@ def get_base_data(
     return base_data
 
 
-def render_template(template_file: Path, out_file: Path, data: dict[str, Any]):
+def render_template(
+    template_file: Path, out_file: Path, data: dict[str, Any]
+) -> None:
     template = Template(template_file.read_text())
     out_file.write_text(template.render(**data))
 
