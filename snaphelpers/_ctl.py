@@ -13,6 +13,7 @@ from typing import (
     Dict,
     IO,
     NamedTuple,
+    Optional,
     Sequence,
 )
 
@@ -73,7 +74,7 @@ class SnapCtl:
     def __init__(
         self,
         executable: str = "/usr/bin/snapctl",
-        env: SnapEnviron | None = None,
+        env: Optional[SnapEnviron] = None,
     ):
         if env is None:
             env = SnapEnviron()
@@ -222,8 +223,8 @@ class SnapCtl:
     def set_health(
         self,
         status: SnapHealthStatus,
-        message: str | None = None,
-        code: str | None = None,
+        message: Optional[str] = None,
+        code: Optional[str] = None,
     ) -> None:
         """Set snap health.
 
@@ -244,7 +245,7 @@ class SnapCtl:
         mode: dict[str, Any] = yaml.safe_load(self.run("system-mode"))
         return mode
 
-    def refresh(self, action: str | None = None) -> dict[str, Any]:
+    def refresh(self, action: Optional[str] = None) -> dict[str, Any]:
         """Return refresh state of the snap, optionally requesting an action.
 
         To perform actions, the snap must have the ``snap-refresh-control``
@@ -276,7 +277,7 @@ class SnapCtl:
         self,
         cmd: str,
         services: Sequence[str],
-        options: dict[str, bool] | None = None,
+        options: Optional[dict[str, bool]] = None,
     ) -> str:
         opts: list[str] = []
         if options:
@@ -301,7 +302,7 @@ class SnapCtl:
         self,
         name: str,
         keys: tuple[str, ...],
-        remote_type: str | None = None,
+        remote_type: Optional[str] = None,
     ) -> dict[str, Any]:
         args = ["get", "-d"]
         if remote_type:
