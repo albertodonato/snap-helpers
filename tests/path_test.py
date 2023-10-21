@@ -26,10 +26,10 @@ class TestSnapPaths:
         paths = SnapPaths(env=snap_environ)
         assert repr(paths) == (
             "SnapPaths("
-            "common=/var/snap/mysnap/common "
-            "data=/var/snap/mysnap/123 "
-            "real_home=/home/user "
-            "snap=/snap/mysnap/123 "
-            "user_common=/home/user/snap/mysnap/common "
-            "user_data=/home/user/snap/mysnap/123)"
+            "common='/var/snap/mysnap/common' "
+            "data='/var/snap/mysnap/123' "
+            "real_home='/home/user' "
+            "snap='/snap/mysnap/123' "
+            "user_common='/home/user/snap/mysnap/common' "
+            "user_data='/home/user/snap/mysnap/123')"
         )

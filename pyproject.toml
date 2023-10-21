@@ -86,6 +86,9 @@ select = ["C", "E", "F", "W", "B", "B950"]
 markers = [
     "requires_root",  # Test requires to be run as root
 ]
+testpaths = [
+    "tests",
+]
 
 [tool.coverage.report]
 fail_under = 100.0
