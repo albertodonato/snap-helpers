@@ -109,7 +109,7 @@ It exposes a top-level ``snaphelpers.Snap`` object which provides access to:
   .. code:: python
 
      >>> snap.metadata_files.snap
-     SnapMetadataFile(/snap/snap-helpers/138/meta/snap.yaml)
+     SnapMetadataFile('/snap/snap-helpers/138/meta/snap.yaml')
      >>> snap.metadata_files.snap.path
      PosixPath('/snap/snap-helpers/138/meta/snap.yaml')
      >>> snap.metadata_files.snap["name"]
