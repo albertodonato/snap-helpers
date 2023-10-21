@@ -31,7 +31,7 @@ class SnapMetadataFile(Mapping[str, Any]):
         return str(self.path)
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}({self.path})"
+        return f"{self.__class__.__name__}('{self.path}')"
 
     def __getitem__(self, item: str) -> Any:
         self._ensure_loaded()

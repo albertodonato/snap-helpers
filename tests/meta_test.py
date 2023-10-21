@@ -78,7 +78,7 @@ class TestSnapMetadataFile:
 
     def test_repr(self):
         sample = SnapMetadataFile(Path("/some/path"))
-        assert repr(sample) == "SnapMetadataFile(/some/path)"
+        assert repr(sample) == "SnapMetadataFile('/some/path')"
 
     def test_len(self, sample_content, sample_yaml_file):
         metadata_file = SnapMetadataFile(sample_yaml_file)

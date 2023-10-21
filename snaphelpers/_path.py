@@ -32,6 +32,6 @@ class SnapPaths:
     def __repr__(self) -> str:
         name = self.__class__.__name__
         values = " ".join(
-            f"{key}={str(getattr(self, key))}" for key in self.__slots__
+            f"{key}='{getattr(self, key)}'" for key in self.__slots__
         )
         return f"{name}({values})"
