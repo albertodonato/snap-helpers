@@ -1,7 +1,7 @@
 snap-helpers - Interact with the Snap system within a Snap
 ==========================================================
 
-|Latest Version| |Snap Package| |Build Status| |Coverage Status| |Documentation|
+|Latest Version| |Snap Package| |Build Status| |Documentation|
 
 
 A Python library to interact with snap configuration and properties from inside
@@ -286,9 +286,6 @@ Full documentation is available on ReadTheDocs_.
 .. |Build Status| image:: https://github.com/albertodonato/snap-helpers/workflows/CI/badge.svg
    :alt: Build Status
    :target: https://github.com/albertodonato/snap-helpers/actions?query=workflow%3ACI
-.. |Coverage Status| image:: https://img.shields.io/codecov/c/github/albertodonato/snap-helpers/main.svg
-   :alt: Coverage Status
-   :target: https://codecov.io/gh/albertodonato/snap-helpers
 .. |Documentation| image:: https://readthedocs.org/projects/snap-helpers/badge/?version=stable
    :alt: Documentation
    :target: https://snap-helpers.readthedocs.io/en/stable/?badge=stable
