@@ -2,9 +2,12 @@ name: snap-helpers-testapp
 version: '1.0'
 summary: Test applicantion using snap-helpers
 description: Test application using snap-helpers
-grade: stable
+grade: devel
 confinement: strict
 base: {{ base }}
+{%- if build_base %}
+build-base: {{ build_base }}
+{%- endif %}
 
 plugs:
   snap-helpers-lib:

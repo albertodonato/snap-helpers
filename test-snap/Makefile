@@ -6,7 +6,7 @@ setup: snap-helpers snapcraft.yaml
 .PHONY: setup
 
 snap: setup
-	SNAPCRAFT_BUILD_ENVIRONMENT=lxd snapcraft
+	SNAPCRAFT_BUILD_ENVIRONMENT=lxd snapcraft -v
 .PHONY: snap
 
 clean:
