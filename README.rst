@@ -144,6 +144,22 @@ It exposes a top-level ``snaphelpers.Snap`` object which provides access to:
       'version': '0.3.0+git5.5794660'}
 
 
+Check if running in a snap
+--------------------------
+
+The library provides a way to check whether a given environment (defaulting to
+the process's environment) is within a snap or not:
+
+.. code:: python
+
+   import snaphelpers
+
+   if snaphelpers.is_snap():
+       print("This process is running in a snap")
+   else:
+       print("This process is not running in a snap")
+
+
 Hook helpers
 ------------
 
