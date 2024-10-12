@@ -2,6 +2,7 @@ import pytest
 
 from snaphelpers._env import (
     is_snap,
+    NotASnapError,
     SnapEnviron,
 )
 
@@ -19,6 +20,10 @@ class TestIsSnap:
 
 
 class TestSnapEnviron:
+    def test_error_not_a_snap_env(self):
+        with pytest.raises(NotASnapError):
+            SnapEnviron({})
+
     def test_to_dict(self, snap_env):
         # ignored environment variables
         snap_env.update({"OTHER": "value", "PATH": "/bin:/usr/bin"})

@@ -17,6 +17,16 @@ def is_snap(environ: Optional[Mapping[str, str]] = None) -> bool:
     return bool(environ.get("SNAP", ""))
 
 
+class NotASnapError(Exception):
+    """Not running within a snap environment."""
+
+    def __init__(self) -> None:
+        super().__init__(
+            "Provided environment is not a snap environment. "
+            "Check if the environment is a snap using snaphelpers.is_snap"
+        )
+
+
 class SnapEnviron(Mapping[str, str]):
     """Environment variables related to the Snap.
 
@@ -39,6 +49,8 @@ class SnapEnviron(Mapping[str, str]):
     def __init__(self, environ: Optional[Mapping[str, str]] = None):
         if environ is None:
             environ = os.environ
+        if not is_snap(environ=environ):
+            raise NotASnapError()
         prefix_len = len(self._PREFIX)
         self._env = {
             key[prefix_len:]: value

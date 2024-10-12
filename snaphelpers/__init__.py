@@ -12,6 +12,7 @@ from ._ctl import (
 )
 from ._env import (
     is_snap,
+    NotASnapError,
     SnapEnviron,
 )
 from ._health import SnapHealth
@@ -20,19 +21,20 @@ from ._service import SnapServices
 from ._snap import Snap
 
 __all__ = [
-    "is_snap",
     "InvalidKey",
+    "NotASnapError",
     "Snap",
-    "SnapCtl",
-    "SnapCtlError",
     "SnapConfig",
     "SnapConfigOptions",
+    "SnapCtl",
+    "SnapCtlError",
     "SnapEnviron",
     "SnapHealth",
     "SnapPaths",
     "SnapServices",
     "UnknownConfigKey",
     "__version__",
+    "is_snap",
 ]
 
 __version__ = "0.4.2"
