@@ -18,9 +18,9 @@ def is_snap(environ: Optional[Mapping[str, str]] = None) -> bool:
 
 
 class NotASnapError(Exception):
-    """We are not running within a snap environment."""
+    """Not running within a snap environment."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(
             "Provided environment is not a snap environment. "
             "Check if the environment is a snap using snaphelpers.is_snap"

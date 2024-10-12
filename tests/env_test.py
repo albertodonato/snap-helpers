@@ -1,8 +1,8 @@
 import pytest
 
 from snaphelpers._env import (
-    NotASnapError,
     is_snap,
+    NotASnapError,
     SnapEnviron,
 )
 
