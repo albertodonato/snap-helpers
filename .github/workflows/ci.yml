@@ -10,14 +10,7 @@ on:
 
 jobs:
   lint:
-    strategy:
-      matrix:
-        include:
-          - python-version: "3.8"
-            platform: ubuntu-20.04
-          - python-version: "3.10"
-            platform: ubuntu-22.04
-    runs-on: ${{ matrix.platform }}
+    runs-on: ubuntu-latest
     steps:
       - name: Repository checkout
         uses: actions/checkout@v3
@@ -25,7 +18,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.12"
 
       - name: Install dependencies
         run: |
@@ -43,6 +36,8 @@ jobs:
             platform: ubuntu-20.04
           - python-version: "3.10"
             platform: ubuntu-22.04
+          - python-version: "3.12"
+            platform: ubuntu-24.04
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Repository checkout
@@ -69,6 +64,8 @@ jobs:
             platform: ubuntu-20.04
           - python-version: "3.10"
             platform: ubuntu-22.04
+          - python-version: "3.12"
+            platform: ubuntu-24.04
     runs-on: ${{ matrix.platform }}
     steps:
       - name: Repository checkout
