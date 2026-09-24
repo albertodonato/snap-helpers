@@ -45,6 +45,7 @@ dependencies = [
 optional-dependencies.testing = [
   "pytest",
   "pytest-mock",
+  "pytest-timeout",
 ]
 urls.changelog = "https://github.com/albertodonato/snap-helpers/blob/main/CHANGES.rst"
 urls.documentation = "https://readthedocs.org/projects/snap-helpers/"

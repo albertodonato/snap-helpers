@@ -1,4 +1,8 @@
 import json
+from subprocess import (
+    PIPE,
+    Popen,
+)
 from textwrap import dedent
 from unittest.mock import call
 
@@ -28,6 +32,46 @@ class TestSnapCtl:
         executable.chmod(0o755)
         snapctl = SnapCtl(executable=str(executable))
         assert snapctl.run() == "foo bar\n"
+
+    @pytest.mark.timeout(10)
+    def test_run_reads_large_output_without_deadlock(self, tmpdir):
+        executable = tmpdir / "snapctl"
+        executable.write_text(
+            dedent(
+                """\
+                #!/bin/sh
+                dd if=/dev/zero bs=1048576 count=2 2>/dev/null | tr '\\000' x
+                dd if=/dev/zero bs=1048576 count=2 2>/dev/null | tr '\\000' y >&2
+                """
+            ),
+            "utf-8",
+        )
+        executable.chmod(0o755)
+
+        output = SnapCtl(executable=str(executable)).run()
+
+        assert output == "x" * (2 * 1024 * 1024)
+
+    def test_error_reads_process_stderr(self, tmpdir):
+        executable = tmpdir / "snapctl"
+        executable.write_text(
+            dedent(
+                """\
+                #!/bin/sh
+                echo 'fail!' >&2
+                exit 1
+                """
+            ),
+            "utf-8",
+        )
+        executable.chmod(0o755)
+        process = Popen([str(executable)], stderr=PIPE)
+        process.wait()
+
+        error = SnapCtlError(process)
+
+        assert error.returncode == 1
+        assert str(error) == "Call to snapctl failed with error 1: fail!\n"
 
     def test_run_fail(self, tmpdir):
         executable = tmpdir / "snapctl"

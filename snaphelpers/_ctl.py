@@ -52,9 +52,11 @@ class SnapCtlError(Exception):
     #: The error message
     error: str
 
-    def __init__(self, process: Popen[bytes]):
+    def __init__(self, process: Popen[bytes], error: Optional[bytes] = None):
         self.returncode = process.returncode
-        self.error = cast(IO[bytes], process.stderr).read().decode("utf-8")
+        if error is None:
+            error = cast(IO[bytes], process.stderr).read()
+        self.error = error.decode("utf-8")
         super().__init__(
             f"Call to snapctl failed with error {self.returncode}: "
             + self.error
@@ -267,10 +269,9 @@ class SnapCtl:
 
         """
         process = Popen([self._executable, *args], stdout=PIPE, stderr=PIPE)
-        process.wait()
+        output, error = process.communicate()
         if process.returncode:
-            raise SnapCtlError(process)
-        output: bytes = cast(IO[bytes], process.stdout).read()
+            raise SnapCtlError(process, error)
         return output.decode("utf-8")
 
     def _run_for_services(
