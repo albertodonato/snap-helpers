@@ -40,6 +40,7 @@ jobs:
         uses: snapcore/action-build@v1
         with:
           path: test-snap
+          snapcraft-channel: ${{ matrix.base == 'core20' && '8.x/stable' || 'stable' }}
 
       - name: Install snap
         run: |
