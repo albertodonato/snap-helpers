@@ -1,5 +1,5 @@
-snap-helpers - Interact with the Snap system within a Snap
-==========================================================
+Interact with the Snap system within a Snap
+===========================================
 
 |Latest Version| |Snap Package| |Build Status| |Documentation|
 
